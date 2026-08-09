@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -23,7 +24,7 @@
         <div class="nav-section-title">Workspace</div>
         <a href="dashboard.html"><span class="nav-icon">OV</span>Dashboard</a>
         <a class="active" href="profile.html" aria-current="page"><span class="nav-icon">ME</span>My Profile</a>
-        <div class="nav-section-title">Procurement</div>
+        <div class="nav-section-title">Tenders</div>
         <a href="tenders.html"><span class="nav-icon">TN</span>Published Tenders</a>
         <a href="bids.html"><span class="nav-icon">BD</span>My Bids</a>
         <div class="nav-section-title">Delivery</div>
@@ -41,12 +42,12 @@
       <header class="app-topbar">
         <div class="topbar-left">
           <button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open navigation"><span></span></button>
-          <div class="topbar-context">Representative workspace / <strong>My Profile</strong></div>
+          <div class="topbar-context">Representative panel / <strong>My Profile</strong></div>
         </div>
         <div class="topbar-right">
           <a class="user-chip" href="profile.html" aria-label="Open representative profile">
             <span class="user-avatar" data-current-rep-initials>--</span>
-            <span class="user-chip-name"><strong data-current-rep-name>Representative</strong><span data-current-rep-title>Account</span></span>
+            <span class="user-chip-name"><strong data-current-rep-name>Representative</strong><span data-current-rep-title>Profile</span></span>
           </a>
         </div>
       </header>
@@ -54,9 +55,9 @@
       <main class="page-content" id="mainContent">
         <div class="page-heading">
           <div>
-            <div class="breadcrumb-line">Account and representation</div>
+            <div class="breadcrumb-line">Profile and representation</div>
             <h1>My profile</h1>
-            <p>Review the shared Person record, representative approval, and the Contractor you represent.</p>
+            <p>View your account, approval status and contractor details.</p>
           </div>
           <a class="btn btn-outline-navy" href="dashboard.html">Back to dashboard</a>
         </div>
@@ -66,7 +67,7 @@
         <section class="data-card mb-4" aria-labelledby="profileHeaderName">
           <div class="profile-header" id="profileHeader"></div>
           <div class="panel-tabs" role="tablist" aria-label="Profile information sections">
-            <button class="active" type="button" data-tab-target="personPanel">Person details</button>
+            <button class="active" type="button" data-tab-target="personPanel">Personal details</button>
             <button type="button" data-tab-target="representativePanel">Representative details</button>
           </div>
           <div class="data-card-body">
@@ -79,7 +80,7 @@
           <div class="col-xl-7">
             <article class="data-card">
               <div class="data-card-header">
-                <div><h2>Represented Contractor</h2><p>License and company details from the Contractor record</p></div>
+                <div><h2>Represented Contractor</h2><p>Company and license details</p></div>
                 <span id="profileLicenseBadge"></span>
               </div>
               <div class="data-card-body">
@@ -91,7 +92,7 @@
           <div class="col-xl-5">
             <article class="data-card">
               <div class="data-card-header">
-                <div><h2>Other representatives</h2><p>Additional people representing the same Contractor, if any</p></div>
+                <div><h2>Other representatives</h2><p>Other representatives from the same contractor</p></div>
               </div>
               <div class="data-card-body" id="profileOtherRepresentatives"></div>
             </article>
@@ -101,7 +102,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/mock-data.js"></script>
+    <script src="../../js/data.js"></script>
     <script src="../../js/common.js"></script>
     <script src="../../js/contractor.js"></script>
   </body>

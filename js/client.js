@@ -1,8 +1,5 @@
-"use strict";
 
-/* Client workspace. The fixed demonstration account is C001. Changes last until refresh only. */
-
-var currentClientId = "C001";
+var currentClientId = "1";
 
 function clientSetText(elementId, value) {
   var element = document.getElementById(elementId);
@@ -189,7 +186,7 @@ function clientIsValidId(value) {
 }
 
 function clientIsValidDate(value) {
-  return Boolean(value && !Number.isNaN(new Date(value + "T00:00:00").getTime()));
+  return Boolean(value && !Number.isNaN(new Date(value + "0:00:00").getTime()));
 }
 
 function clientGetQueryValue(name) {
@@ -215,8 +212,6 @@ function clientRenderSharedIdentity() {
     initialElements[index].textContent = initials;
   }
 }
-
-/* Client table filters combine search and status instead of letting one filter undo the other. */
 
 function clientApplyTableFilter(tableId) {
   var table = document.getElementById(tableId);
@@ -296,7 +291,7 @@ function clientRenderDashboard() {
   clientSetText("dashboardComplaintCount", openComplaintCount);
   clientSetText("dashboardAllocationNote", confirmedCount + " confirmed, " + (bookings.length - confirmedCount) + " awaiting confirmation");
   clientSetText("dashboardPaymentNote", pendingPaymentCount + " awaiting Employee verification");
-  clientSetText("dashboardInstallmentNote", installments.length ? "Review upcoming due dates" : "No installment schedule");
+  clientSetText("dashboardInstallmentNote", installments.length ? "Check upcoming due dates" : "No installment schedule");
 
   var bookingHolder = document.getElementById("dashboardBookingSummary");
   if (bookingHolder) {
@@ -320,19 +315,19 @@ function clientRenderDashboard() {
   if (actionHolder) {
     var actions = [];
     if (!bookings.length) {
-      actions.push(["UN", "Browse available Units", "Start with the global Properties inventory.", "properties.html"]);
+      actions.push(["UN", "Browse available Units", "Start with the available Units page.", "properties.html"]);
     }
     if (bookings.length > confirmedCount) {
       actions.push(["AL", "Check allocation status", "An Employee has not confirmed every Booking.", "bookings.html#allocationStatus"]);
     }
     if (pendingPaymentCount || bookings.length) {
-      actions.push(["PY", "Review finance records", pendingPaymentCount + " Payment(s) are Pending.", "payments.html"]);
+      actions.push(["PY", "Check payments", pendingPaymentCount + " Payment(s) are Pending.", "payments.html"]);
     }
     if (openComplaintCount) {
       actions.push(["CP", "Follow support requests", openComplaintCount + " Complaint(s) await resolution.", "complaints.html"]);
     }
     if (!actions.length) {
-      actions.push(["PR", "Explore projects", "Review construction progress and Areas.", "projects.html"]);
+      actions.push(["PR", "View projects", "Check project progress and areas.", "projects.html"]);
     }
     var actionHtml = "";
     for (index = 0; index < actions.length; index += 1) {
@@ -374,7 +369,7 @@ function clientRenderProfile() {
   var client = clientGetCurrentClient();
   var person = clientGetCurrentPerson();
   if (!client || !person) {
-    showPageAlert("The fixed C001 Client profile could not be found.", "danger");
+    showPageAlert("The fixed 1 Client profile could not be found.", "danger");
     return;
   }
   var fullName = person.firstName + " " + person.lastName;
@@ -458,7 +453,7 @@ function clientOpenProject(projectId) {
       clientDetailItem("Project ID", project.projectId) + clientDetailItem("Project name", project.projectName) +
       clientDetailItem("Budget", formatCurrency(project.projectBudget)) + clientDetailItem("Deadline", formatDate(project.deadline)) +
       clientDetailHtmlItem("Status", createStatusBadge(project.status)) +
-      clientDetailHtmlItem("Derived deadline state", createStatusBadge(isProjectOverdue(project) ? "Overdue" : "On schedule")) +
+      clientDetailHtmlItem("Deadline status", createStatusBadge(isProjectOverdue(project) ? "Overdue" : "On schedule")) +
       "</ul></div><div class=\"col-lg-6\"><h3 class=\"h6\">Area</h3>";
     if (area) {
       html += '<ul class="detail-list">' + clientDetailItem("Area ID", area.areaId) +
@@ -562,7 +557,7 @@ function clientRenderProperties() {
     visibleCount += 1;
     html += '<div class="col-md-6 col-xl-4"><article class="unit-card"><span class="unit-code">' +
       escapeHtml(unit.unitNo) + "</span><h3>" + escapeHtml(unit.unitType) + '</h3><p class="text-muted-custom">' +
-      escapeHtml(unit.unitId) + " · Global inventory</p><div class=\"d-flex gap-2 flex-wrap align-items-center mt-3\">" +
+      escapeHtml(unit.unitId) + " · Unit list</p><div class=\"d-flex gap-2 flex-wrap align-items-center mt-3\">" +
       createStatusBadge(unit.status) + (bookable ? createStatusBadge("Bookable") : createStatusBadge("Not bookable")) +
       '</div><div class="d-flex gap-2 flex-wrap mt-4"><button class="mini-action" type="button" data-client-unit="' +
       escapeHtml(unit.unitId) + '">Details</button>' + (bookable ? '<a class="mini-action" href="bookings.html?unit=' +
@@ -694,7 +689,7 @@ function clientRenderBookings() {
 function clientOpenBooking(bookingId) {
   var booking = clientGetBooking(bookingId);
   if (!booking || booking.clientId !== currentClientId) {
-    showPageAlert("The selected C001 Booking could not be found.", "danger");
+    showPageAlert("The selected 1 Booking could not be found.", "danger");
     return;
   }
   var project = clientGetProject(booking.projectId);
@@ -739,7 +734,7 @@ function clientSubmitBooking(event) {
     showPageAlert("Choose an existing Project.", "danger");
     return;
   }
-  /* Recheck immediately before mutation in case page-memory data changed after the select was built. */
+  
   if (!unit || !isUnitAvailableForBooking(unit)) {
     clientPopulateBookingChoices("");
     showPageAlert("That Unit is no longer truly available. The choices were refreshed.", "danger");
@@ -753,7 +748,7 @@ function clientSubmitBooking(event) {
     showPageAlert("Enter a valid Due amount greater than zero.", "danger");
     return;
   }
-  if (!window.confirm("Create temporary Booking " + bookingId + " for Unit " + unit.unitNo + " and Project " + project.projectName + "?")) {
+  if (!window.confirm("Create Booking " + bookingId + " for Unit " + unit.unitNo + " and Project " + project.projectName + "?")) {
     return;
   }
   nirmanData.bookings.push({
@@ -771,7 +766,7 @@ function clientSubmitBooking(event) {
   document.getElementById("bookingDate").value = clientGetToday();
   clientPopulateBookingChoices("");
   clientRenderBookings();
-  showPageAlert("Booking " + bookingId + " was created in page memory and the Unit is reserved until refresh.", "success");
+  showPageAlert("Booking " + bookingId + " was created. The unit is reserved for this session.", "success");
 }
 
 function clientInitializeBookings() {
@@ -829,7 +824,7 @@ function clientRenderPayments() {
       pendingCount += 1;
     }
     paymentHtml += '<tr data-status="' + escapeHtml(payment.paymentStatus) + '"><td><span class="table-primary-text">' +
-      escapeHtml(payment.clientId + " / " + payment.paymentId) + '</span><span class="table-secondary-text">Client ID / partial Payment ID</span></td><td>' +
+      escapeHtml(payment.clientId + " / " + payment.paymentId) + '</span><span class="table-secondary-text">Client / Payment ID</span></td><td>' +
       escapeHtml(payment.bookingId) + "</td><td>" + escapeHtml(payment.paymentMethod) + '<span class="table-secondary-text">' +
       escapeHtml(formatCurrency(payment.amount)) + "</span></td><td>" + escapeHtml(formatDate(payment.paymentDue)) +
       "</td><td>" + createStatusBadge(payment.paymentStatus) + "</td><td>" +
@@ -841,7 +836,7 @@ function clientRenderPayments() {
     var installment = installments[index];
     installmentHtml += '<tr data-status="' + escapeHtml(installment.status) + '"><td><span class="table-primary-text">' +
       escapeHtml(installment.clientId + " / " + installment.paymentId + " / " + installment.installmentId) +
-      '</span><span class="table-secondary-text">Client / Payment / partial Installment ID</span></td><td>' +
+      '</span><span class="table-secondary-text">Client / Payment / Installment ID</span></td><td>' +
       escapeHtml(installment.clientId + " / " + installment.paymentId) + "</td><td>" + escapeHtml(formatCurrency(installment.amount)) +
       "</td><td>" + escapeHtml(formatDate(installment.dueDate)) + "</td><td>" + createStatusBadge(installment.status) +
       "</td><td>" + escapeHtml(installment.expiredAt ? clientFormatDateTime(installment.expiredAt) : "Not expired") + "</td></tr>";
@@ -861,21 +856,21 @@ function clientRenderPayments() {
 function clientOpenPayment(paymentId) {
   var payment = clientFindPayment(paymentId);
   if (!payment) {
-    showPageAlert("The selected C001 Payment could not be found.", "danger");
+    showPageAlert("The selected 1 Payment could not be found.", "danger");
     return;
   }
   var installments = clientGetPaymentInstallments(payment.paymentId);
   clientSetText("paymentDetailTitle", currentClientId + " / " + payment.paymentId);
   var body = document.getElementById("paymentDetailBody");
   if (body) {
-    var html = '<ul class="detail-list">' + clientDetailItem("Composite Payment key", payment.clientId + " / " + payment.paymentId) +
+    var html = '<ul class="detail-list">' + clientDetailItem("Payment ID", payment.clientId + " / " + payment.paymentId) +
       clientDetailItem("Booking", payment.bookingId) + clientDetailItem("Method", payment.paymentMethod) +
       clientDetailItem("Amount", formatCurrency(payment.amount)) + clientDetailItem("Payment due", formatDate(payment.paymentDue)) +
       clientDetailHtmlItem("Status", createStatusBadge(payment.paymentStatus)) +
       clientDetailItem("Future / actual verifier", getEmployeeName(payment.verifiedByEmployeeId) + " (" + payment.verifiedByEmployeeId + ")") +
       clientDetailItem("Verified at", clientFormatDateTime(payment.verifiedAt)) + "</ul>";
     if (installments.length) {
-      html += '<h3 class="h6 mt-4">Owned Installments</h3><div class="table-responsive"><table class="table"><thead><tr><th>Composite key</th><th>Amount</th><th>Due</th><th>Status</th></tr></thead><tbody>';
+      html += '<h3 class="h6 mt-4">Owned Installments</h3><div class="table-responsive"><table class="table"><thead><tr><th>ID</th><th>Amount</th><th>Due</th><th>Status</th></tr></thead><tbody>';
       for (var index = 0; index < installments.length; index += 1) {
         html += "<tr><td>" + escapeHtml(installments[index].clientId + " / " + installments[index].paymentId + " / " + installments[index].installmentId) +
           "</td><td>" + escapeHtml(formatCurrency(installments[index].amount)) + "</td><td>" +
@@ -900,18 +895,18 @@ function clientSubmitPayment(event) {
   var amount = Number(amountText);
   var paymentDue = document.getElementById("paymentDue").value;
   var booking = clientGetBooking(bookingId);
-  var verifier = findRecord(nirmanData.employees, "employeeId", "E002");
+  var verifier = findRecord(nirmanData.employees, "employeeId", "2");
   if (!clientIsValidId(paymentId)) {
     showPageAlert("Enter a Payment ID using only letters, numbers, and hyphens.", "danger");
     return;
   }
   var ownPayments = clientGetOwnPayments();
   if (clientIdExists(ownPayments, "paymentId", paymentId)) {
-    showPageAlert("That Payment ID already exists within Client C001.", "danger");
+    showPageAlert("That Payment ID already exists within Client 1.", "danger");
     return;
   }
   if (!booking || booking.clientId !== currentClientId) {
-    showPageAlert("Choose one of C001's existing Bookings.", "danger");
+    showPageAlert("Choose one of 1's existing Bookings.", "danger");
     return;
   }
   if (["Bank Transfer", "Card", "Cash", "Installment Plan"].indexOf(method) === -1) {
@@ -927,10 +922,10 @@ function clientSubmitPayment(event) {
     return;
   }
   if (!verifier) {
-    showPageAlert("The configured finance Employee E002 is unavailable, so this Payment cannot be associated safely.", "danger");
+    showPageAlert("The configured finance Employee 2 is unavailable, so this Payment cannot be associated safely.", "danger");
     return;
   }
-  if (!window.confirm("Submit temporary Pending Payment " + currentClientId + " / " + paymentId + " for " + formatCurrency(amount) + "?")) {
+  if (!window.confirm("Submit Payment " + currentClientId + " / " + paymentId + " for " + formatCurrency(amount) + "?")) {
     return;
   }
   nirmanData.payments.push({
@@ -949,7 +944,7 @@ function clientSubmitPayment(event) {
   clientRenderPayments();
   clientApplyTableFilter("paymentTable");
   clientApplyTableFilter("installmentTable");
-  showPageAlert("Pending Payment " + currentClientId + " / " + paymentId + " was added in page memory only.", "success");
+  showPageAlert("Pending Payment " + currentClientId + " / " + paymentId + " was added for this session.", "success");
 }
 
 function clientInitializePayments() {
@@ -1001,7 +996,7 @@ function clientRenderComplaints() {
 function clientOpenComplaint(complaintId) {
   var complaint = findRecord(nirmanData.complaints, "complaintId", complaintId);
   if (!complaint || complaint.clientId !== currentClientId) {
-    showPageAlert("The selected C001 Complaint could not be found.", "danger");
+    showPageAlert("The selected 1 Complaint could not be found.", "danger");
     return;
   }
   clientSetText("complaintDetailTitle", "Complaint " + complaint.complaintId);
@@ -1023,7 +1018,7 @@ function clientSubmitComplaint(event) {
   var complaintId = document.getElementById("complaintId").value.trim();
   var filedDate = document.getElementById("complaintDate").value;
   var note = document.getElementById("complaintNote").value.trim();
-  var assignedEmployee = findRecord(nirmanData.employees, "employeeId", "E004");
+  var assignedEmployee = findRecord(nirmanData.employees, "employeeId", "4");
   if (!clientIsValidId(complaintId)) {
     showPageAlert("Enter a Complaint ID using only letters, numbers, and hyphens.", "danger");
     return;
@@ -1041,10 +1036,10 @@ function clientSubmitComplaint(event) {
     return;
   }
   if (!assignedEmployee) {
-    showPageAlert("The configured Client Services Employee E004 is unavailable.", "danger");
+    showPageAlert("The configured Client Services Employee 4 is unavailable.", "danger");
     return;
   }
-  if (!window.confirm("File temporary Complaint " + complaintId + " and assign it to " + getEmployeeName(assignedEmployee.employeeId) + "?")) {
+  if (!window.confirm("Submit Complaint " + complaintId + " and assign it to " + getEmployeeName(assignedEmployee.employeeId) + "?")) {
     return;
   }
   nirmanData.complaints.push({
@@ -1060,7 +1055,7 @@ function clientSubmitComplaint(event) {
   document.getElementById("complaintDate").value = clientGetToday();
   clientRenderComplaints();
   clientApplyTableFilter("complaintTable");
-  showPageAlert("Complaint " + complaintId + " was filed in page memory only.", "success");
+  showPageAlert("Complaint " + complaintId + " was submitted for this session.", "success");
 }
 
 function clientInitializeComplaints() {
@@ -1089,7 +1084,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   clientRenderSharedIdentity();
   if (!clientGetCurrentClient() || !clientGetCurrentPerson()) {
-    showPageAlert("The fixed current Client C001 and its Person record are required.", "danger");
+    showPageAlert("The fixed current Client 1 and its Person record are required.", "danger");
     return;
   }
   if (page === "dashboard") {

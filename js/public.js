@@ -1,4 +1,3 @@
-"use strict";
 
 function renderLandingStatistics() {
   var projectCount = document.getElementById("projectCount");
@@ -93,7 +92,7 @@ function renderAvailableUnitPreview() {
           '<article class="unit-card">' +
             '<div class="unit-code">' + escapeHtml(unit.unitNo) + "</div>" +
             "<h3>" + escapeHtml(unit.unitType) + "</h3>" +
-            '<p class="text-muted-custom small mb-3">Inventory ID ' + escapeHtml(unit.unitId) + "</p>" +
+            '<p class="text-muted-custom small mb-3">Unit ID ' + escapeHtml(unit.unitId) + "</p>" +
             createStatusBadge(unit.status) +
           "</article>" +
         "</div>";
@@ -104,8 +103,76 @@ function renderAvailableUnitPreview() {
   unitContainer.innerHTML = unitHtml;
 }
 
+
+
+function setupPublicNavigation() {
+  var navbar = document.querySelector(".public-navbar");
+  var links = Array.prototype.slice.call(document.querySelectorAll('.public-navbar .nav-link[href^="#"]'));
+  var items = [];
+
+  for (var i = 0; i < links.length; i += 1) {
+    var sectionId = links[i].getAttribute("href").slice(1);
+    var section = document.getElementById(sectionId);
+
+    if (section) {
+      items.push({ link: links[i], section: section, id: sectionId });
+    }
+  }
+
+  items.sort(function (a, b) {
+    return a.section.offsetTop - b.section.offsetTop;
+  });
+
+  function setActiveLink(sectionId) {
+    for (var i = 0; i < items.length; i += 1) {
+      items[i].link.classList.toggle("active", items[i].id === sectionId);
+    }
+  }
+
+  function updateActiveLink() {
+    if (!items.length) {
+      return;
+    }
+
+    var navbarHeight = navbar ? navbar.offsetHeight : 0;
+    var currentPosition = window.pageYOffset + navbarHeight + 70;
+    var currentId = items[0].id;
+
+    for (var i = 0; i < items.length; i += 1) {
+      if (items[i].section.offsetTop <= currentPosition) {
+        currentId = items[i].id;
+      }
+    }
+
+    setActiveLink(currentId);
+  }
+
+  for (var i = 0; i < items.length; i += 1) {
+    (function (item) {
+      item.link.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var navbarHeight = navbar ? navbar.offsetHeight : 0;
+        var targetTop = item.section.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 12;
+
+        setActiveLink(item.id);
+        window.scrollTo({ top: Math.max(targetTop, 0), behavior: "smooth" });
+
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, "", "#" + item.id);
+        }
+      });
+    })(items[i]);
+  }
+
+  window.addEventListener("scroll", updateActiveLink, { passive: true });
+  window.addEventListener("resize", updateActiveLink);
+  updateActiveLink();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   renderLandingStatistics();
   renderFeaturedProjects();
   renderAvailableUnitPreview();
+  setupPublicNavigation();
 });

@@ -1,8 +1,5 @@
-"use strict";
 
-/* Contractor Representative workspace. All changes remain in page memory. */
-
-var currentRepresentativeId = "R001";
+var currentRepresentativeId = "1";
 
 function contractorSetText(elementId, value) {
   var element = document.getElementById(elementId);
@@ -168,7 +165,7 @@ function contractorGetLatestUpdate(projectId) {
 }
 
 function contractorTenderDeadlinePassed(tender) {
-  return new Date(tender.deadline + "T23:59:59") < new Date();
+  return new Date(tender.deadline + "23:59:59") < new Date();
 }
 
 function contractorCanBid(tender) {
@@ -399,7 +396,7 @@ function contractorRenderProfile() {
   var contractorDetails = document.getElementById("profileContractorDetails");
   var licenseBadge = document.getElementById("profileLicenseBadge");
   if (contractor) {
-    var licenseState = new Date(contractor.licenseDue + "T23:59:59") < new Date() ? "Expired" : "Active";
+    var licenseState = new Date(contractor.licenseDue + "23:59:59") < new Date() ? "Expired" : "Active";
     if (licenseBadge) {
       licenseBadge.innerHTML = createStatusBadge(licenseState);
     }
@@ -599,7 +596,7 @@ function contractorSubmitBid(event) {
   for (var index = 0; index < nirmanData.tenderBids.length; index += 1) {
     var existingBid = nirmanData.tenderBids[index];
     if (existingBid.tenderId === tenderId && existingBid.bidId.toLowerCase() === bidId.toLowerCase()) {
-      contractorShowBidFormError("That Tender ID / Bid ID composite identifier already exists.");
+      contractorShowBidFormError("That Tender ID and Bid ID already exist.");
       return;
     }
   }
@@ -615,7 +612,7 @@ function contractorSubmitBid(event) {
   });
   contractorHideModal("bidSubmissionModal");
   contractorRenderTenders();
-  showPageAlert("Temporary bid " + tenderId + " / " + bidId + " was added in memory.", "success");
+  showPageAlert("bid " + tenderId + " / " + bidId + " was added for this session.", "success");
 }
 
 function contractorInitializeTenders() {
@@ -704,7 +701,7 @@ function contractorRenderBids() {
     visibleCount += 1;
     var tender = contractorGetTender(bid.tenderId);
     rows += "<tr><td><span class=\"table-primary-text\">" + escapeHtml(bid.tenderId + " / " + bid.bidId) +
-      '</span><span class="table-secondary-text">Tender ID / partial Bid ID</span></td><td><span class="table-primary-text">' +
+      '</span><span class="table-secondary-text">Tender / Bid ID</span></td><td><span class="table-primary-text">' +
       escapeHtml(tender ? tender.title : "Tender unavailable") + '</span><span class="table-secondary-text">' +
       escapeHtml(tender ? tender.task : bid.tenderId) + "</span></td><td>" + escapeHtml(formatCurrency(bid.bidAmount)) +
       "</td><td>" + createStatusBadge(bid.bidStatus) + "</td><td>" +
@@ -743,7 +740,7 @@ function contractorOpenBidDetail(compositeId) {
   var body = document.getElementById("bidDetailBody");
   if (body) {
     var html = '<h3 class="h6">Tender Bid</h3><ul class="detail-list">' +
-      contractorDetailItem("Composite ID", bid.tenderId + " / " + bid.bidId) +
+      contractorDetailItem("ID", bid.tenderId + " / " + bid.bidId) +
       contractorDetailItem("Representative", getRepresentativeName(bid.repId) + " (" + bid.repId + ")") +
       contractorDetailItem("Bid amount", formatCurrency(bid.bidAmount)) +
       contractorDetailHtmlItem("Bid status", createStatusBadge(bid.bidStatus)) + "</ul>";
@@ -757,7 +754,7 @@ function contractorOpenBidDetail(compositeId) {
     if (award) {
       html += '<h3 class="h6 mt-4">Matching Award</h3><ul class="detail-list">' +
         contractorDetailItem("Award ID", award.awardId) +
-        contractorDetailItem("Composite bid match", award.tenderId + " / " + award.bidId) +
+        contractorDetailItem("Tender / Bid ID", award.tenderId + " / " + award.bidId) +
         contractorDetailItem("Award amount", formatCurrency(award.awardAmount)) +
         contractorDetailItem("Award date", formatDate(award.awardDate)) +
         contractorDetailItem("Issued by", getEmployeeName(award.employeeId) + " (" + award.employeeId + ")") + "</ul>";
@@ -1049,7 +1046,7 @@ function contractorRenderUpdates() {
     visibleCount += 1;
     var updateProject = findRecord(nirmanData.projects, "projectId", update.projectId);
     rows += "<tr><td><span class=\"table-primary-text\">" + escapeHtml(update.projectId + " / " + update.updateId) +
-      '</span><span class="table-secondary-text">Project ID / partial Update ID</span></td><td>' +
+      '</span><span class="table-secondary-text">Project / Update ID</span></td><td>' +
       escapeHtml(updateProject ? updateProject.projectName : update.projectId) + "</td><td>" + escapeHtml(formatDate(update.updateDate)) +
       "</td><td><strong>" + escapeHtml(contractorFormatProgress(update.progressPercent)) + "</strong>" + contractorProgressBar(update.progressPercent) +
       "</td><td>" + escapeHtml(getRepresentativeName(update.repId)) + '<span class="table-secondary-text">' + escapeHtml(update.repId) +
@@ -1083,7 +1080,7 @@ function contractorOpenUpdateDetail(compositeId) {
   var body = document.getElementById("updateDetailBody");
   if (body) {
     body.innerHTML = '<ul class="detail-list">' +
-      contractorDetailItem("Composite ID", update.projectId + " / " + update.updateId) +
+      contractorDetailItem("ID", update.projectId + " / " + update.updateId) +
       contractorDetailItem("Project", project ? project.projectName : update.projectId) +
       contractorDetailItem("Award path", path ? path.bid.tenderId + " / " + path.bid.bidId + " -> " + path.award.awardId : "Unavailable") +
       contractorDetailItem("Created by", getRepresentativeName(update.repId) + " (" + update.repId + ")") +
@@ -1124,7 +1121,7 @@ function contractorSubmitUpdate(event) {
   for (var index = 0; index < nirmanData.projectUpdates.length; index += 1) {
     var existingUpdate = nirmanData.projectUpdates[index];
     if (existingUpdate.projectId === projectId && existingUpdate.updateId.toLowerCase() === updateId.toLowerCase()) {
-      showPageAlert("That Project ID / Update ID composite identifier already exists.", "danger");
+      showPageAlert("That Project ID and Update ID already exist.", "danger");
       return;
     }
   }
@@ -1145,7 +1142,7 @@ function contractorSubmitUpdate(event) {
   contractorPopulateProjectChoices();
   contractorUpdateProjectContext();
   contractorRenderUpdates();
-  showPageAlert("Temporary update " + projectId + " / " + updateId + " was added in memory.", "success");
+  showPageAlert("update " + projectId + " / " + updateId + " was added for this session.", "success");
 }
 
 function contractorInitializeUpdates() {

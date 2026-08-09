@@ -1,8 +1,5 @@
-"use strict";
 
-/* Employee workspace. All changes are temporary and disappear after refresh. */
-
-var currentEmployeeId = "E001";
+var currentEmployeeId = "1";
 
 function employeeSetText(elementId, value) {
   var element = document.getElementById(elementId);
@@ -179,8 +176,6 @@ function employeeRenderSharedIdentity() {
   }
 }
 
-/* Employee tables combine search and status instead of applying either alone. */
-
 function employeeApplyFilter(tableId) {
   var table = document.getElementById(tableId);
   var group = document.querySelector('.employee-filter-group[data-employee-table="' + tableId + '"]');
@@ -321,8 +316,8 @@ function employeeRenderDashboard() {
     ["AL", "Confirm Booking-Allocation Processes", pendingAllocations + " pending process(es)", "allocations.html"],
     ["PY", "Verify client Payments", pendingPayments + " pending payment(s)", "payments.html"],
     ["CP", "Resolve client Complaints", pendingComplaints + " unresolved complaint(s)", "complaints.html"],
-    ["TN", "Publish and award Tenders", ownTenders.length + " tender(s) published by E001", "tenders.html"],
-    ["PR", "Supervise Contractors and Projects", "Review progress and delivery deadlines", "projects.html"]
+    ["TN", "Publish and award Tenders", ownTenders.length + " tender(s) published by 1", "tenders.html"],
+    ["PR", "Supervise Contractors and Projects", "Check progress and deadlines", "projects.html"]
   ];
   var responsibilityHtml = "";
   for (index = 0; index < responsibilities.length; index += 1) {
@@ -349,7 +344,7 @@ function employeeRenderDashboard() {
   }
   var tenderBody = document.getElementById("dashboardTenderBody");
   if (tenderBody) {
-    tenderBody.innerHTML = tenderHtml || employeeEmptyTableRow(4, "No E001 tenders", "Published tenders will appear here.");
+    tenderBody.innerHTML = tenderHtml || employeeEmptyTableRow(4, "No 1 tenders", "Published tenders will appear here.");
   }
 
   var projectHtml = "";
@@ -373,7 +368,7 @@ function employeeRenderProfile() {
   var employee = employeeGetCurrentEmployee();
   var person = employeeGetCurrentPerson();
   if (!employee || !person) {
-    showPageAlert("The fixed E001 Person and Employee records could not be found.", "danger");
+    showPageAlert("The fixed 1 Person and Employee records could not be found.", "danger");
     return;
   }
   var department = findRecord(nirmanData.departments, "deptName", employee.deptName);
@@ -424,7 +419,7 @@ function employeeRenderProfile() {
   if (manager) {
     manager.innerHTML = managerId ? '<div class="activity-item"><span class="activity-marker">MG</span><div><h3>' +
       escapeHtml(getEmployeeName(managerId)) + "</h3><p>" + escapeHtml(managerId) + "</p></div></div>" :
-      '<p class="text-muted-custom mb-0">E001 is a top-level employee with no direct manager record.</p>';
+      '<p class="text-muted-custom mb-0">1 is a top-level employee with no direct manager record.</p>';
   }
   var subordinateHtml = "";
   for (index = 0; index < subordinateIds.length; index += 1) {
@@ -519,7 +514,7 @@ function employeeRenderTenders() {
         escapeHtml(award.awardId) + "</span>" : createStatusBadge(bid.bidStatus);
     }
     bidHtml += '<tr data-filter-row data-status="' + escapeHtml(bid.bidStatus) + '"><td><span class="table-primary-text">' +
-      escapeHtml(bid.tenderId + " / " + bid.bidId) + '</span><span class="table-secondary-text">Tender ID / partial Bid ID</span></td><td>' +
+      escapeHtml(bid.tenderId + " / " + bid.bidId) + '</span><span class="table-secondary-text">Tender / Bid ID</span></td><td>' +
       escapeHtml(bidTender ? bidTender.title : bid.tenderId) + "</td><td>" + escapeHtml(getRepresentativeName(bid.repId)) +
       '<span class="table-secondary-text">' + escapeHtml(contractor ? contractor.companyName : bid.repId) +
       "</span></td><td>" + escapeHtml(formatCurrency(bid.bidAmount)) + "</td><td>" + createStatusBadge(bid.bidStatus) +
@@ -532,7 +527,7 @@ function employeeRenderTenders() {
     tenderBody.innerHTML = tenderHtml || employeeEmptyTableRow(6, "No tenders", "No Tender records are available.");
   }
   if (bidBody) {
-    bidBody.innerHTML = bidHtml || employeeEmptyTableRow(6, "No bids", "No composite Tender Bid records are available.");
+    bidBody.innerHTML = bidHtml || employeeEmptyTableRow(6, "No bids", "No tender bids are available.");
   }
   employeeSetText("tenderCount", nirmanData.tenders.length);
   employeeSetText("myTenderCount", ownTenderCount);
@@ -589,12 +584,12 @@ function employeeOpenBidDetail(compositeKey) {
   var award = bid ? employeeFindAwardForBid(bid.tenderId, bid.bidId) : null;
   var project = award ? findRecord(nirmanData.projects, "awardId", award.awardId) : null;
   if (!bid) {
-    showPageAlert("The selected composite Tender Bid could not be found.", "danger");
+    showPageAlert("The selected tender bid could not be found.", "danger");
     return;
   }
   employeeSetText("tenderDetailTitle", "Bid " + bid.tenderId + " / " + bid.bidId);
   var html = '<ul class="detail-list">' +
-    employeeDetailItem("Composite Bid ID", bid.tenderId + " / " + bid.bidId) +
+    employeeDetailItem("Bid ID", bid.tenderId + " / " + bid.bidId) +
     employeeDetailItem("Tender", tender ? tender.title : bid.tenderId) +
     employeeDetailItem("Representative", getRepresentativeName(bid.repId) + " (" + bid.repId + ")") +
     employeeDetailItem("Contractor", contractor ? contractor.companyName : "Unknown contractor") +
@@ -620,7 +615,7 @@ function employeeReviewBid(compositeKey, action) {
     showPageAlert("Only an unawarded Under Review bid on a non-Awarded Tender can be reviewed.", "danger");
     return;
   }
-  if (!window.confirm(nextStatus + " bid " + bid.tenderId + " / " + bid.bidId + " temporarily?")) {
+  if (!window.confirm(nextStatus + " bid " + bid.tenderId + " / " + bid.bidId + "?")) {
     return;
   }
   bid.bidStatus = nextStatus;
@@ -628,7 +623,7 @@ function employeeReviewBid(compositeKey, action) {
     tender.status = "Evaluation";
   }
   employeeRenderTenders();
-  showPageAlert("Bid " + bid.tenderId + " / " + bid.bidId + " marked " + nextStatus + " in page memory only.", "success");
+  showPageAlert("Bid " + bid.tenderId + " / " + bid.bidId + " marked " + nextStatus + " for this session.", "success");
 }
 
 function employeeSubmitTender(event) {
@@ -666,7 +661,7 @@ function employeeSubmitTender(event) {
     showPageAlert("Complete the title, task, and bid details within their displayed length limits.", "danger");
     return;
   }
-  if (!window.confirm("Publish Tender " + tenderId + " as E001 temporarily?")) {
+  if (!window.confirm("Publish Tender " + tenderId + " as 1?")) {
     return;
   }
   nirmanData.tenders.push({
@@ -682,7 +677,7 @@ function employeeSubmitTender(event) {
   form.reset();
   employeeHideModal("publishTenderModal");
   employeeRenderTenders();
-  showPageAlert("Tender " + tenderId + " was added in page memory only.", "success");
+  showPageAlert("Tender " + tenderId + " was added for this session.", "success");
 }
 
 function employeeOpenAwardForm(compositeKey) {
@@ -755,11 +750,10 @@ function employeeSubmitAward(event) {
     showPageAlert("The selected Bid or Award is already linked in the Award-Project chain.", "danger");
     return;
   }
-  if (!window.confirm("Create Award " + awardId + " and required Project " + projectId + " together temporarily?")) {
+  if (!window.confirm("Create Award " + awardId + " and required Project " + projectId + " together?")) {
     return;
   }
 
-  /* Append only after every Award and Project rule succeeds, preserving an atomic UI action. */
   nirmanData.tenderAwards.push({
     awardId: awardId,
     tenderId: bid.tenderId,
@@ -782,7 +776,7 @@ function employeeSubmitAward(event) {
   form.reset();
   employeeHideModal("awardModal");
   employeeRenderTenders();
-  showPageAlert("Award " + awardId + " and Project " + projectId + " were created together in page memory only.", "success");
+  showPageAlert("Award " + awardId + " and Project " + projectId + " were created together for this session.", "success");
 }
 
 function employeeInitializeTenders() {
@@ -853,20 +847,20 @@ function employeeConfirmAllocation(bookingId) {
   var unit = booking ? findRecord(nirmanData.units, "unitId", booking.unitId) : null;
   var project = booking ? employeeGetProject(booking.projectId) : null;
   if (!booking || !client || !unit || !project) {
-    showPageAlert("The Booking, Client, reserved Unit, and Project aggregation must all exist before confirmation.", "danger");
+    showPageAlert("Booking, client, unit and project details are required before confirmation.", "danger");
     return;
   }
   if (findRecord(nirmanData.allocationConfirmations, "bookingId", bookingId)) {
-    showPageAlert("This Booking-Allocation Process is already confirmed.", "danger");
+    showPageAlert("This Booking allocation is already confirmed.", "danger");
     return;
   }
-  if (!window.confirm("Confirm " + bookingId + " for " + getClientName(booking.clientId) + " as E001 temporarily?")) {
+  if (!window.confirm("Confirm " + bookingId + " for " + getClientName(booking.clientId) + " as 1?")) {
     return;
   }
   nirmanData.allocationConfirmations.push({ bookingId: bookingId, employeeId: currentEmployeeId });
   booking.bookingStatus = "Confirmed";
   employeeRenderAllocations();
-  showPageAlert("Booking-Allocation Process " + bookingId + " was confirmed in page memory only.", "success");
+  showPageAlert("Booking allocation " + bookingId + " was confirmed for this session.", "success");
 }
 
 function employeeRenderPayments() {
@@ -882,7 +876,7 @@ function employeeRenderPayments() {
       pendingCount += 1;
     }
     html += '<tr data-filter-row data-status="' + escapeHtml(payment.paymentStatus) + '"><td><span class="table-primary-text">' +
-      escapeHtml(payment.clientId + " / " + payment.paymentId) + '</span><span class="table-secondary-text">Client ID / partial Payment ID</span></td><td>' +
+      escapeHtml(payment.clientId + " / " + payment.paymentId) + '</span><span class="table-secondary-text">Client / Payment ID</span></td><td>' +
       escapeHtml(getClientName(payment.clientId)) + '<span class="table-secondary-text">' +
       escapeHtml(booking ? booking.bookingId + " / Unit " + booking.unitId : payment.bookingId) + "</span></td><td>" +
       escapeHtml(formatCurrency(payment.amount)) + '<span class="table-secondary-text">' + escapeHtml(payment.paymentMethod) +
@@ -909,12 +903,12 @@ function employeeShowInstallments(compositeKey) {
   var parts = compositeKey.split("|");
   var payment = parts.length === 2 ? employeeFindPayment(parts[0], parts[1]) : null;
   if (!payment) {
-    showPageAlert("The selected composite Payment could not be found.", "danger");
+    showPageAlert("The selected payment could not be found.", "danger");
     return;
   }
   var installments = employeeGetPaymentInstallments(payment);
   var html = '<ul class="detail-list">' +
-    employeeDetailItem("Composite Payment ID", payment.clientId + " / " + payment.paymentId) +
+    employeeDetailItem("Payment ID", payment.clientId + " / " + payment.paymentId) +
     employeeDetailItem("Client", getClientName(payment.clientId)) +
     employeeDetailItem("Booking-Allocation Process", payment.bookingId) +
     employeeDetailItem("Amount", formatCurrency(payment.amount)) +
@@ -924,7 +918,7 @@ function employeeShowInstallments(compositeKey) {
     employeeDetailItem("Verified by", payment.paymentStatus === "Verified" ?
       getEmployeeName(payment.verifiedByEmployeeId) + " at " + employeeFormatDateTime(payment.verifiedAt) : "Not yet verified") + "</ul>";
   if (installments.length) {
-    html += '<h3 class="h6 mt-4">Owned Installments</h3><div class="table-responsive"><table class="table"><thead><tr><th>Composite key</th><th>Amount</th><th>Due</th><th>Status</th><th>Expired</th></tr></thead><tbody>';
+    html += '<h3 class="h6 mt-4">Owned Installments</h3><div class="table-responsive"><table class="table"><thead><tr><th>ID</th><th>Amount</th><th>Due</th><th>Status</th><th>Expired</th></tr></thead><tbody>';
     var index;
     for (index = 0; index < installments.length; index += 1) {
       var installment = installments[index];
@@ -935,7 +929,7 @@ function employeeShowInstallments(compositeKey) {
     }
     html += "</tbody></table></div>";
   } else {
-    html += '<p class="text-muted-custom mt-3 mb-0">No Installments belong to this composite Payment.</p>';
+    html += '<p class="text-muted-custom mt-3 mb-0">No installments are available for this payment.</p>';
   }
   employeeSetText("installmentTitle", "Installments for " + payment.clientId + " / " + payment.paymentId);
   var body = document.getElementById("installmentBody");
@@ -962,14 +956,14 @@ function employeeVerifyPayment(compositeKey) {
     showPageAlert("The Payment needs a positive amount, method, and due date before verification.", "danger");
     return;
   }
-  if (!window.confirm("Verify Payment " + payment.clientId + " / " + payment.paymentId + " as E001 temporarily?")) {
+  if (!window.confirm("Verify Payment " + payment.clientId + " / " + payment.paymentId + " as 1?")) {
     return;
   }
   payment.paymentStatus = "Verified";
   payment.verifiedByEmployeeId = currentEmployeeId;
   payment.verifiedAt = new Date().toISOString();
   employeeRenderPayments();
-  showPageAlert("Payment " + payment.clientId + " / " + payment.paymentId + " was verified in page memory only.", "success");
+  showPageAlert("Payment " + payment.clientId + " / " + payment.paymentId + " was verified for this session.", "success");
 }
 
 function employeeRenderComplaints() {
@@ -1033,7 +1027,7 @@ function employeeSubmitResolution(event) {
     showPageAlert("Enter a resolution from 10 to 500 characters.", "danger");
     return;
   }
-  if (!window.confirm("Resolve Complaint " + complaintId + " as E001 temporarily?")) {
+  if (!window.confirm("Resolve Complaint " + complaintId + " as 1?")) {
     return;
   }
   complaint.status = "Resolved";
@@ -1042,7 +1036,7 @@ function employeeSubmitResolution(event) {
   form.reset();
   employeeHideModal("resolutionModal");
   employeeRenderComplaints();
-  showPageAlert("Complaint " + complaintId + " was resolved in page memory only.", "success");
+  showPageAlert("Complaint " + complaintId + " was resolved for this session.", "success");
 }
 
 function employeeGetProjectContractor(project) {
@@ -1117,7 +1111,7 @@ function employeeRenderProjects() {
     projectBody.innerHTML = projectHtml || employeeEmptyTableRow(7, "No projects", "No Award-resulting Projects are available.");
   }
   if (supervisionBody) {
-    supervisionBody.innerHTML = supervisionHtml || employeeEmptyTableRow(5, "No assignments", "E001 does not supervise a Contractor yet.");
+    supervisionBody.innerHTML = supervisionHtml || employeeEmptyTableRow(5, "No assignments", "1 does not supervise a Contractor yet.");
   }
   employeeSetText("projectCount", nirmanData.projects.length);
   employeeSetText("projectOverdueCount", overdueCount);
@@ -1185,7 +1179,7 @@ function employeeShowProjectUpdates(projectId) {
     employeeDetailItem("Project ID", project.projectId) + employeeDetailItem("Name", project.projectName) +
     employeeDetailItem("Budget", formatCurrency(project.projectBudget)) + employeeDetailItem("Deadline", formatDate(project.deadline)) +
     employeeDetailHtmlItem("Status", createStatusBadge(project.status)) +
-    employeeDetailHtmlItem("Derived overdue", createStatusBadge(isProjectOverdue(project) ? "Overdue" : "On schedule")) +
+    employeeDetailHtmlItem("Overdue", createStatusBadge(isProjectOverdue(project) ? "Overdue" : "On schedule")) +
     employeeDetailItem("Award", award ? award.awardId + " / " + award.tenderId + " / " + award.bidId : project.awardId) +
     employeeDetailItem("Resulting Contractor", contractor ? contractor.companyName : "Not available through the selected Bid") +
     employeeDetailItem("Booking-Allocation Processes", bookingCount) +
@@ -1222,24 +1216,24 @@ function employeeSubmitSupervision(event) {
   var contractor = employeeGetContractor(contractorId);
   var index;
   if (!contractor) {
-    showPageAlert("Choose an existing Contractor not already supervised by E001.", "danger");
+    showPageAlert("Choose an existing Contractor not already supervised by 1.", "danger");
     return;
   }
   for (index = 0; index < nirmanData.supervisions.length; index += 1) {
     if (nirmanData.supervisions[index].employeeId === currentEmployeeId &&
         nirmanData.supervisions[index].contractorId === contractorId) {
-      showPageAlert("E001 already supervises this Contractor.", "danger");
+      showPageAlert("1 already supervises this Contractor.", "danger");
       return;
     }
   }
-  if (!window.confirm("Assign E001 to supervise " + contractor.companyName + " temporarily?")) {
+  if (!window.confirm("Assign 1 to supervise " + contractor.companyName + "?")) {
     return;
   }
   nirmanData.supervisions.push({ employeeId: currentEmployeeId, contractorId: contractorId });
   form.reset();
   employeeHideModal("supervisionModal");
   employeeRenderProjects();
-  showPageAlert("E001 was assigned to " + contractor.companyName + " in page memory only.", "success");
+  showPageAlert("1 was assigned to " + contractor.companyName + " for this session.", "success");
 }
 
 function employeeInitializeProjects() {

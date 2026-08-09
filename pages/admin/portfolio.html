@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -12,7 +13,7 @@
   <body class="app-body" data-admin-page="portfolio">
     <a class="skip-link" href="#mainContent">Skip to main content</a>
     <aside class="app-sidebar" id="appSidebar" aria-label="Admin navigation">
-      <div class="sidebar-header"><a class="brand-logo brand-logo-light" href="dashboard.html" aria-label="NIRMAN Admin home"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a><p class="sidebar-role">Admin access role</p></div>
+      <div class="sidebar-header"><a class="brand-logo brand-logo-light" href="dashboard.html" aria-label="NIRMAN Admin home"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a><p class="sidebar-role">Admin</p></div>
       <nav class="sidebar-nav">
         <div class="nav-section-title">Overview</div><a href="dashboard.html"><span class="nav-icon">DB</span>Dashboard</a>
         <div class="nav-section-title">Management</div><a href="people.html"><span class="nav-icon">PE</span>People & Departments</a><a href="contractors.html"><span class="nav-icon">CO</span>Contractors</a><a class="active" aria-current="page" href="portfolio.html"><span class="nav-icon">PF</span>Project Portfolio</a>
@@ -24,23 +25,23 @@
 
     <div class="app-main">
       <header class="app-topbar">
-        <div class="topbar-left"><button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open Admin navigation"><span></span></button><div class="topbar-context"><strong>Admin workspace</strong> / Project Portfolio</div></div>
-        <div class="topbar-right"><div class="user-chip" aria-label="Signed in as System Administrator, Admin access role"><span class="user-avatar">SA</span><span class="user-chip-name"><strong>System Administrator</strong><span>Admin access role</span></span></div></div>
+        <div class="topbar-left"><button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open Admin navigation"><span></span></button><div class="topbar-context"><strong>Admin</strong> / Project Portfolio</div></div>
+        <div class="topbar-right"><div class="user-chip" aria-label="Signed in as System Administrator, Employee"><span class="user-avatar">SA</span><span class="user-chip-name"><strong>System Administrator</strong><span>Employee</span></span></div></div>
       </header>
 
       <main class="page-content" id="mainContent">
-        <div class="page-heading"><div><div class="breadcrumb-line">Property portfolio</div><h1>Areas, projects & inventory</h1><p>Review composite area details, award-backed projects, derived deadlines, global units, and weak project updates.</p></div></div>
+        <div class="page-heading"><div><div class="breadcrumb-line">Property portfolio</div><h1>Areas, projects & units</h1><p>View areas, projects, deadlines, units and project updates.</p></div></div>
         <div class="page-alert-holder" id="pageAlert" aria-live="polite"></div>
 
         <section class="row g-3 mb-4" aria-label="Portfolio summary">
-          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Areas</span><strong class="stat-value" id="portfolioAreaCount">0</strong><span class="stat-note">Composite address and centre</span></div></div>
+          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Areas</span><strong class="stat-value" id="portfolioAreaCount">0</strong><span class="stat-note">Address and location</span></div></div>
           <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Projects</span><strong class="stat-value" id="portfolioProjectCount">0</strong><span class="stat-note" id="portfolioOverdueNote">0 overdue</span></div></div>
           <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Global units</span><strong class="stat-value" id="portfolioUnitCount">0</strong><span class="stat-note" id="portfolioAvailableNote">0 available</span></div></div>
-          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Project updates</span><strong class="stat-value" id="portfolioUpdateCount">0</strong><span class="stat-note">Composite project/update key</span></div></div>
+          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Project updates</span><strong class="stat-value" id="portfolioUpdateCount">0</strong><span class="stat-note">Project / Update ID</span></div></div>
         </section>
 
         <section class="data-card">
-          <div class="data-card-header"><div><h2>Portfolio records</h2><p>ER-aligned location, construction, inventory, and progress views</p></div></div>
+          <div class="data-card-header"><div><h2>Portfolio records</h2><p>Area, project, unit and progress details</p></div></div>
           <div class="panel-tabs" role="tablist" aria-label="Portfolio views">
             <button class="active" type="button" data-tab-target="areaPanel">Areas</button>
             <button type="button" data-tab-target="projectPanel">Projects</button>
@@ -50,7 +51,7 @@
 
           <div class="tab-panel" id="areaPanel">
             <div class="filter-bar admin-filter-group" data-admin-table="areaTable"><label class="visually-hidden" for="areaSearch">Search areas</label><input class="form-control admin-search" id="areaSearch" type="search" placeholder="Search areas or coordinates"><span class="filter-count" data-admin-count="areaTable">0 records</span></div>
-            <div class="table-responsive"><table class="table" id="areaTable"><thead><tr><th>Area</th><th>Composite address</th><th>Centre location</th><th>Boundary information</th><th>Projects</th></tr></thead><tbody id="areaTableBody"></tbody></table></div>
+            <div class="table-responsive"><table class="table" id="areaTable"><thead><tr><th>Area</th><th>Address</th><th>Centre location</th><th>Boundary information</th><th>Projects</th></tr></thead><tbody id="areaTableBody"></tbody></table></div>
           </div>
 
           <div class="tab-panel" id="projectPanel" hidden>
@@ -63,13 +64,13 @@
           </div>
 
           <div class="tab-panel" id="unitPanel" hidden>
-            <div class="info-callout m-3 mb-0"><strong>Global inventory:</strong> Flats & Units has no direct Project foreign key. A project is shown only when a unit participates in an existing Booking-Allocation Process; unbooked units are not claimed by any project.</div>
+            <div class="info-callout m-3 mb-0"><strong>All units:</strong> Flats & Units has no direct Project foreign key. A project is shown only when a unit participates in an existing Booking allocation; unbooked units are not claimed by any project.</div>
             <div class="filter-bar admin-filter-group" data-admin-table="unitTable">
               <label class="visually-hidden" for="unitSearch">Search units</label><input class="form-control admin-search" id="unitSearch" type="search" placeholder="Search unit number or type">
               <label class="visually-hidden" for="unitStatusFilter">Filter unit status</label><select class="form-select admin-status" id="unitStatusFilter"><option value="all">All unit statuses</option><option value="Available">Available</option><option value="Reserved">Reserved</option><option value="Allocated">Allocated</option></select>
               <span class="filter-count" data-admin-count="unitTable">0 records</span>
             </div>
-            <div class="table-responsive"><table class="table" id="unitTable"><thead><tr><th>Unit</th><th>Type</th><th>Status</th><th>Booking-allocation context</th><th>Project context</th></tr></thead><tbody id="unitTableBody"></tbody></table></div>
+            <div class="table-responsive"><table class="table" id="unitTable"><thead><tr><th>Unit</th><th>Type</th><th>Status</th><th>Booking-allocation details</th><th>Project details</th></tr></thead><tbody id="unitTableBody"></tbody></table></div>
           </div>
 
           <div class="tab-panel" id="updatePanel" hidden>
@@ -81,7 +82,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/mock-data.js"></script>
+    <script src="../../js/data.js"></script>
     <script src="../../js/common.js"></script>
     <script src="../../js/admin.js"></script>
   </body>

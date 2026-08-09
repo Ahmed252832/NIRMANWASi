@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -23,7 +24,7 @@
         <div class="nav-section-title">Workspace</div>
         <a class="active" href="dashboard.html" aria-current="page"><span class="nav-icon">OV</span>Dashboard</a>
         <a href="profile.html"><span class="nav-icon">ME</span>My Profile</a>
-        <div class="nav-section-title">Procurement</div>
+        <div class="nav-section-title">Tenders</div>
         <a href="tenders.html"><span class="nav-icon">TN</span>Published Tenders</a>
         <a href="bids.html"><span class="nav-icon">BD</span>My Bids</a>
         <div class="nav-section-title">Delivery</div>
@@ -41,12 +42,12 @@
       <header class="app-topbar">
         <div class="topbar-left">
           <button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open navigation"><span></span></button>
-          <div class="topbar-context">Representative workspace / <strong>Dashboard</strong></div>
+          <div class="topbar-context">Representative panel / <strong>Dashboard</strong></div>
         </div>
         <div class="topbar-right">
           <a class="user-chip" href="profile.html" aria-label="Open representative profile">
             <span class="user-avatar" data-current-rep-initials>--</span>
-            <span class="user-chip-name"><strong data-current-rep-name>Representative</strong><span data-current-rep-title>Account</span></span>
+            <span class="user-chip-name"><strong data-current-rep-name>Representative</strong><span data-current-rep-title>Profile</span></span>
           </a>
         </div>
       </header>
@@ -56,7 +57,7 @@
           <div>
             <div class="breadcrumb-line">Representative overview</div>
             <h1>Contractor dashboard</h1>
-            <p>Follow published opportunities, your bid outcomes, awarded work, and the latest recorded construction progress.</p>
+            <p>Check published tenders, your bids, awarded projects and latest progress.</p>
           </div>
           <a class="btn btn-nirman" href="tenders.html">Browse published tenders</a>
         </div>
@@ -88,7 +89,7 @@
           </div>
           <div class="col-sm-6 col-xl-3">
             <div class="stat-card">
-              <span class="stat-label">Relevant awards</span>
+              <span class="stat-label">Related awards</span>
               <strong class="stat-value" id="dashboardAwardCount">0</strong>
               <span class="stat-note">Awards matching your selected bids</span>
             </div>
@@ -106,7 +107,7 @@
           <div class="col-xl-4">
             <article class="data-card">
               <div class="data-card-header">
-                <div><h2>Representation status</h2><p>Approval and represented contractor</p></div>
+                <div><h2>Representation status</h2><p>Approval status and contractor</p></div>
                 <a class="mini-action" href="profile.html">Full profile</a>
               </div>
               <div class="data-card-body">
@@ -119,7 +120,7 @@
           <div class="col-xl-8">
             <article class="data-card">
               <div class="data-card-header">
-                <div><h2>Published tenders</h2><p>Current tenders available to approved representatives</p></div>
+                <div><h2>Published tenders</h2><p>Published tenders available to you</p></div>
                 <a class="mini-action" href="tenders.html">View all</a>
               </div>
               <div class="table-responsive">
@@ -136,8 +137,8 @@
           <div class="col-xl-5">
             <article class="data-card">
               <div class="data-card-header">
-                <div><h2>My bid statuses</h2><p>Every bid is shown with its tender context</p></div>
-                <a class="mini-action" href="bids.html">Review bids</a>
+                <div><h2>My bid statuses</h2><p>Your bids and their tender details</p></div>
+                <a class="mini-action" href="bids.html">View bids</a>
               </div>
               <div class="data-card-body" id="dashboardBidStatusList"></div>
             </article>
@@ -145,7 +146,7 @@
           <div class="col-xl-7">
             <article class="data-card">
               <div class="data-card-header">
-                <div><h2>Awards and resulting projects</h2><p>Derived from your selected bid, then award, then project</p></div>
+                <div><h2>Awards and resulting projects</h2><p>Based on your awarded bids and projects</p></div>
                 <a class="mini-action" href="projects.html">Open projects</a>
               </div>
               <div class="data-card-body" id="dashboardProjectList"></div>
@@ -155,7 +156,7 @@
 
         <section class="data-card" aria-labelledby="recentUpdateHeading">
           <div class="data-card-header">
-            <div><h2 id="recentUpdateHeading">Recent project update status</h2><p>Latest progress records for projects reached through your awards</p></div>
+            <div><h2 id="recentUpdateHeading">Recent project update status</h2><p>Latest progress for your awarded projects</p></div>
             <a class="mini-action" href="updates.html">Manage updates</a>
           </div>
           <div class="data-card-body" id="dashboardRecentUpdates"></div>
@@ -164,7 +165,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/mock-data.js"></script>
+    <script src="../../js/data.js"></script>
     <script src="../../js/common.js"></script>
     <script src="../../js/contractor.js"></script>
   </body>
