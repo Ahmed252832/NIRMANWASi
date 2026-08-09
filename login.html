@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -16,23 +17,23 @@
           <span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span>
         </a>
         <div class="auth-showcase-copy">
-          <span class="section-kicker">Role workspace access</span>
-          <h1 id="loginWelcomeTitle">Return to the work that matters.</h1>
-          <p>Select your role and use a supplied demonstration account to enter the matching NIRMAN workspace.</p>
+          <span class="section-kicker">User access</span>
+          <h1 id="loginWelcomeTitle">Login to your NIRMAN account.</h1>
+          <p>Select your role, then enter your email and password.</p>
           <div class="auth-blueprint" aria-label="Available user workspaces">
             <div class="blueprint-cell"><strong>01</strong><span>Employee operations</span></div>
             <div class="blueprint-cell"><strong>02</strong><span>Client property journey</span></div>
             <div class="blueprint-cell"><strong>03</strong><span>Representative tenders</span></div>
           </div>
         </div>
-        <p class="auth-showcase-note mb-0">Mock authentication only. No credentials are sent to a server.</p>
+        <p class="auth-showcase-note mb-0">Login uses the current local data.</p>
       </section>
 
       <section class="auth-form-panel">
         <a class="auth-back-link" href="index.html"><span aria-hidden="true">&larr;</span> Back to public site</a>
         <div class="auth-form-heading">
           <h2>User login</h2>
-          <p>Choose the account type that matches your credentials.</p>
+          <p>Choose your role and enter your login details.</p>
         </div>
 
         <div id="loginFeedback" aria-live="polite"></div>
@@ -48,28 +49,21 @@
           </fieldset>
           <div class="mb-3">
             <label class="form-label" for="loginEmail">Email address</label>
-            <input class="form-control" type="email" id="loginEmail" autocomplete="username" required placeholder="name@nirman.demo">
+            <input class="form-control" type="email" id="loginEmail" autocomplete="username" required placeholder="Enter email address">
           </div>
           <div class="mb-4">
             <label class="form-label" for="loginPassword">Password</label>
             <input class="form-control" type="password" id="loginPassword" autocomplete="current-password" required placeholder="Enter password">
           </div>
-          <button class="btn btn-navy w-100" type="submit">Open workspace</button>
+          <button class="btn btn-navy w-100" type="submit">Login</button>
         </form>
 
-        <div class="demo-box">
-          <div class="demo-box-title">Fill a demonstration account</div>
-          <button class="demo-account-button" type="button" data-demo-role="employee" data-demo-email="arif@nirman.demo" data-demo-password="employee123"><strong>Employee:</strong> arif@nirman.demo / employee123</button>
-          <button class="demo-account-button" type="button" data-demo-role="client" data-demo-email="samira@nirman.demo" data-demo-password="client123"><strong>Client:</strong> samira@nirman.demo / client123</button>
-          <button class="demo-account-button" type="button" data-demo-role="contractor" data-demo-email="tanvir@nirman.demo" data-demo-password="contractor123"><strong>Representative:</strong> tanvir@nirman.demo / contractor123</button>
-        </div>
-
-        <p class="auth-switch">Eligible for public registration? <a href="register.html">Create an account</a></p>
-        <p class="auth-switch mt-2">Administrator? <a href="admin-login.html">Use separate Admin login</a></p>
+        <p class="auth-switch">New user? <a href="register.html">Create an account</a></p>
+        <p class="auth-switch mt-2">Administrator? <a href="admin-login.html">Admin login</a></p>
       </section>
     </main>
 
-    <script src="js/mock-data.js"></script>
+    <script src="js/data.js"></script>
     <script src="js/common.js"></script>
     <script src="js/auth.js"></script>
   </body>

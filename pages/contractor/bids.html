@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -23,7 +24,7 @@
         <div class="nav-section-title">Workspace</div>
         <a href="dashboard.html"><span class="nav-icon">OV</span>Dashboard</a>
         <a href="profile.html"><span class="nav-icon">ME</span>My Profile</a>
-        <div class="nav-section-title">Procurement</div>
+        <div class="nav-section-title">Tenders</div>
         <a href="tenders.html"><span class="nav-icon">TN</span>Published Tenders</a>
         <a class="active" href="bids.html" aria-current="page"><span class="nav-icon">BD</span>My Bids</a>
         <div class="nav-section-title">Delivery</div>
@@ -41,12 +42,12 @@
       <header class="app-topbar">
         <div class="topbar-left">
           <button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open navigation"><span></span></button>
-          <div class="topbar-context">Representative workspace / <strong>My Bids</strong></div>
+          <div class="topbar-context">Representative panel / <strong>My Bids</strong></div>
         </div>
         <div class="topbar-right">
           <a class="user-chip" href="profile.html" aria-label="Open representative profile">
             <span class="user-avatar" data-current-rep-initials>--</span>
-            <span class="user-chip-name"><strong data-current-rep-name>Representative</strong><span data-current-rep-title>Account</span></span>
+            <span class="user-chip-name"><strong data-current-rep-name>Representative</strong><span data-current-rep-title>Profile</span></span>
           </a>
         </div>
       </header>
@@ -56,7 +57,7 @@
           <div>
             <div class="breadcrumb-line">Tender participation</div>
             <h1>My tender bids</h1>
-            <p>Review your weak-entity Bid IDs inside their Tender context and see whether each selected bid has an Award.</p>
+            <p>View your bids, their tenders and award status.</p>
           </div>
           <a class="btn btn-nirman" href="tenders.html">Find a tender</a>
         </div>
@@ -84,7 +85,7 @@
 
         <section class="data-card" aria-labelledby="ownBidTableHeading">
           <div class="data-card-header">
-            <div><h2 id="ownBidTableHeading">Representative bid register</h2><p>Bid ID is a partial key; Tender ID completes the identifier</p></div>
+            <div><h2 id="ownBidTableHeading">Representative bid register</h2><p>Each bid is shown with its tender ID</p></div>
           </div>
           <div class="filter-bar">
             <label class="visually-hidden" for="bidSearch">Search bids</label>
@@ -101,7 +102,7 @@
           </div>
           <div class="table-responsive">
             <table class="table" id="ownBidsTable" aria-label="Current representative tender bids">
-              <thead><tr><th>Composite ID</th><th>Tender</th><th>Bid amount</th><th>Bid status</th><th>Award</th><th>Action</th></tr></thead>
+              <thead><tr><th>ID</th><th>Tender</th><th>Bid amount</th><th>Bid status</th><th>Award</th><th>Action</th></tr></thead>
               <tbody id="bidTableBody"></tbody>
             </table>
           </div>
@@ -123,7 +124,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/mock-data.js"></script>
+    <script src="../../js/data.js"></script>
     <script src="../../js/common.js"></script>
     <script src="../../js/contractor.js"></script>
   </body>

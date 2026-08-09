@@ -1,6 +1,3 @@
-"use strict";
-
-/* Shared formatting and lookup functions */
 
 function findRecord(list, propertyName, value) {
   for (var index = 0; index < list.length; index += 1) {
@@ -119,7 +116,7 @@ function createStatusBadge(status) {
 
 function isProjectOverdue(project) {
   var completedStatuses = ["Completed", "Closed"];
-  var deadline = new Date(project.deadline + "T23:59:59");
+  var deadline = new Date(project.deadline + "23:59:59");
   return completedStatuses.indexOf(project.status) === -1 && deadline < new Date();
 }
 
@@ -160,8 +157,6 @@ function showPageAlert(message, alertType) {
     "</div>";
   holder.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
-
-/* Generic table search used by role pages */
 
 function filterTableRows(inputElement) {
   var tableId = inputElement.getAttribute("data-table-search");
@@ -238,8 +233,6 @@ function initializeSimpleTabs() {
     });
   }
 }
-
-/* Shared page setup */
 
 document.addEventListener("DOMContentLoaded", function () {
   var sidebar = document.getElementById("appSidebar");

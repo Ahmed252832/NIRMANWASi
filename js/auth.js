@@ -1,4 +1,3 @@
-"use strict";
 
 function showAuthFeedback(elementId, message, type) {
   var feedbackElement = document.getElementById(elementId);
@@ -43,26 +42,26 @@ function handleGeneralLogin(event) {
   var person = findPersonByEmail(email);
 
   if (!person || person.password !== password) {
-    showAuthFeedback("loginFeedback", "The email or password does not match a mock account.", "danger");
+    showAuthFeedback("loginFeedback", "Email or password is incorrect.", "danger");
     return;
   }
 
   var actualRole = getRoleForPerson(person.personId);
   if (actualRole !== selectedRole) {
-    showAuthFeedback("loginFeedback", "This mock account does not belong to the selected role.", "warning");
+    showAuthFeedback("loginFeedback", "This account does not match the selected role.", "warning");
     return;
   }
 
   if (actualRole === "contractor") {
     var representative = findRecord(nirmanData.contractorReps, "personId", person.personId);
     if (representative.approvalStatus !== "Approved") {
-      showAuthFeedback("loginFeedback", "This representative account is awaiting Admin approval.", "warning");
+      showAuthFeedback("loginFeedback", "This representative account is waiting for admin approval.", "warning");
       return;
     }
   }
 
   var destination = "pages/" + actualRole + "/dashboard.html";
-  showAuthFeedback("loginFeedback", "Mock login successful. Opening your dashboard...", "success");
+  showAuthFeedback("loginFeedback", "Login successful.", "success");
   window.setTimeout(function () {
     window.location.href = destination;
   }, 450);
@@ -71,24 +70,22 @@ function handleGeneralLogin(event) {
 function handleAdminLogin(event) {
   event.preventDefault();
 
-  var email = document.getElementById("adminEmail").value.trim().toLowerCase();
+  var email = document.getElementById("adminEmail").value.trim();
   var password = document.getElementById("adminPassword").value;
-  var matchingAdmin = null;
+  var person = findPersonByEmail(email);
 
-  for (var index = 0; index < nirmanData.adminAccounts.length; index += 1) {
-    var account = nirmanData.adminAccounts[index];
-    if (account.email.toLowerCase() === email && account.password === password) {
-      matchingAdmin = account;
-      break;
-    }
-  }
-
-  if (!matchingAdmin) {
-    showAuthFeedback("adminFeedback", "The Admin email or password is incorrect.", "danger");
+  if (!person || person.password !== password) {
+    showAuthFeedback("adminFeedback", "Email or password is incorrect.", "danger");
     return;
   }
 
-  showAuthFeedback("adminFeedback", "Mock Admin login successful. Opening the dashboard...", "success");
+  var employee = findRecord(nirmanData.employees, "personId", person.personId);
+  if (!employee || employee.designation !== "System Administrator") {
+    showAuthFeedback("adminFeedback", "This employee does not have administrator access.", "warning");
+    return;
+  }
+
+  showAuthFeedback("adminFeedback", "Login successful.", "success");
   window.setTimeout(function () {
     window.location.href = "pages/admin/dashboard.html";
   }, 450);
@@ -145,12 +142,12 @@ function handleRegistration(event) {
   }
 
   if (findPersonByEmail(email)) {
-    showAuthFeedback("registerFeedback", "That email is already used by a mock account.", "warning");
+    showAuthFeedback("registerFeedback", "This email is already in use.", "warning");
     return;
   }
 
   var personNumber = nirmanData.people.length + 1;
-  var newPersonId = "P" + String(personNumber).padStart(3, "0");
+  var newPersonId = String(personNumber);
   var newPerson = {
     personId: newPersonId,
     firstName: document.getElementById("firstName").value.trim(),
@@ -163,7 +160,7 @@ function handleRegistration(event) {
   nirmanData.people.push(newPerson);
 
   if (selectedRole === "client") {
-    var newClientId = "C" + String(nirmanData.clients.length + 1).padStart(3, "0");
+    var newClientId = String(nirmanData.clients.length + 1);
     nirmanData.clients.push({
       clientId: newClientId,
       personId: newPersonId,
@@ -179,7 +176,7 @@ function handleRegistration(event) {
       nirmanData.clientContacts.push({ clientId: newClientId, contactNo: extraContact });
     }
   } else {
-    var newRepId = "R" + String(nirmanData.contractorReps.length + 1).padStart(3, "0");
+    var newRepId = String(nirmanData.contractorReps.length + 1);
     nirmanData.contractorReps.push({
       repId: newRepId,
       personId: newPersonId,
@@ -191,34 +188,17 @@ function handleRegistration(event) {
 
   showAuthFeedback(
     "registerFeedback",
-    "Prototype registration created for this page session. No database record was saved.",
+    "Account created for this session.",
     "success"
   );
   event.currentTarget.reset();
   updateRegistrationFields();
 }
 
-function fillDemoLogin(button) {
-  var emailInput = document.getElementById("loginEmail") || document.getElementById("adminEmail");
-  var passwordInput = document.getElementById("loginPassword") || document.getElementById("adminPassword");
-
-  emailInput.value = button.getAttribute("data-demo-email");
-  passwordInput.value = button.getAttribute("data-demo-password");
-
-  var role = button.getAttribute("data-demo-role");
-  if (role) {
-    var roleInput = document.querySelector('input[name="loginRole"][value="' + role + '"]');
-    if (roleInput) {
-      roleInput.checked = true;
-    }
-  }
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   var loginForm = document.getElementById("loginForm");
   var adminLoginForm = document.getElementById("adminLoginForm");
   var registrationForm = document.getElementById("registrationForm");
-  var demoButtons = document.querySelectorAll("[data-demo-email]");
   var roleInputs = document.querySelectorAll('input[name="registerRole"]');
 
   if (loginForm) {
@@ -237,9 +217,4 @@ document.addEventListener("DOMContentLoaded", function () {
     roleInputs[roleIndex].addEventListener("change", updateRegistrationFields);
   }
 
-  for (var demoIndex = 0; demoIndex < demoButtons.length; demoIndex += 1) {
-    demoButtons[demoIndex].addEventListener("click", function () {
-      fillDemoLogin(this);
-    });
-  }
 });

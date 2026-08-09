@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -16,16 +17,16 @@
           <span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span>
         </a>
         <div class="auth-showcase-copy">
-          <span class="admin-auth-badge">Restricted interface</span>
-          <h1 id="adminWelcomeTitle">System oversight, clearly separated.</h1>
-          <p>The Admin workspace provides high-level frontend management views. Admin remains an application role and is not a database entity.</p>
+          <span class="admin-auth-badge">Admin area</span>
+          <h1 id="adminWelcomeTitle">Manage the NIRMAN system.</h1>
+          <p>Admins can manage users, projects, payments, complaints, tenders and other system data.</p>
           <div class="auth-blueprint" aria-label="Admin management areas">
-            <div class="blueprint-cell"><strong>17</strong><span>ER entities represented</span></div>
-            <div class="blueprint-cell"><strong>08</strong><span>Management views</span></div>
-            <div class="blueprint-cell"><strong>01</strong><span>Access-control role</span></div>
+            <div class="blueprint-cell"><strong>17</strong><span>Main data tables</span></div>
+            <div class="blueprint-cell"><strong>08</strong><span>Admin pages</span></div>
+            <div class="blueprint-cell"><strong>01</strong><span>Admin role</span></div>
           </div>
         </div>
-        <p class="auth-showcase-note mb-0">Frontend demonstration access only. Real authentication is not implemented.</p>
+        <p class="auth-showcase-note mb-0">Login uses the current local data.</p>
       </section>
 
       <section class="auth-form-panel">
@@ -33,7 +34,7 @@
         <div class="auth-form-heading">
           <span class="admin-auth-badge mb-3">Admin access</span>
           <h2>Administrator login</h2>
-          <p>This sign-in is intentionally separate from ordinary user access.</p>
+          <p>Admins use a separate login page.</p>
         </div>
 
         <div id="adminFeedback" aria-live="polite"></div>
@@ -41,25 +42,20 @@
         <form id="adminLoginForm">
           <div class="mb-3">
             <label class="form-label" for="adminEmail">Admin email</label>
-            <input class="form-control" type="email" id="adminEmail" autocomplete="username" required placeholder="admin@nirman.demo">
+            <input class="form-control" type="email" id="adminEmail" autocomplete="username" required placeholder="Enter admin email">
           </div>
           <div class="mb-4">
             <label class="form-label" for="adminPassword">Password</label>
             <input class="form-control" type="password" id="adminPassword" autocomplete="current-password" required placeholder="Enter Admin password">
           </div>
-          <button class="btn btn-nirman w-100" type="submit">Open Admin workspace</button>
+          <button class="btn btn-nirman w-100" type="submit">Login as Admin</button>
         </form>
 
-        <div class="demo-box">
-          <div class="demo-box-title">Demonstration Admin</div>
-          <button class="demo-account-button" type="button" data-demo-email="admin@nirman.demo" data-demo-password="admin123"><strong>Admin:</strong> admin@nirman.demo / admin123</button>
-        </div>
-
-        <p class="auth-switch">Not an administrator? <a href="login.html">Use general user login</a></p>
+        <p class="auth-switch">Not an admin? <a href="login.html">User login</a></p>
       </section>
     </main>
 
-    <script src="js/mock-data.js"></script>
+    <script src="js/data.js"></script>
     <script src="js/common.js"></script>
     <script src="js/auth.js"></script>
   </body>

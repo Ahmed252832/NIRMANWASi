@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -16,23 +17,23 @@
           <span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span>
         </a>
         <div class="auth-showcase-copy">
-          <span class="section-kicker">Public registration</span>
-          <h1 id="registerWelcomeTitle">Begin with the right role.</h1>
-          <p>Public sign-up is available only to Clients and Contractor Representatives. Employee and Admin accounts are managed internally.</p>
+          <span class="section-kicker">User registration</span>
+          <h1 id="registerWelcomeTitle">Create your NIRMAN account.</h1>
+          <p>Clients and Contractor Representatives can register here. Employee and Admin accounts are created by the admin.</p>
           <div class="auth-blueprint" aria-label="Registration process">
-            <div class="blueprint-cell"><strong>01</strong><span>Select an eligible role</span></div>
-            <div class="blueprint-cell"><strong>02</strong><span>Enter relevant details</span></div>
-            <div class="blueprint-cell"><strong>03</strong><span>Review prototype result</span></div>
+            <div class="blueprint-cell"><strong>01</strong><span>Choose a role</span></div>
+            <div class="blueprint-cell"><strong>02</strong><span>Enter your details</span></div>
+            <div class="blueprint-cell"><strong>03</strong><span>Submit the form</span></div>
           </div>
         </div>
-        <p class="auth-showcase-note mb-0">Submitted data remains only in page memory and disappears after refresh.</p>
+        <p class="auth-showcase-note mb-0">Registration data resets after refresh.</p>
       </section>
 
       <section class="auth-form-panel auth-form-panel-wide">
         <a class="auth-back-link" href="index.html"><span aria-hidden="true">&larr;</span> Back to public site</a>
         <div class="auth-form-heading">
           <h2>Create an account</h2>
-          <p>Fields follow the Person and selected subtype information in the project specification.</p>
+          <p>Fill in the required account details.</p>
         </div>
 
         <div id="registerFeedback" aria-live="polite"></div>
@@ -47,7 +48,7 @@
           </fieldset>
 
           <section class="registration-section" aria-labelledby="personDetailsHeading">
-            <h3 id="personDetailsHeading">Person details</h3>
+            <h3 id="personDetailsHeading">Personal details</h3>
             <div class="row g-3">
               <div class="col-sm-6">
                 <label class="form-label" for="firstName">First name <span class="required-mark">*</span></label>
@@ -86,7 +87,7 @@
               <div class="col-12">
                 <label class="form-label" for="additionalContact">Additional contact number</label>
                 <input class="form-control" id="additionalContact" type="tel" pattern="[0-9+ -]{7,18}">
-                <div class="form-help">Client contact number is multivalued in the ER model.</div>
+                <div class="form-help">A client can have more than one contact number.</div>
               </div>
             </div>
           </section>
@@ -101,20 +102,20 @@
               <div class="col-12">
                 <label class="form-label" for="representativeContractor">Represented contractor <span class="required-mark">*</span></label>
                 <select class="form-select" id="representativeContractor"></select>
-                <div class="form-help">One representative belongs to one Contractor. New representative accounts start as Pending.</div>
+                <div class="form-help">Choose the contractor you represent. New representative accounts start with Pending status.</div>
               </div>
             </div>
           </section>
 
-          <div class="info-callout mb-3">This operation demonstrates validation and temporary data handling only. It does not save information to Oracle.</div>
-          <button class="btn btn-navy w-100" type="submit">Create prototype account</button>
+          <div class="info-callout mb-3">For now, this form does not save data to Oracle.</div>
+          <button class="btn btn-navy w-100" type="submit">Create account</button>
         </form>
 
-        <p class="auth-switch">Already have a mock account? <a href="login.html">Sign in</a></p>
+        <p class="auth-switch">Already have an account? <a href="login.html">Sign in</a></p>
       </section>
     </main>
 
-    <script src="js/mock-data.js"></script>
+    <script src="js/data.js"></script>
     <script src="js/common.js"></script>
     <script src="js/auth.js"></script>
   </body>

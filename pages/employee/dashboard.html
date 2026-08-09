@@ -1,9 +1,10 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="NIRMAN Employee operational dashboard.">
+    <meta name="description" content="NIRMAN Employee work dashboard.">
     <title>Employee Dashboard | NIRMAN</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/style.css">
@@ -12,7 +13,7 @@
   <body class="app-body" data-employee-page="dashboard">
     <a class="skip-link" href="#mainContent">Skip to main content</a>
     <aside class="app-sidebar" id="appSidebar" aria-label="Employee navigation">
-      <div class="sidebar-header"><a class="brand-logo brand-logo-light" href="dashboard.html" aria-label="NIRMAN Employee home"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a><p class="sidebar-role">Employee workspace</p></div>
+      <div class="sidebar-header"><a class="brand-logo brand-logo-light" href="dashboard.html" aria-label="NIRMAN Employee home"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a><p class="sidebar-role">Employee panel</p></div>
       <nav class="sidebar-nav">
         <div class="nav-section-title">Workspace</div><a class="active" aria-current="page" href="dashboard.html"><span class="nav-icon">OV</span>Dashboard</a><a href="profile.html"><span class="nav-icon">ME</span>My Profile</a>
         <div class="nav-section-title">Responsibilities</div><a href="tenders.html"><span class="nav-icon">TN</span>Tenders</a><a href="allocations.html"><span class="nav-icon">AL</span>Allocations</a><a href="payments.html"><span class="nav-icon">PY</span>Payments</a><a href="complaints.html"><span class="nav-icon">CP</span>Complaints</a><a href="projects.html"><span class="nav-icon">PR</span>Projects</a>
@@ -21,24 +22,24 @@
     </aside>
     <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
     <div class="app-main">
-      <header class="app-topbar"><div class="topbar-left"><button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open Employee navigation"><span></span></button><div class="topbar-context">Employee workspace / <strong>Dashboard</strong></div></div><div class="topbar-right"><a class="user-chip" href="profile.html" aria-label="Open employee profile"><span class="user-avatar" data-employee-initials>AR</span><span class="user-chip-name"><strong data-employee-name>Arif Rahman</strong><span data-employee-role>Operations Manager</span></span></a></div></header>
+      <header class="app-topbar"><div class="topbar-left"><button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open Employee navigation"><span></span></button><div class="topbar-context">Employee panel / <strong>Dashboard</strong></div></div><div class="topbar-right"><a class="user-chip" href="profile.html" aria-label="Open employee profile"><span class="user-avatar" data-employee-initials>AR</span><span class="user-chip-name"><strong data-employee-name>Arif Rahman</strong><span data-employee-role>Operations Manager</span></span></a></div></header>
       <main class="page-content" id="mainContent">
-        <div class="page-heading"><div><div class="breadcrumb-line">Employee overview</div><h1>Operations dashboard</h1><p>Review Arif Rahman's current responsibilities, deadlines, and project delivery signals.</p></div><a class="btn btn-navy" href="allocations.html">Review pending work</a></div>
+        <div class="page-heading"><div><div class="breadcrumb-line">Employee overview</div><h1>Employee dashboard</h1><p>View current tasks, deadlines and project progress.</p></div><a class="btn btn-navy" href="allocations.html">View pending work</a></div>
         <div class="page-alert-holder" id="pageAlert" aria-live="polite"></div>
         <section class="row g-3 mb-4" aria-label="Pending responsibility summary">
           <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Allocations pending</span><strong class="stat-value" id="dashboardAllocationCount">0</strong><span class="stat-note">Unconfirmed processes</span></div></div>
           <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Payments pending</span><strong class="stat-value" id="dashboardPaymentCount">0</strong><span class="stat-note">Awaiting verification</span></div></div>
           <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Complaints open</span><strong class="stat-value" id="dashboardComplaintCount">0</strong><span class="stat-note">Awaiting resolution</span></div></div>
-          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">My tenders</span><strong class="stat-value" id="dashboardTenderCount">0</strong><span class="stat-note">Published by E001</span></div></div>
+          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">My tenders</span><strong class="stat-value" id="dashboardTenderCount">0</strong><span class="stat-note">Published by 1</span></div></div>
         </section>
         <section class="row g-4 mb-4">
-          <div class="col-xl-5"><article class="data-card"><div class="data-card-header"><div><h2>My responsibilities</h2><p>Actions available to the current Employee</p></div></div><div class="data-card-body"><ul class="activity-list" id="dashboardResponsibilityList"></ul></div></article></div>
-          <div class="col-xl-7"><article class="data-card"><div class="data-card-header"><div><h2>Tender deadline watch</h2><p>Current E001 tenders ordered by deadline</p></div><a class="mini-action" href="tenders.html">Open tenders</a></div><div class="table-responsive"><table class="table"><thead><tr><th>Tender</th><th>Deadline</th><th>Status</th><th>Bids</th></tr></thead><tbody id="dashboardTenderBody"></tbody></table></div></article></div>
+          <div class="col-xl-5"><article class="data-card"><div class="data-card-header"><div><h2>My responsibilities</h2><p>Your available actions</p></div></div><div class="data-card-body"><ul class="activity-list" id="dashboardResponsibilityList"></ul></div></article></div>
+          <div class="col-xl-7"><article class="data-card"><div class="data-card-header"><div><h2>Tender deadline watch</h2><p>Your tenders ordered by deadline</p></div><a class="mini-action" href="tenders.html">Open tenders</a></div><div class="table-responsive"><table class="table"><thead><tr><th>Tender</th><th>Deadline</th><th>Status</th><th>Bids</th></tr></thead><tbody id="dashboardTenderBody"></tbody></table></div></article></div>
         </section>
-        <section class="data-card"><div class="data-card-header"><div><h2>Project delivery</h2><p>Deadlines, derived overdue state, and latest progress</p></div><a class="mini-action" href="projects.html">Manage supervision</a></div><div class="table-responsive"><table class="table"><thead><tr><th>Project</th><th>Status</th><th>Deadline</th><th>Time state</th><th>Progress</th></tr></thead><tbody id="dashboardProjectBody"></tbody></table></div></section>
+        <section class="data-card"><div class="data-card-header"><div><h2>Project delivery</h2><p>Deadlines, status and latest progress</p></div><a class="mini-action" href="projects.html">Manage supervision</a></div><div class="table-responsive"><table class="table"><thead><tr><th>Project</th><th>Status</th><th>Deadline</th><th>Time state</th><th>Progress</th></tr></thead><tbody id="dashboardProjectBody"></tbody></table></div></section>
       </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/mock-data.js"></script><script src="../../js/common.js"></script><script src="../../js/employee.js"></script>
+    <script src="../../js/data.js"></script><script src="../../js/common.js"></script><script src="../../js/employee.js"></script>
   </body>
 </html>

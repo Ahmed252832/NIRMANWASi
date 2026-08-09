@@ -1,9 +1,10 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="NIRMAN real estate and construction management frontend prototype.">
+    <meta name="description" content="NIRMAN real estate and construction management system.">
     <title>NIRMAN | Real Estate & Construction Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -39,10 +40,10 @@
         <div class="container">
           <div class="row hero-content align-items-center">
             <div class="col-lg-7">
-              <div class="hero-eyebrow"><span></span>Property. Construction. Clarity.</div>
-              <h1>One clear view from <strong>plan</strong> to property.</h1>
+              <div class="hero-eyebrow"><span></span>Real Estate and Construction</div>
+              <h1>Manage everything from <strong>plan</strong> to property.</h1>
               <p class="hero-lead">
-                NIRMAN brings projects, units, bookings, payments, tenders, contractors, and construction progress into one organized management experience.
+                NIRMAN helps manage projects, units, bookings, payments, tenders, contractors and construction updates in one place.
               </p>
               <div class="hero-actions">
                 <a class="btn btn-nirman btn-lg" href="#projects">Explore projects</a>
@@ -50,14 +51,14 @@
               </div>
               <div class="hero-note">
                 <span class="hero-note-line"></span>
-                <span>Independent frontend prototype powered by realistic mock data</span>
+                <span>Real estate and construction management</span>
               </div>
             </div>
             <div class="col-lg-5">
-              <div class="hero-visual" aria-label="Meridian Heights project progress preview">
+              <div class="hero-visual" aria-label="GANGCHILL project progress pview">
                 <div class="plan-header">
-                  <span class="plan-label">Live project board</span>
-                  <span class="plan-code">PR001 / AR001</span>
+                  <span class="plan-label">Project overview</span>
+                  <span class="plan-code">1 / 1</span>
                 </div>
                 <div class="tower-scene" aria-hidden="true">
                   <div class="tower tower-one"></div>
@@ -66,8 +67,8 @@
                 </div>
                 <div class="plan-footer">
                   <div>
-                    <p class="plan-project-name">Meridian Heights</p>
-                    <div class="plan-progress">Latest recorded construction progress</div>
+                    <p class="plan-project-name">GANGCHILL</p>
+                    <div class="plan-progress">Latest project progress</div>
                   </div>
                   <div class="plan-percent">38%</div>
                 </div>
@@ -77,10 +78,10 @@
         </div>
       </section>
 
-      <section class="intro-band" aria-label="Mock system statistics">
+      <section class="intro-band" aria-label="System statistics">
         <div class="container">
           <div class="intro-stat-grid">
-            <div class="intro-stat"><strong id="projectCount">0</strong><span>Projects in mock data</span></div>
+            <div class="intro-stat"><strong id="projectCount">0</strong><span>Total projects</span></div>
             <div class="intro-stat"><strong id="availableUnitCount">0</strong><span>Available units</span></div>
             <div class="intro-stat"><strong id="publishedTenderCount">0</strong><span>Published tenders</span></div>
             <div class="intro-stat"><strong id="progressUpdateCount">0</strong><span>Progress updates</span></div>
@@ -88,44 +89,13 @@
         </div>
       </section>
 
-      <section class="section-space" id="about">
-        <div class="container">
-          <div class="row g-5 align-items-center">
-            <div class="col-lg-5">
-              <span class="section-kicker">Built around the full process</span>
-              <h2 class="display-5 mb-4">Connected work, without a crowded experience.</h2>
-              <p class="text-muted-custom mb-4">
-                NIRMAN is an independent management system prototype for the people and processes behind property development. Each workspace presents only the tasks relevant to its role.
-              </p>
-              <a class="btn btn-outline-navy" href="register.html">Create an eligible account</a>
-            </div>
-            <div class="col-lg-7">
-              <div class="about-panel">
-                <span class="section-kicker">System coverage</span>
-                <h3 class="h2">From tender publication to client service</h3>
-                <p class="text-muted-custom mb-0">
-                  Operational records remain connected across departments, contractors, projects, booking allocations, and financial follow-up.
-                </p>
-                <ul class="about-list">
-                  <li>Project and area tracking</li>
-                  <li>Booking allocation flow</li>
-                  <li>Tenders, bids, and awards</li>
-                  <li>Payments and installments</li>
-                  <li>Contractor supervision</li>
-                  <li>Complaints and resolution</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section class="section-space bg-white" id="projects">
         <div class="container">
           <div class="section-heading">
             <span class="section-kicker">Featured projects</span>
-            <h2>Progress made visible.</h2>
-            <p>These summaries are generated from the centralized frontend mock data, including areas, deadlines, statuses, and the latest project updates.</p>
+            <h2>See project progress.</h2>
+            <p>Project cards show details like area, deadline, status and progress.</p>
           </div>
           <div class="row g-4" id="featuredProjects" aria-live="polite"></div>
         </div>
@@ -135,50 +105,82 @@
         <div class="container">
           <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5">
             <div class="section-heading mb-0">
-              <span class="section-kicker">Available inventory</span>
-              <h2>Find the right unit.</h2>
-              <p>Browse the global unit inventory. A selected project and unit are recorded together when a client creates a booking.</p>
+              <span class="section-kicker">Available units</span>
+              <h2>Find an available unit.</h2>
+              <p>Clients can view available units and book a unit under a project.</p>
             </div>
-            <a class="btn btn-navy" href="login.html">Client property workspace</a>
+            <a class="btn btn-navy" href="login.html">Client area</a>
           </div>
           <div class="row g-4" id="availableUnits" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section-space" id="about">
+        <div class="container">
+          <div class="row g-5 align-items-center">
+            <div class="col-lg-5">
+              <span class="section-kicker">About NIRMAN</span>
+              <h2 class="display-5 mb-4">Manage real estate work in one system.</h2>
+              <p class="text-muted-custom mb-4">
+                NIRMAN helps manage real estate and construction work. Each user role has its own pages and tasks.
+              </p>
+              <a class="btn btn-outline-navy" href="register.html">Create an account</a>
+            </div>
+            <div class="col-lg-7">
+              <div class="about-panel">
+                <span class="section-kicker">Main features</span>
+                <h3 class="h2">From tenders to client support</h3>
+                <p class="text-muted-custom mb-0">
+                  The system connects departments, contractors, projects, bookings and payments.
+                </p>
+                <ul class="about-list">
+                  <li>Project and area tracking</li>
+                  <li>Booking and allocation</li>
+                  <li>Tenders, bids, and awards</li>
+                  <li>Payments and installments</li>
+                  <li>Contractor supervision</li>
+                  <li>Complaints</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <section class="section-space bg-navy" id="capabilities">
         <div class="container">
           <div class="section-heading">
-            <span class="section-kicker">Core capabilities</span>
-            <h2 class="text-white">One system, four focused workspaces.</h2>
-            <p class="text-white-50">Each role follows the same underlying project information while receiving a clear, relevant set of actions.</p>
+            <span class="section-kicker">User roles</span>
+            <h2 class="text-white">Four user roles in one system.</h2>
+            <p class="text-white-50">Each role sees the pages and actions it needs.</p>
           </div>
           <div class="row g-4">
             <div class="col-md-6 col-xl-3">
               <article class="capability-card">
                 <div class="capability-number">01 / ADMIN</div>
-                <h3>System oversight</h3>
-                <p>Review people, contractors, properties, operations, finance, complaints, and procurement.</p>
+                <h3>Manage the system</h3>
+                <p>Manage users, contractors, projects, payments, complaints and tenders.</p>
               </article>
             </div>
             <div class="col-md-6 col-xl-3">
               <article class="capability-card">
                 <div class="capability-number">02 / EMPLOYEE</div>
-                <h3>Operational action</h3>
-                <p>Publish tenders, confirm allocations, verify payments, resolve issues, and monitor work.</p>
+                <h3>Employee work</h3>
+                <p>Employees can publish tenders, confirm bookings, verify payments and resolve complaints.</p>
               </article>
             </div>
             <div class="col-md-6 col-xl-3">
               <article class="capability-card">
                 <div class="capability-number">03 / CLIENT</div>
-                <h3>Property journey</h3>
-                <p>Move clearly from projects and units to bookings, allocations, payments, and support.</p>
+                <h3>Client activities</h3>
+                <p>Clients can view properties, make bookings, check payments and send complaints.</p>
               </article>
             </div>
             <div class="col-md-6 col-xl-3">
               <article class="capability-card">
                 <div class="capability-number">04 / REPRESENTATIVE</div>
-                <h3>Bid and progress</h3>
-                <p>Review tenders, submit bids, follow awards, and provide construction progress updates.</p>
+                <h3>Bids and updates</h3>
+                <p>Representatives can view tenders, submit bids and post project updates.</p>
               </article>
             </div>
           </div>
@@ -190,23 +192,23 @@
           <div class="row g-5 align-items-center">
             <div class="col-lg-6">
               <div class="section-heading mb-0">
-                <span class="section-kicker">Why NIRMAN</span>
-                <h2>Designed around decisions, not decoration.</h2>
-                <p>The interface keeps complex real-estate operations understandable through focused pages, visible statuses, and connected detail views.</p>
+                <span class="section-kicker">Why use NIRMAN?</span>
+                <h2>Simple tools for daily work.</h2>
+                <p>The system keeps project information and common tasks easy to find.</p>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="why-item">
                 <span class="why-index">01</span>
-                <div><h3>Clear role boundaries</h3><p>Clients, employees, representatives, and administrators see the work that belongs to them.</p></div>
+                <div><h3>Separate user roles</h3><p>Each user sees the pages for their own role.</p></div>
               </div>
               <div class="why-item">
                 <span class="why-index">02</span>
-                <div><h3>Traceable workflows</h3><p>Booking allocations and tender awards remain understandable from their first action to their outcome.</p></div>
+                <div><h3>Connected work</h3><p>Bookings, tenders and awards stay linked with related data.</p></div>
               </div>
               <div class="why-item mb-0">
                 <span class="why-index">03</span>
-                <div><h3>Practical status visibility</h3><p>Deadlines, approvals, verifications, resolutions, and progress are easy to review at a glance.</p></div>
+                <div><h3>Easy status checking</h3><p>Users can quickly check deadlines, approvals, payments and project progress.</p></div>
               </div>
             </div>
           </div>
@@ -217,9 +219,9 @@
         <div class="container">
           <div class="cta-panel">
             <div class="position-relative">
-              <span class="section-kicker">Enter NIRMAN</span>
-              <h2>Choose the workspace built for your role.</h2>
-              <p class="mb-4">Use a supplied mock account to explore the frontend, or register a temporary Client or Contractor Representative account.</p>
+              <span class="section-kicker">Get started</span>
+              <h2>Login with your user role.</h2>
+              <p class="mb-4">Login with an existing account or register as a Client or Contractor Representative.</p>
               <div class="d-flex flex-wrap gap-2">
                 <a class="btn btn-nirman" href="login.html">Go to login</a>
                 <a class="btn btn-outline-light" href="register.html">Register</a>
@@ -237,7 +239,7 @@
             <a class="brand-logo brand-logo-light mb-3" href="index.html">
               <span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span>
             </a>
-            <p class="pe-lg-5">An independent real estate and construction management frontend prototype for clear, connected operations.</p>
+            <p class="pe-lg-5">A system for managing real estate and construction work.</p>
           </div>
           <div class="col-6 col-lg-2">
             <h4>Explore</h4>
@@ -256,8 +258,8 @@
             </ul>
           </div>
           <div class="col-lg-3">
-            <h4>Current stage</h4>
-            <p class="small">Frontend demonstration only. Backend and Oracle database integration are not implemented.</p>
+            <h4>Project status</h4>
+            <p class="small">Project is ready. Oracle database connection will be added later.</p>
           </div>
         </div>
         <div class="footer-bottom d-flex flex-wrap justify-content-between gap-2">
@@ -268,7 +270,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/mock-data.js"></script>
+    <script src="js/data.js"></script>
     <script src="js/common.js"></script>
     <script src="js/public.js"></script>
   </body>

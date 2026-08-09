@@ -1,6 +1,3 @@
-"use strict";
-
-/* Admin pages use the shared mock arrays directly. All changes last until refresh only. */
 
 function setAdminText(elementId, value) {
   var element = document.getElementById(elementId);
@@ -74,7 +71,7 @@ function hideAdminModal(modalId) {
 
 function getDateState(dateValue) {
   var today = new Date();
-  var date = new Date(dateValue + "T23:59:59");
+  var date = new Date(dateValue + "23:59:59");
   var dayDifference;
   today.setHours(0, 0, 0, 0);
   dayDifference = Math.ceil((date.getTime() - today.getTime()) / 86400000);
@@ -106,7 +103,7 @@ function formatAdminDateTime(dateValue) {
 
 function getLicenseState(dateValue) {
   var today = new Date();
-  var dueDate = new Date(dateValue + "T23:59:59");
+  var dueDate = new Date(dateValue + "23:59:59");
   var dayDifference;
   today.setHours(0, 0, 0, 0);
   dayDifference = Math.ceil((dueDate.getTime() - today.getTime()) / 86400000);
@@ -555,7 +552,7 @@ function renderContractorsPage() {
   for (index = 0; index < approveButtons.length; index += 1) {
     approveButtons[index].addEventListener("click", function () {
       var representative = findRecord(nirmanData.contractorReps, "repId", this.getAttribute("data-id"));
-      if (representative && window.confirm("Approve " + getRepresentativeName(representative.repId) + " temporarily?")) {
+      if (representative && window.confirm("Approve " + getRepresentativeName(representative.repId) + "?")) {
         representative.approvalStatus = "Approved";
         renderContractorsPage();
         applyAdminFilter("contractorTable");
@@ -596,7 +593,7 @@ function initializeContractorForm() {
       showPageAlert("That Employee-Contractor supervision pair already exists.", "danger");
       return;
     }
-    if (!window.confirm("Create this supervision assignment temporarily?")) {
+    if (!window.confirm("Create this supervision assignment?")) {
       return;
     }
     nirmanData.supervisions.push({ employeeId: employeeId, contractorId: contractorId });
@@ -755,7 +752,7 @@ function initializeAllocationForm() {
       showPageAlert("This Booking-Allocation Process is already confirmed.", "danger");
       return;
     }
-    if (!window.confirm("Confirm this Booking-Allocation Process temporarily?")) {
+    if (!window.confirm("Confirm this Booking-Allocation Process?")) {
       return;
     }
     nirmanData.allocationConfirmations.push({ bookingId: bookingId, employeeId: employeeId });
@@ -855,7 +852,7 @@ function verifyAdminPayment(clientId, paymentId) {
   }
   employee = getAdminEmployee(payment.verifiedByEmployeeId);
   if (!employee) {
-    employee = getAdminEmployee("E002");
+    employee = getAdminEmployee("2");
   }
   if (!employee && nirmanData.employees.length > 0) {
     employee = nirmanData.employees[0];
@@ -864,7 +861,7 @@ function verifyAdminPayment(clientId, paymentId) {
     showPageAlert("No existing Employee is available to verify this payment.", "danger");
     return;
   }
-  if (!window.confirm("Verify " + clientId + " / " + paymentId + " as " + getEmployeeName(employee.employeeId) + " temporarily?")) {
+  if (!window.confirm("Verify " + clientId + " / " + paymentId + " as " + getEmployeeName(employee.employeeId) + "?")) {
     return;
   }
   payment.verifiedByEmployeeId = employee.employeeId;
@@ -987,7 +984,7 @@ function initializeComplaintForm() {
       showPageAlert("Choose Resolved, select an existing Employee, and enter at least 10 characters of resolution detail.", "danger");
       return;
     }
-    if (!window.confirm("Resolve " + complaintId + " temporarily?")) {
+    if (!window.confirm("Resolve " + complaintId + "?")) {
       return;
     }
     complaint.status = status;
@@ -1154,7 +1151,7 @@ function showTenderDetails(kind, firstId, secondId) {
     var contractor = representative ? getAdminContractor(representative.contractorId) : null;
     if (!bid) { return; }
     title = "Bid " + bid.tenderId + " / " + bid.bidId;
-    items = [["Composite bid key", bid.tenderId + " / " + bid.bidId], ["Representative", getRepresentativeName(bid.repId)],
+    items = [["Tender / Bid ID", bid.tenderId + " / " + bid.bidId], ["Representative", getRepresentativeName(bid.repId)],
       ["Contractor", contractor ? contractor.companyName : "Unknown contractor"], ["Amount", formatCurrency(bid.bidAmount)],
       ["Status", bid.bidStatus], ["Award", findAwardForBid(bid.tenderId, bid.bidId) ? findAwardForBid(bid.tenderId, bid.bidId).awardId : "Unawarded"]];
   } else {
@@ -1210,7 +1207,7 @@ function initializeTenderAwardForm() {
       return;
     }
     if (findAwardForBid(bid.tenderId, bid.bidId)) {
-      showPageAlert("That composite Tender/Bid already has an Award.", "danger");
+      showPageAlert("That tender bid already has an award.", "danger");
       return;
     }
     if (getAdminProject(projectId)) {
@@ -1221,7 +1218,7 @@ function initializeTenderAwardForm() {
       showPageAlert("That Award is already used by a Construction Project.", "danger");
       return;
     }
-    if (!window.confirm("Create Award " + awardId + " and its required Construction Project " + projectId + " temporarily?")) {
+    if (!window.confirm("Create Award " + awardId + " and its required Construction Project " + projectId + "?")) {
       return;
     }
     nirmanData.tenderAwards.push({ awardId: awardId, tenderId: bid.tenderId, bidId: bid.bidId,
