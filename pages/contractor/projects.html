@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="NIRMAN projects derived from the current representative's awarded bids.">
+    <title>Awarded Projects | NIRMAN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+  </head>
+  <body class="app-body" data-contractor-page="projects">
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+    <aside class="app-sidebar" id="appSidebar" aria-label="Contractor representative navigation">
+      <div class="sidebar-header">
+        <a class="brand-logo brand-logo-light" href="dashboard.html" aria-label="NIRMAN representative dashboard">
+          <span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span>
+        </a>
+        <p class="sidebar-role">Contractor Representative</p>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Workspace</div>
+        <a href="dashboard.html"><span class="nav-icon">OV</span>Dashboard</a>
+        <a href="profile.html"><span class="nav-icon">ME</span>My Profile</a>
+        <div class="nav-section-title">Procurement</div>
+        <a href="tenders.html"><span class="nav-icon">TN</span>Published Tenders</a>
+        <a href="bids.html"><span class="nav-icon">BD</span>My Bids</a>
+        <div class="nav-section-title">Delivery</div>
+        <a class="active" href="projects.html" aria-current="page"><span class="nav-icon">PR</span>Projects</a>
+        <a href="updates.html"><span class="nav-icon">UP</span>Progress Updates</a>
+        <div class="sidebar-footer">
+          <a href="../../index.html"><span class="nav-icon">EX</span>Sign Out</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+    <div class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open navigation"><span></span></button>
+          <div class="topbar-context">Representative workspace / <strong>Projects</strong></div>
+        </div>
+        <div class="topbar-right">
+          <a class="user-chip" href="profile.html" aria-label="Open representative profile">
+            <span class="user-avatar" data-current-rep-initials>--</span>
+            <span class="user-chip-name"><strong data-current-rep-name>Representative</strong><span data-current-rep-title>Account</span></span>
+          </a>
+        </div>
+      </header>
+
+      <main class="page-content" id="mainContent">
+        <div class="page-heading">
+          <div>
+            <div class="breadcrumb-line">Awarded delivery work</div>
+            <h1>Relevant projects</h1>
+            <p>Projects appear only when one of your bids matches an Award and that Award results in a Construction Project.</p>
+          </div>
+          <a class="btn btn-nirman" href="updates.html">Create progress update</a>
+        </div>
+
+        <div class="page-alert-holder" id="pageAlert" aria-live="polite"></div>
+
+        <div class="info-callout mb-4">Relationship path used here: Representative -> Tender Bid -> Tender Award -> Construction Project. No direct Contractor-to-Project link is assumed.</div>
+
+        <section class="row g-3 mb-4" aria-label="Project statistics">
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card"><span class="stat-label">Relevant projects</span><strong class="stat-value" id="projectRelevantCount">0</strong><span class="stat-note">Reached through awarded bids</span></div>
+          </div>
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card"><span class="stat-label">In progress</span><strong class="stat-value" id="projectActiveCount">0</strong><span class="stat-note">Current project status</span></div>
+          </div>
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card"><span class="stat-label">Derived overdue</span><strong class="stat-value" id="projectOverdueCount">0</strong><span class="stat-note">Calculated from deadline and status</span></div>
+          </div>
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card"><span class="stat-label">Average progress</span><strong class="stat-value" id="projectAverageProgress">0%</strong><span class="stat-note">Latest update per project</span></div>
+          </div>
+        </section>
+
+        <section class="data-card" aria-labelledby="projectTableHeading">
+          <div class="data-card-header">
+            <div><h2 id="projectTableHeading">Awarded project register</h2><p>Open details for the Area, selected bid, award, and full progress history</p></div>
+          </div>
+          <div class="filter-bar">
+            <label class="visually-hidden" for="projectSearch">Search projects</label>
+            <input class="form-control" id="projectSearch" type="search" placeholder="Search project, award, or area">
+            <label class="visually-hidden" for="projectStatusFilter">Filter project status</label>
+            <select class="form-select" id="projectStatusFilter"><option value="all">All statuses</option></select>
+            <label class="visually-hidden" for="projectOverdueFilter">Filter overdue state</label>
+            <select class="form-select" id="projectOverdueFilter">
+              <option value="all">All deadline states</option>
+              <option value="overdue">Overdue only</option>
+              <option value="on-schedule">Not overdue</option>
+            </select>
+            <span class="filter-count" id="projectResultCount">0 records</span>
+          </div>
+          <div class="table-responsive">
+            <table class="table" id="projectsTable" aria-label="Relevant construction projects">
+              <thead><tr><th>Project</th><th>Award path</th><th>Area</th><th>Deadline</th><th>Latest progress</th><th>Action</th></tr></thead>
+              <tbody id="projectTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-labelledby="projectDetailTitle" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="projectDetailTitle">Project details</h2>
+            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="projectDetailBody"></div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button>
+            <a class="btn btn-navy" id="projectUpdateLink" href="updates.html">Create update for this project</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/mock-data.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/contractor.js"></script>
+  </body>
+</html>

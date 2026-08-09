@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Separate NIRMAN administrator login.">
+    <title>Admin Login | NIRMAN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+  </head>
+  <body class="auth-page admin-auth">
+    <main class="auth-shell">
+      <section class="auth-showcase" aria-labelledby="adminWelcomeTitle">
+        <a class="brand-logo brand-logo-light" href="index.html">
+          <span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span>
+        </a>
+        <div class="auth-showcase-copy">
+          <span class="admin-auth-badge">Restricted interface</span>
+          <h1 id="adminWelcomeTitle">System oversight, clearly separated.</h1>
+          <p>The Admin workspace provides high-level frontend management views. Admin remains an application role and is not a database entity.</p>
+          <div class="auth-blueprint" aria-label="Admin management areas">
+            <div class="blueprint-cell"><strong>17</strong><span>ER entities represented</span></div>
+            <div class="blueprint-cell"><strong>08</strong><span>Management views</span></div>
+            <div class="blueprint-cell"><strong>01</strong><span>Access-control role</span></div>
+          </div>
+        </div>
+        <p class="auth-showcase-note mb-0">Frontend demonstration access only. Real authentication is not implemented.</p>
+      </section>
+
+      <section class="auth-form-panel">
+        <a class="auth-back-link" href="index.html"><span aria-hidden="true">&larr;</span> Back to public site</a>
+        <div class="auth-form-heading">
+          <span class="admin-auth-badge mb-3">Admin access</span>
+          <h2>Administrator login</h2>
+          <p>This sign-in is intentionally separate from ordinary user access.</p>
+        </div>
+
+        <div id="adminFeedback" aria-live="polite"></div>
+
+        <form id="adminLoginForm">
+          <div class="mb-3">
+            <label class="form-label" for="adminEmail">Admin email</label>
+            <input class="form-control" type="email" id="adminEmail" autocomplete="username" required placeholder="admin@nirman.demo">
+          </div>
+          <div class="mb-4">
+            <label class="form-label" for="adminPassword">Password</label>
+            <input class="form-control" type="password" id="adminPassword" autocomplete="current-password" required placeholder="Enter Admin password">
+          </div>
+          <button class="btn btn-nirman w-100" type="submit">Open Admin workspace</button>
+        </form>
+
+        <div class="demo-box">
+          <div class="demo-box-title">Demonstration Admin</div>
+          <button class="demo-account-button" type="button" data-demo-email="admin@nirman.demo" data-demo-password="admin123"><strong>Admin:</strong> admin@nirman.demo / admin123</button>
+        </div>
+
+        <p class="auth-switch">Not an administrator? <a href="login.html">Use general user login</a></p>
+      </section>
+    </main>
+
+    <script src="js/mock-data.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

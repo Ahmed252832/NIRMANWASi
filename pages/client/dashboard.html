@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="NIRMAN Client booking, allocation, payment, and support dashboard.">
+    <title>Client Dashboard | NIRMAN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+  </head>
+  <body class="app-body" data-client-page="dashboard">
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+    <aside class="app-sidebar" id="appSidebar" aria-label="Client navigation">
+      <div class="sidebar-header"><a class="brand-logo brand-logo-light" href="dashboard.html" aria-label="NIRMAN Client dashboard"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a><p class="sidebar-role">Client workspace</p></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Workspace</div><a class="active" aria-current="page" href="dashboard.html"><span class="nav-icon">OV</span>Dashboard</a><a href="profile.html"><span class="nav-icon">ME</span>My Profile</a>
+        <div class="nav-section-title">Browse</div><a href="projects.html"><span class="nav-icon">PR</span>Projects</a><a href="properties.html"><span class="nav-icon">UN</span>Properties</a>
+        <div class="nav-section-title">My journey</div><a href="bookings.html"><span class="nav-icon">BK</span>Bookings</a><a href="payments.html"><span class="nav-icon">PY</span>Payments</a><a href="complaints.html"><span class="nav-icon">CP</span>Complaints</a>
+        <div class="sidebar-footer"><a href="../../index.html"><span class="nav-icon">EX</span>Sign Out</a></div>
+      </nav>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+    <div class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left"><button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open Client navigation"><span></span></button><div class="topbar-context">Client workspace / <strong>Dashboard</strong></div></div>
+        <div class="topbar-right"><a class="user-chip" href="profile.html" aria-label="Open Client profile"><span class="user-avatar" data-client-initials>SK</span><span class="user-chip-name"><strong data-client-name>Samira Khan</strong><span data-client-id>C001</span></span></a></div>
+      </header>
+      <main class="page-content" id="mainContent">
+        <div class="page-heading"><div><div class="breadcrumb-line">Client overview</div><h1>Welcome, Samira</h1><p>Track your reserved property, allocation confirmation, financial commitments, installments, and support requests.</p></div><a class="btn btn-nirman" href="properties.html">Find a property</a></div>
+        <div class="page-alert-holder" id="pageAlert" aria-live="polite"></div>
+        <nav class="flow-strip mb-4" aria-label="Client property journey">
+          <a class="flow-step active" href="projects.html"><span class="flow-number">1</span>Projects</a><a class="flow-step active" href="properties.html"><span class="flow-number">2</span>Units</a><a class="flow-step" href="properties.html"><span class="flow-number">3</span>Unit Details</a><a class="flow-step" href="bookings.html"><span class="flow-number">4</span>Booking</a><a class="flow-step" href="bookings.html#allocationStatus"><span class="flow-number">5</span>Allocation Status</a><a class="flow-step" href="payments.html"><span class="flow-number">6</span>Payments / Installments</a>
+        </nav>
+        <section class="row g-3 mb-4" aria-label="Client record summary">
+          <div class="col-sm-6 col-xl-3"><div class="stat-card"><span class="stat-label">My bookings</span><strong class="stat-value" id="dashboardBookingCount">0</strong><span class="stat-note" id="dashboardAllocationNote">Allocation state</span></div></div>
+          <div class="col-sm-6 col-xl-3"><div class="stat-card"><span class="stat-label">Payments recorded</span><strong class="stat-value" id="dashboardPaymentCount">0</strong><span class="stat-note" id="dashboardPaymentNote">Payment status</span></div></div>
+          <div class="col-sm-6 col-xl-3"><div class="stat-card"><span class="stat-label">Installments</span><strong class="stat-value" id="dashboardInstallmentCount">0</strong><span class="stat-note" id="dashboardInstallmentNote">Upcoming schedule</span></div></div>
+          <div class="col-sm-6 col-xl-3"><div class="stat-card"><span class="stat-label">Open complaints</span><strong class="stat-value" id="dashboardComplaintCount">0</strong><span class="stat-note">Awaiting an Employee resolution</span></div></div>
+        </section>
+        <section class="row g-4 mb-4">
+          <div class="col-xl-7"><article class="data-card"><div class="data-card-header"><div><h2>Booking & allocation</h2><p>Your Booking-Allocation Process and confirmation state</p></div><a class="mini-action" href="bookings.html">Manage bookings</a></div><div class="data-card-body" id="dashboardBookingSummary"></div></article></div>
+          <div class="col-xl-5"><article class="data-card"><div class="data-card-header"><div><h2>Next actions</h2><p>Useful steps based on current records</p></div></div><div class="data-card-body"><ul class="activity-list" id="dashboardNextActions"></ul></div></article></div>
+        </section>
+        <section class="row g-4">
+          <div class="col-xl-7"><article class="data-card"><div class="data-card-header"><div><h2>Payments & installments</h2><p>Amounts due and current verification states</p></div><a class="mini-action" href="payments.html">Open finance</a></div><div class="data-card-body" id="dashboardFinanceSummary"></div></article></div>
+          <div class="col-xl-5"><article class="data-card"><div class="data-card-header"><div><h2>Complaint status</h2><p>Your latest filed support requests</p></div><a class="mini-action" href="complaints.html">File complaint</a></div><div class="data-card-body" id="dashboardComplaintSummary"></div></article></div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/mock-data.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/client.js"></script>
+  </body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="NIRMAN Admin booking-allocation process management.">
+    <title>Booking Allocations | NIRMAN Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+  </head>
+  <body class="app-body" data-admin-page="allocations">
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+    <aside class="app-sidebar" id="appSidebar" aria-label="Admin navigation">
+      <div class="sidebar-header"><a class="brand-logo brand-logo-light" href="dashboard.html" aria-label="NIRMAN Admin home"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a><p class="sidebar-role">Admin access role</p></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Overview</div><a href="dashboard.html"><span class="nav-icon">DB</span>Dashboard</a>
+        <div class="nav-section-title">Management</div><a href="people.html"><span class="nav-icon">PE</span>People & Departments</a><a href="contractors.html"><span class="nav-icon">CO</span>Contractors</a><a href="portfolio.html"><span class="nav-icon">PF</span>Project Portfolio</a>
+        <div class="nav-section-title">Operations</div><a class="active" aria-current="page" href="allocations.html"><span class="nav-icon">AL</span>Allocations</a><a href="finance.html"><span class="nav-icon">FN</span>Finance</a><a href="complaints.html"><span class="nav-icon">CP</span>Complaints</a><a href="tenders.html"><span class="nav-icon">TN</span>Tenders & Awards</a>
+        <div class="sidebar-footer"><a href="../../index.html"><span class="nav-icon">EX</span>Sign out</a></div>
+      </nav>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+    <div class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left"><button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open Admin navigation"><span></span></button><div class="topbar-context"><strong>Admin workspace</strong> / Allocations</div></div>
+        <div class="topbar-right"><div class="user-chip" aria-label="Signed in as System Administrator, Admin access role"><span class="user-avatar">SA</span><span class="user-chip-name"><strong>System Administrator</strong><span>Admin access role</span></span></div></div>
+      </header>
+
+      <main class="page-content" id="mainContent">
+        <div class="page-heading"><div><div class="breadcrumb-line">Booking operations</div><h1>Booking allocations</h1><p>Review Booking, reserved Unit, Client, and Project together as the Booking-Allocation Process aggregation, then record employee confirmation.</p></div></div>
+        <div class="page-alert-holder" id="pageAlert" aria-live="polite"></div>
+
+        <div class="flow-strip mb-4" aria-label="Booking allocation process">
+          <div class="flow-step active"><span class="flow-number">1</span>Client booking</div>
+          <div class="flow-step active"><span class="flow-number">2</span>Reserves one unit</div>
+          <div class="flow-step active"><span class="flow-number">3</span>Project aggregation</div>
+          <div class="flow-step"><span class="flow-number">4</span>Employee confirmation</div>
+          <div class="flow-step"><span class="flow-number">5</span>Related payments</div>
+        </div>
+
+        <section class="row g-3 mb-4" aria-label="Allocation summary">
+          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Bookings</span><strong class="stat-value" id="allocationBookingCount">0</strong><span class="stat-note">One reserved unit each</span></div></div>
+          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Confirmed</span><strong class="stat-value" id="allocationConfirmedCount">0</strong><span class="stat-note">Employee confirmation exists</span></div></div>
+          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Pending</span><strong class="stat-value" id="allocationPendingCount">0</strong><span class="stat-note">Needs employee confirmation</span></div></div>
+          <div class="col-6 col-xl-3"><div class="stat-card"><span class="stat-label">Related payments</span><strong class="stat-value" id="allocationPaymentCount">0</strong><span class="stat-note">Pending against aggregations</span></div></div>
+        </section>
+
+        <section class="data-card">
+          <div class="data-card-header"><div><h2>Booking-Allocation Processes</h2><p>Each row keeps Booking, Unit, Project, Client, and confirmation context together</p></div></div>
+          <div class="info-callout warning-callout m-3 mb-0">Confirmation actions are temporary frontend changes. They update in-memory data and disappear after refresh.</div>
+          <div class="filter-bar admin-filter-group" data-admin-table="allocationTable">
+            <label class="visually-hidden" for="allocationSearch">Search allocations</label><input class="form-control admin-search" id="allocationSearch" type="search" placeholder="Search booking, client, unit, or project">
+            <label class="visually-hidden" for="allocationStatusFilter">Filter confirmation status</label><select class="form-select admin-status" id="allocationStatusFilter"><option value="all">All confirmation states</option><option value="Pending confirmation">Pending confirmation</option><option value="Confirmed">Confirmed</option></select>
+            <span class="filter-count" data-admin-count="allocationTable">0 records</span>
+          </div>
+          <div class="table-responsive"><table class="table" id="allocationTable"><thead><tr><th>Booking</th><th>Client</th><th>Reserved unit</th><th>Project aggregation</th><th>Booking details</th><th>Employee confirmation</th><th>Action</th></tr></thead><tbody id="allocationTableBody"></tbody></table></div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal fade" id="allocationModal" tabindex="-1" aria-labelledby="allocationModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+        <form id="allocationForm">
+          <div class="modal-header"><h2 class="modal-title" id="allocationModalTitle">Confirm allocation</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+          <div class="modal-body">
+            <input type="hidden" id="allocationBookingId">
+            <div class="info-callout mb-3" id="allocationSummary">Select a pending allocation.</div>
+            <label class="form-label" for="allocationEmployee">Confirming employee</label>
+            <select class="form-select" id="allocationEmployee" required><option value="">Choose an employee</option></select>
+            <p class="form-help">The selected Employee confirms this existing Booking-Allocation Process.</p>
+          </div>
+          <div class="modal-footer"><button class="btn btn-outline-navy" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-nirman" type="submit">Confirm temporarily</button></div>
+        </form>
+      </div></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/mock-data.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/admin.js"></script>
+  </body>
+</html>

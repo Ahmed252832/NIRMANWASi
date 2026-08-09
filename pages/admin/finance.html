@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="NIRMAN Admin payment verification and installment management.">
+    <title>Finance | NIRMAN Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+  </head>
+  <body class="app-body" data-admin-page="finance">
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+    <aside class="app-sidebar" id="appSidebar" aria-label="Admin navigation">
+      <div class="sidebar-header"><a class="brand-logo brand-logo-light" href="dashboard.html" aria-label="NIRMAN Admin home"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a><p class="sidebar-role">Admin access role</p></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Overview</div><a href="dashboard.html"><span class="nav-icon">DB</span>Dashboard</a>
+        <div class="nav-section-title">Management</div><a href="people.html"><span class="nav-icon">PE</span>People & Departments</a><a href="contractors.html"><span class="nav-icon">CO</span>Contractors</a><a href="portfolio.html"><span class="nav-icon">PF</span>Project Portfolio</a>
+        <div class="nav-section-title">Operations</div><a href="allocations.html"><span class="nav-icon">AL</span>Allocations</a><a class="active" aria-current="page" href="finance.html"><span class="nav-icon">FN</span>Finance</a><a href="complaints.html"><span class="nav-icon">CP</span>Complaints</a><a href="tenders.html"><span class="nav-icon">TN</span>Tenders & Awards</a>
+        <div class="sidebar-footer"><a href="../../index.html"><span class="nav-icon">EX</span>Sign out</a></div>
+      </nav>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+    <div class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left"><button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open Admin navigation"><span></span></button><div class="topbar-context"><strong>Admin workspace</strong> / Finance</div></div>
+        <div class="topbar-right"><div class="user-chip" aria-label="Signed in as System Administrator, Admin access role"><span class="user-avatar">SA</span><span class="user-chip-name"><strong>System Administrator</strong><span>Admin access role</span></span></div></div>
+      </header>
+
+      <main class="page-content" id="mainContent">
+        <div class="page-heading"><div><div class="breadcrumb-line">Financial operations</div><h1>Payments & installments</h1><p>Follow each weak Payment through its Client and Booking-Allocation Process, review its verifier, and preserve composite installment ownership.</p></div></div>
+        <div class="page-alert-holder" id="pageAlert" aria-live="polite"></div>
+
+        <section class="row g-3 mb-4" aria-label="Finance summary">
+          <div class="col-sm-6 col-xl-3"><div class="stat-card"><span class="stat-label">Payments</span><strong class="stat-value" id="financePaymentCount">0</strong><span class="stat-note">Client-owned weak records</span></div></div>
+          <div class="col-sm-6 col-xl-3"><div class="stat-card"><span class="stat-label">Recorded amount</span><strong class="stat-value fs-4" id="financeTotalAmount">BDT 0</strong><span class="stat-note">Across current payments</span></div></div>
+          <div class="col-sm-6 col-xl-3"><div class="stat-card"><span class="stat-label">Pending verification</span><strong class="stat-value" id="financePendingCount">0</strong><span class="stat-note">Temporary action available</span></div></div>
+          <div class="col-sm-6 col-xl-3"><div class="stat-card"><span class="stat-label">Installments</span><strong class="stat-value" id="financeInstallmentCount">0</strong><span class="stat-note">Payment-owned weak records</span></div></div>
+        </section>
+
+        <section class="data-card">
+          <div class="data-card-header"><div><h2>Finance records</h2><p>Payment verification and installment ownership views</p></div></div>
+          <div class="panel-tabs" role="tablist" aria-label="Finance views"><button class="active" type="button" data-tab-target="paymentPanel">Payments</button><button type="button" data-tab-target="installmentPanel">Installments</button></div>
+
+          <div class="tab-panel" id="paymentPanel">
+            <div class="info-callout warning-callout m-3 mb-0">Verification updates the selected payment in page memory only and disappears after refresh.</div>
+            <div class="filter-bar admin-filter-group" data-admin-table="paymentTable">
+              <label class="visually-hidden" for="paymentSearch">Search payments</label><input class="form-control admin-search" id="paymentSearch" type="search" placeholder="Search payment, client, booking, or verifier">
+              <label class="visually-hidden" for="paymentStatusFilter">Filter payment status</label><select class="form-select admin-status" id="paymentStatusFilter"><option value="all">All payment statuses</option><option value="Pending">Pending</option><option value="Verified">Verified</option></select>
+              <span class="filter-count" data-admin-count="paymentTable">0 records</span>
+            </div>
+            <div class="table-responsive"><table class="table" id="paymentTable"><thead><tr><th>Composite payment key</th><th>Client</th><th>Booking</th><th>Amount & method</th><th>Due</th><th>Verifier</th><th>Status</th><th>Action</th></tr></thead><tbody id="paymentTableBody"></tbody></table></div>
+          </div>
+
+          <div class="tab-panel" id="installmentPanel" hidden>
+            <div class="filter-bar admin-filter-group" data-admin-table="installmentTable">
+              <label class="visually-hidden" for="installmentSearch">Search installments</label><input class="form-control admin-search" id="installmentSearch" type="search" placeholder="Search owner key, client, or status">
+              <label class="visually-hidden" for="installmentStatusFilter">Filter installment status</label><select class="form-select admin-status" id="installmentStatusFilter"><option value="all">All installment statuses</option><option value="Pending">Pending</option><option value="Upcoming">Upcoming</option><option value="Expired">Expired</option><option value="Paid">Paid</option></select>
+              <span class="filter-count" data-admin-count="installmentTable">0 records</span>
+            </div>
+            <div class="table-responsive"><table class="table" id="installmentTable"><thead><tr><th>Composite installment key</th><th>Payment owner</th><th>Client</th><th>Amount</th><th>Due date</th><th>Status</th><th>Expired at</th></tr></thead><tbody id="installmentTableBody"></tbody></table></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal fade" id="installmentDetailModal" tabindex="-1" aria-labelledby="installmentDetailTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h2 class="modal-title" id="installmentDetailTitle">Payment installments</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body" id="installmentDetailBody"></div><div class="modal-footer"><button class="btn btn-outline-navy" type="button" data-bs-dismiss="modal">Close</button></div></div></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/mock-data.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/admin.js"></script>
+  </body>
+</html>
