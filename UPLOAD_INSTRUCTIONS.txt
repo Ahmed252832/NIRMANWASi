@@ -1,0 +1,24 @@
+NIRMAN BACKEND-READY FRONTEND
+
+Replace:
+  frontend/js/common.js
+(or js/common.js in the standalone repo)
+
+with:
+  js/common.js from this package.
+
+BACKEND_API_CONTRACT.md is documentation for the backend team.
+
+Current behavior:
+- GitHub Pages / no API configured -> demo data still works.
+- Backend configured -> login goes to POST /auth/login.
+- Logged-in role/person/roleId are saved in session.
+- Role pages fetch GET /bootstrap.
+- Real backend data replaces demo nirmanData.
+- Client/Employee/Contractor dashboards render the logged-in user's real records.
+- Backend can use bearer tokens or HttpOnly cookies.
+
+For a separate backend host, open login once with:
+  login.html?api=https://YOUR-BACKEND/api
+
+For a same-origin deployment, /api is detected automatically.
