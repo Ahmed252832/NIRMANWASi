@@ -39,40 +39,51 @@ function renderFeaturedProjects() {
     return;
   }
 
-  var projectHtml = "";
+  fetch("get_featured_projects.php")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (projects) {
+      var projectHtml = "";
 
-  for (var index = 0; index < nirmanData.projects.length; index += 1) {
-    var project = nirmanData.projects[index];
-    var area = findRecord(nirmanData.areas, "areaId", project.areaId);
-    var progress = getLatestProjectProgress(project.projectId);
-    var displayStatus = isProjectOverdue(project) ? "Overdue" : project.status;
+      for (var index = 0; index < projects.length; index += 1) {
+        var project = projects[index];
+        var progress = project.PROGRESS !== null ? project.PROGRESS : 0;
+        var deadlineDate = new Date(project.DEADLINE);
+        var isOverdue = deadlineDate < new Date() && project.STATUS !== "Completed";
+        var displayStatus = isOverdue ? "Overdue" : project.STATUS;
 
-    projectHtml +=
-      '<div class="col-lg-6">' +
-        '<article class="project-card">' +
-          '<div class="project-card-top">' +
-            '<span class="project-number">Project file / ' + escapeHtml(project.projectId) + "</span>" +
-            '<div class="project-silhouette" aria-hidden="true"></div>' +
-          "</div>" +
-          '<div class="project-card-body">' +
-            '<div class="d-flex justify-content-between gap-3 align-items-start mb-3">' +
-              "<div>" +
-                "<h3>" + escapeHtml(project.projectName) + "</h3>" +
-                '<div class="meta-row"><span>' + escapeHtml(area ? area.roadSector : "Area unavailable") + "</span>" +
-                "<span>Deadline " + formatDate(project.deadline) + "</span></div>" +
+        projectHtml +=
+          '<div class="col-lg-6">' +
+            '<article class="project-card">' +
+              '<div class="project-card-top">' +
+                '<span class="project-number">Project file / ' + escapeHtml(project.PROJECT_ID) + "</span>" +
+                '<div class="project-silhouette" aria-hidden="true"></div>' +
               "</div>" +
-              createStatusBadge(displayStatus) +
-            "</div>" +
-            '<div class="d-flex justify-content-between mb-2 small fw-bold"><span>Recorded progress</span><span>' + progress + "%</span></div>" +
-            '<div class="progress progress-thin" role="progressbar" aria-label="Project progress" aria-valuenow="' + progress + '" aria-valuemin="0" aria-valuemax="100">' +
-              '<div class="progress-bar" style="width: ' + progress + '%"></div>' +
-            "</div>" +
-          "</div>" +
-        "</article>" +
-      "</div>";
-  }
+              '<div class="project-card-body">' +
+                '<div class="d-flex justify-content-between gap-3 align-items-start mb-3">' +
+                  "<div>" +
+                    "<h3>" + escapeHtml(project.PROJECT_NAME) + "</h3>" +
+                    '<div class="meta-row"><span>' + escapeHtml(project.ROAD_SECTOR || "Area unavailable") + "</span>" +
+                    "<span>Deadline " + formatDate(project.DEADLINE) + "</span></div>" +
+                  "</div>" +
+                  createStatusBadge(displayStatus) +
+                "</div>" +
+                '<div class="d-flex justify-content-between mb-2 small fw-bold"><span>Recorded progress</span><span>' + progress + "%</span></div>" +
+                '<div class="progress progress-thin" role="progressbar" aria-label="Project progress" aria-valuenow="' + progress + '" aria-valuemin="0" aria-valuemax="100">' +
+                  '<div class="progress-bar" style="width: ' + progress + '%"></div>' +
+                "</div>" +
+              "</div>" +
+            "</article>" +
+          "</div>";
+      }
 
-  projectContainer.innerHTML = projectHtml;
+      projectContainer.innerHTML = projectHtml;
+    })
+    .catch(function (error) {
+      console.error("Failed to load projects:", error);
+      projectContainer.innerHTML = "<p>Could not load projects.</p>";
+    });
 }
 
 function renderAvailableUnitPreview() {

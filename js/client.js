@@ -1,5 +1,5 @@
 
-var currentClientId = "1";
+var currentClientId = null;
 
 function clientSetText(elementId, value) {
   var element = document.getElementById(elementId);
@@ -369,42 +369,40 @@ function clientRenderDashboard() {
 }
 
 function clientRenderProfile() {
-  var client = clientGetCurrentClient();
-  var person = clientGetCurrentPerson();
-  if (!client || !person) {
-    showPageAlert("The fixed 1 Client profile could not be found.", "danger");
-    return;
-  }
-  var fullName = person.firstName + " " + person.lastName;
-  var header = document.getElementById("profileHeader");
-  if (header) {
-    header.innerHTML = '<span class="profile-avatar">' + escapeHtml(clientGetInitials(person)) +
-      "</span><div><h2>" + escapeHtml(fullName) + "</h2><p>Client account</p></div>";
-  }
-  var personDetails = document.getElementById("profilePersonDetails");
-  if (personDetails) {
-    personDetails.innerHTML = clientDetailItem("First name", person.firstName) + clientDetailItem("Last name", person.lastName) +
-      clientDetailItem("Primary contact", person.contactNo) + clientDetailItem("Email", person.email);
-  }
-  var clientDetails = document.getElementById("profileClientDetails");
-  if (clientDetails) {
-    clientDetails.innerHTML = clientDetailItem("NID", client.nid);
-  }
-  var contacts = [];
-  for (var index = 0; index < nirmanData.clientContacts.length; index += 1) {
-    if (nirmanData.clientContacts[index].clientId === currentClientId) {
-      contacts.push(nirmanData.clientContacts[index].contactNo);
-    }
-  }
-  var contactHolder = document.getElementById("profileContacts");
-  if (contactHolder) {
-    var html = '<ul class="detail-list">';
-    for (index = 0; index < contacts.length; index += 1) {
-      html += clientDetailItem("Client contact " + (index + 1), contacts[index]);
-    }
-    html += "</ul>";
-    contactHolder.innerHTML = contacts.length ? html : clientEmptyState("CN", "No Client contacts", "No multivalued contact numbers are recorded.");
-  }
+  fetch("../../get_client_profile.php")
+    .then(function (r) { return r.json(); })
+    .then(function (result) {
+      if (!result.found) {
+        showPageAlert("The Client profile could not be found.", "danger");
+        return;
+      }
+      var c = result.client;
+      var fullName = c.FIRST_NAME + " " + c.LAST_NAME;
+      var initials = (c.FIRST_NAME.charAt(0) + c.LAST_NAME.charAt(0)).toUpperCase();
+      var header = document.getElementById("profileHeader");
+      if (header) {
+        header.innerHTML = '<span class="profile-avatar">' + escapeHtml(initials) +
+          "</span><div><h2>" + escapeHtml(fullName) + "</h2><p>Client account</p></div>";
+      }
+      var personDetails = document.getElementById("profilePersonDetails");
+      if (personDetails) {
+        personDetails.innerHTML = clientDetailItem("First name", c.FIRST_NAME) + clientDetailItem("Last name", c.LAST_NAME) +
+          clientDetailItem("Primary contact", c.CONTACT_NO) + clientDetailItem("Email", c.EMAIL);
+      }
+      var clientDetails = document.getElementById("profileClientDetails");
+      if (clientDetails) {
+        clientDetails.innerHTML = clientDetailItem("NID", c.NID);
+      }
+      var contactHolder = document.getElementById("profileContacts");
+      if (contactHolder) {
+        var html = '<ul class="detail-list">';
+        for (var index = 0; index < result.contacts.length; index += 1) {
+          html += clientDetailItem("Client contact " + (index + 1), result.contacts[index]);
+        }
+        html += "</ul>";
+        contactHolder.innerHTML = result.contacts.length ? html : clientEmptyState("CN", "No Client contacts", "No multivalued contact numbers are recorded.");
+      }
+    });
 }
 
 function clientRenderProjects() {
@@ -619,36 +617,36 @@ function clientInitializeProperties() {
 function clientPopulateBookingChoices(preselectedUnitId) {
   var projectSelect = document.getElementById("bookingProject");
   var unitSelect = document.getElementById("bookingUnit");
+
   if (projectSelect) {
-    projectSelect.innerHTML = '<option value="">Choose an existing Project</option>';
-    for (var projectIndex = 0; projectIndex < nirmanData.projects.length; projectIndex += 1) {
-      var project = nirmanData.projects[projectIndex];
-      projectSelect.innerHTML += '<option value="' + escapeHtml(project.projectId) + '">' +
-        escapeHtml(project.projectId + " · " + project.projectName) + "</option>";
-    }
+    fetch("../../get_projects_list.php")
+      .then(function (r) { return r.json(); })
+      .then(function (projects) {
+        var html = '<option value="">Choose an existing Project</option>';
+        for (var i = 0; i < projects.length; i += 1) {
+          html += '<option value="' + escapeHtml(projects[i].PROJECT_ID) + '">' +
+            escapeHtml(projects[i].PROJECT_ID + " · " + projects[i].PROJECT_NAME) + "</option>";
+        }
+        projectSelect.innerHTML = html;
+      });
   }
+
   if (unitSelect) {
-    var unitHtml = '<option value="">Choose an available Unit</option>';
-    var availableCount = 0;
-    for (var unitIndex = 0; unitIndex < nirmanData.units.length; unitIndex += 1) {
-      var unit = nirmanData.units[unitIndex];
-      if (isUnitAvailableForBooking(unit)) {
-        availableCount += 1;
-        unitHtml += '<option value="' + escapeHtml(unit.unitId) + '">' +
-          escapeHtml(unit.unitId + " · " + unit.unitNo + " · " + unit.unitType) + "</option>";
-      }
-    }
-    unitSelect.innerHTML = unitHtml;
-    unitSelect.disabled = availableCount === 0;
-    clientSetText("bookingUnitHelp", availableCount ? availableCount + " truly available Unit(s); existing Bookings are excluded." : "No Unit currently passes the availability rule.");
-    if (preselectedUnitId) {
-      var preselectedUnit = clientGetUnit(preselectedUnitId);
-      if (preselectedUnit && isUnitAvailableForBooking(preselectedUnit)) {
-        unitSelect.value = preselectedUnitId;
-      } else {
-        showPageAlert("The requested Unit is missing or no longer truly available. Choose another Unit.", "warning");
-      }
-    }
+    fetch("../../get_available_units.php")
+      .then(function (r) { return r.json(); })
+      .then(function (units) {
+        var html = '<option value="">Choose an available Unit</option>';
+        for (var i = 0; i < units.length; i += 1) {
+          html += '<option value="' + escapeHtml(units[i].UNIT_ID) + '">' +
+            escapeHtml(units[i].UNIT_ID + " · " + units[i].UNIT_NO + " · " + units[i].UNIT_TYPE) + "</option>";
+        }
+        unitSelect.innerHTML = html;
+        unitSelect.disabled = units.length === 0;
+        clientSetText("bookingUnitHelp", units.length ? units.length + " available unit(s)." : "No unit currently available.");
+        if (preselectedUnitId) {
+          unitSelect.value = preselectedUnitId;
+        }
+      });
   }
 }
 
@@ -714,56 +712,38 @@ function clientOpenBooking(bookingId) {
 function clientSubmitBooking(event) {
   event.preventDefault();
   var form = event.currentTarget;
-  var bookingNumber = nirmanData.bookings.length + 1;
-  var bookingId = String(bookingNumber);
-  while (clientIdExists(nirmanData.bookings, "bookingId", bookingId)) {
-    bookingNumber += 1;
-    bookingId = String(bookingNumber);
-  }
   var projectId = document.getElementById("bookingProject").value;
   var unitId = document.getElementById("bookingUnit").value;
   var bookingDate = document.getElementById("bookingDate").value;
-  var amountText = document.getElementById("bookingDueAmount").value;
-  var dueAmount = Number(amountText);
-  var project = clientGetProject(projectId);
-  var unit = clientGetUnit(unitId);
-  if (!project) {
-    showPageAlert("Choose an existing Project.", "danger");
+  var dueAmount = document.getElementById("bookingDueAmount").value;
+
+  if (!projectId || !unitId || !clientIsValidDate(bookingDate) || !dueAmount || Number(dueAmount) <= 0) {
+    showPageAlert("Please fill in all booking fields with valid values.", "danger");
     return;
   }
-  
-  if (!unit || !isUnitAvailableForBooking(unit)) {
-    clientPopulateBookingChoices("");
-    showPageAlert("That Unit is no longer truly available. The choices were refreshed.", "danger");
-    return;
-  }
-  if (!clientIsValidDate(bookingDate)) {
-    showPageAlert("Choose a valid Booking date.", "danger");
-    return;
-  }
-  if (!amountText || !Number.isFinite(dueAmount) || dueAmount <= 0) {
-    showPageAlert("Enter a valid Due amount greater than zero.", "danger");
-    return;
-  }
-  if (!window.confirm("Create Booking " + bookingId + " for Unit " + unit.unitNo + " and Project " + project.projectName + "?")) {
-    return;
-  }
-  nirmanData.bookings.push({
-    bookingId: bookingId,
-    clientId: currentClientId,
-    unitId: unit.unitId,
-    projectId: project.projectId,
-    bookingStatus: "Pending",
-    bookingDate: bookingDate,
-    dueAmount: dueAmount
-  });
-  unit.status = "Reserved";
-  form.reset();
-  document.getElementById("bookingStatus").value = "Pending";
-  document.getElementById("bookingDate").value = clientGetToday();
-  clientPopulateBookingChoices("");
-  clientRenderBookings();
-  showPageAlert("Booking created successfully.", "success");
+
+  var formData = new FormData();
+  formData.append("projectId", projectId);
+  formData.append("unitId", unitId);
+  formData.append("bookingDate", bookingDate);
+  formData.append("dueAmount", dueAmount);
+
+  fetch("../../book_unit.php", { method: "POST", body: formData })
+    .then(function (response) { return response.json(); })
+    .then(function (result) {
+      if (result.success) {
+        showPageAlert(result.message, "success");
+        form.reset();
+        document.getElementById("bookingDate").value = clientGetToday();
+        clientPopulateBookingChoices("");
+      } else {
+        showPageAlert(result.message, "danger");
+      }
+    })
+    .catch(function (error) {
+      showPageAlert("Something went wrong. Please try again.", "danger");
+      console.error(error);
+    });
 }
 
 function clientInitializeBookings() {
@@ -791,16 +771,17 @@ function clientPopulatePaymentBookings() {
   if (!select) {
     return;
   }
-  var bookings = clientGetOwnBookings();
-  var html = '<option value="">Choose one of my Bookings</option>';
-  for (var index = 0; index < bookings.length; index += 1) {
-    var unit = clientGetUnit(bookings[index].unitId);
-    html += '<option value="' + escapeHtml(bookings[index].bookingId) + '">' +
-      escapeHtml(bookings[index].bookingId + " · " + (unit ? unit.unitNo : bookings[index].unitId) +
-        " · due " + formatCurrency(bookings[index].dueAmount)) + "</option>";
-  }
-  select.innerHTML = html;
-  select.disabled = bookings.length === 0;
+  fetch("../../get_my_bookings.php")
+    .then(function (r) { return r.json(); })
+    .then(function (bookings) {
+      var html = '<option value="">Choose one of my Bookings</option>';
+      for (var i = 0; i < bookings.length; i += 1) {
+        html += '<option value="' + escapeHtml(bookings[i].BOOKING_ID) + '">' +
+          escapeHtml(bookings[i].BOOKING_ID + " · " + bookings[i].UNIT_NO + " · due " + bookings[i].DUE_AMOUNT) + "</option>";
+      }
+      select.innerHTML = html;
+      select.disabled = bookings.length === 0;
+    });
 }
 
 function clientRenderPayments() {
@@ -885,63 +866,37 @@ function clientOpenPayment(paymentId) {
 function clientSubmitPayment(event) {
   event.preventDefault();
   var form = event.currentTarget;
-  var paymentId = document.getElementById("paymentId").value.trim();
   var bookingId = document.getElementById("paymentBooking").value;
   var method = document.getElementById("paymentMethod").value;
-  var amountText = document.getElementById("paymentAmount").value;
-  var amount = Number(amountText);
+  var amount = document.getElementById("paymentAmount").value;
   var paymentDue = document.getElementById("paymentDue").value;
-  var booking = clientGetBooking(bookingId);
-  var verifier = findRecord(nirmanData.employees, "employeeId", "2");
-  if (!clientIsValidId(paymentId)) {
-    showPageAlert("Enter a Payment ID using only letters, numbers, and hyphens.", "danger");
+
+  if (!bookingId || !method || !amount || Number(amount) <= 0 || !clientIsValidDate(paymentDue)) {
+    showPageAlert("Please fill in all payment fields with valid values.", "danger");
     return;
   }
-  var ownPayments = clientGetOwnPayments();
-  if (clientIdExists(ownPayments, "paymentId", paymentId)) {
-    showPageAlert("That Payment ID already exists within Client 1.", "danger");
-    return;
-  }
-  if (!booking || booking.clientId !== currentClientId) {
-    showPageAlert("Choose one of 1's existing Bookings.", "danger");
-    return;
-  }
-  if (["Bank Transfer", "Card", "Cash", "Installment Plan"].indexOf(method) === -1) {
-    showPageAlert("Choose a listed Payment method.", "danger");
-    return;
-  }
-  if (!amountText || !Number.isFinite(amount) || amount <= 0) {
-    showPageAlert("Enter a valid Payment amount greater than zero.", "danger");
-    return;
-  }
-  if (!clientIsValidDate(paymentDue)) {
-    showPageAlert("Choose a valid Payment due date.", "danger");
-    return;
-  }
-  if (!verifier) {
-    showPageAlert("The configured finance Employee 2 is unavailable, so this Payment cannot be associated safely.", "danger");
-    return;
-  }
-  if (!window.confirm("Submit Payment " + currentClientId + " / " + paymentId + " for " + formatCurrency(amount) + "?")) {
-    return;
-  }
-  nirmanData.payments.push({
-    clientId: currentClientId,
-    paymentId: paymentId,
-    bookingId: booking.bookingId,
-    verifiedByEmployeeId: verifier.employeeId,
-    paymentStatus: "Pending",
-    verifiedAt: "",
-    paymentMethod: method,
-    amount: amount,
-    paymentDue: paymentDue
-  });
-  form.reset();
-  clientHideModal("makePaymentModal");
-  clientRenderPayments();
-  clientApplyTableFilter("paymentTable");
-  clientApplyTableFilter("installmentTable");
-  showPageAlert("Payment submitted successfully.", "success");
+
+  var formData = new FormData();
+  formData.append("bookingId", bookingId);
+  formData.append("method", method);
+  formData.append("amount", amount);
+  formData.append("paymentDue", paymentDue);
+
+  fetch("../../make_payment.php", { method: "POST", body: formData })
+    .then(function (response) { return response.json(); })
+    .then(function (result) {
+      if (result.success) {
+        showPageAlert(result.message, "success");
+        form.reset();
+        clientHideModal("makePaymentModal");
+      } else {
+        showPageAlert(result.message, "danger");
+      }
+    })
+    .catch(function (error) {
+      showPageAlert("Something went wrong. Please try again.", "danger");
+      console.error(error);
+    });
 }
 
 function clientInitializePayments() {
@@ -1012,47 +967,33 @@ function clientOpenComplaint(complaintId) {
 function clientSubmitComplaint(event) {
   event.preventDefault();
   var form = event.currentTarget;
-  var complaintId = document.getElementById("complaintId").value.trim();
   var filedDate = document.getElementById("complaintDate").value;
   var note = document.getElementById("complaintNote").value.trim();
-  var assignedEmployee = findRecord(nirmanData.employees, "employeeId", "4");
-  if (!clientIsValidId(complaintId)) {
-    showPageAlert("Enter a Complaint ID using only letters, numbers, and hyphens.", "danger");
+
+  if (!clientIsValidDate(filedDate) || note.length < 10 || note.length > 500) {
+    showPageAlert("Enter a valid filed date and a note between 10 and 500 characters.", "danger");
     return;
   }
-  if (clientIdExists(nirmanData.complaints, "complaintId", complaintId)) {
-    showPageAlert("That Complaint ID already exists.", "danger");
-    return;
-  }
-  if (!clientIsValidDate(filedDate)) {
-    showPageAlert("Choose a valid Filed date.", "danger");
-    return;
-  }
-  if (note.length < 10 || note.length > 500) {
-    showPageAlert("Enter a Complaint note between 10 and 500 characters.", "danger");
-    return;
-  }
-  if (!assignedEmployee) {
-    showPageAlert("The configured Client Services Employee 4 is unavailable.", "danger");
-    return;
-  }
-  if (!window.confirm("Submit Complaint " + complaintId + " and assign it to " + getEmployeeName(assignedEmployee.employeeId) + "?")) {
-    return;
-  }
-  nirmanData.complaints.push({
-    complaintId: complaintId,
-    clientId: currentClientId,
-    resolvedByEmployeeId: assignedEmployee.employeeId,
-    status: "Pending",
-    filedDate: filedDate,
-    note: note,
-    resolution: ""
-  });
-  form.reset();
-  document.getElementById("complaintDate").value = clientGetToday();
-  clientRenderComplaints();
-  clientApplyTableFilter("complaintTable");
-  showPageAlert("Complaint submitted successfully.", "success");
+
+  var formData = new FormData();
+  formData.append("filedDate", filedDate);
+  formData.append("note", note);
+
+  fetch("../../file_complaint.php", { method: "POST", body: formData })
+    .then(function (response) { return response.json(); })
+    .then(function (result) {
+      if (result.success) {
+        showPageAlert(result.message, "success");
+        form.reset();
+        document.getElementById("complaintDate").value = clientGetToday();
+      } else {
+        showPageAlert(result.message, "danger");
+      }
+    })
+    .catch(function (error) {
+      showPageAlert("Something went wrong. Please try again.", "danger");
+      console.error(error);
+    });
 }
 
 function clientInitializeComplaints() {
@@ -1076,27 +1017,44 @@ function clientInitializeComplaints() {
 
 document.addEventListener("DOMContentLoaded", function () {
   var page = document.body.getAttribute("data-client-page");
-  if (!page || typeof nirmanData === "undefined") {
+  if (!page) {
     return;
   }
-  clientRenderSharedIdentity();
-  if (!clientGetCurrentClient() || !clientGetCurrentPerson()) {
-    showPageAlert("The fixed current Client 1 and its Person record are required.", "danger");
-    return;
-  }
-  if (page === "dashboard") {
-    clientRenderDashboard();
-  } else if (page === "profile") {
-    clientRenderProfile();
-  } else if (page === "projects") {
-    clientInitializeProjects();
-  } else if (page === "properties") {
-    clientInitializeProperties();
-  } else if (page === "bookings") {
-    clientInitializeBookings();
-  } else if (page === "payments") {
-    clientInitializePayments();
-  } else if (page === "complaints") {
-    clientInitializeComplaints();
-  }
+  fetch("../../get_current_user.php")
+    .then(function (r) { return r.json(); })
+    .then(function (result) {
+      if (!result.loggedIn || result.role !== "client") {
+        window.location.href = "../../login.html";
+        return;
+      }
+      currentClientId = result.roleId;
+      var fullName = result.firstName + " " + result.lastName;
+      var initials = (result.firstName.charAt(0) + result.lastName.charAt(0)).toUpperCase();
+      var nameElements = document.querySelectorAll("[data-client-name]");
+      var idElements = document.querySelectorAll("[data-client-id]");
+      var initialElements = document.querySelectorAll("[data-client-initials]");
+      var i;
+      for (i = 0; i < nameElements.length; i += 1) nameElements[i].textContent = fullName;
+      for (i = 0; i < idElements.length; i += 1) idElements[i].textContent = "Client account";
+      for (i = 0; i < initialElements.length; i += 1) initialElements[i].textContent = initials;
+
+      if (page === "dashboard") {
+        clientRenderDashboard();
+      } else if (page === "profile") {
+        clientRenderProfile();
+      } else if (page === "projects") {
+        clientInitializeProjects();
+      } else if (page === "properties") {
+        clientInitializeProperties();
+      } else if (page === "bookings") {
+        clientInitializeBookings();
+      } else if (page === "payments") {
+        clientInitializePayments();
+      } else if (page === "complaints") {
+        clientInitializeComplaints();
+      }
+    })
+    .catch(function () {
+      window.location.href = "../../login.html";
+    });
 });

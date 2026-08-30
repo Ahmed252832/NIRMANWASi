@@ -28,8 +28,8 @@
         <a href="tenders.html"><span class="nav-icon">TN</span>Published Tenders</a>
         <a href="bids.html"><span class="nav-icon">BD</span>My Bids</a>
         <div class="nav-section-title">Delivery</div>
-         <a aria-disabled="true"><span class="nav-icon">PR</span>Projects</a>
-         <a aria-disabled="true"><span class="nav-icon">UP</span>Progress Updates</a>
+        <a href="projects.html"><span class="nav-icon">PR</span>Projects</a>
+        <a href="updates.html"><span class="nav-icon">UP</span>Progress Updates</a>
         <div class="sidebar-footer">
           <a href="../../index.html"><span class="nav-icon">EX</span>Sign Out</a>
         </div>
@@ -77,24 +77,28 @@
             <div class="stat-card">
               <span class="stat-label">Published tenders</span>
               <strong class="stat-value" id="dashboardPublishedCount">0</strong>
+              <span class="stat-note">Openly listed opportunities</span>
             </div>
           </div>
           <div class="col-sm-6 col-xl-3">
             <div class="stat-card">
               <span class="stat-label">My tender bids</span>
               <strong class="stat-value" id="dashboardBidCount">0</strong>
+              <span class="stat-note">Identified within their tender</span>
             </div>
           </div>
           <div class="col-sm-6 col-xl-3">
             <div class="stat-card">
               <span class="stat-label">Related awards</span>
               <strong class="stat-value" id="dashboardAwardCount">0</strong>
+              <span class="stat-note">Awards matching your selected bids</span>
             </div>
           </div>
           <div class="col-sm-6 col-xl-3">
             <div class="stat-card">
               <span class="stat-label">Awarded projects</span>
               <strong class="stat-value" id="dashboardProjectCount">0</strong>
+              <span class="stat-note">Reached through bid and award records</span>
             </div>
           </div>
         </section>
@@ -143,6 +147,7 @@
             <article class="data-card">
               <div class="data-card-header">
                 <div><h2>Awards and resulting projects</h2><p>Based on your awarded bids and projects</p></div>
+                <a class="mini-action" href="projects.html">Open projects</a>
               </div>
               <div class="data-card-body" id="dashboardProjectList"></div>
             </article>
@@ -152,6 +157,7 @@
         <section class="data-card" aria-labelledby="recentUpdateHeading">
           <div class="data-card-header">
             <div><h2 id="recentUpdateHeading">Recent project update status</h2><p>Latest progress for your awarded projects</p></div>
+            <a class="mini-action" href="updates.html">Manage updates</a>
           </div>
           <div class="data-card-body" id="dashboardRecentUpdates"></div>
         </section>
