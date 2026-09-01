@@ -11,6 +11,16 @@ $password = $_POST['password'];
 $nid = $_POST['nid'];
 $additionalContact = isset($_POST['additionalContact']) ? $_POST['additionalContact'] : '';
 
+// Server-side validation — never trust the frontend alone
+if (strlen($password) < 6) {
+    echo json_encode(['success' => false, 'message' => 'Password must contain at least 6 characters.']);
+    exit;
+}
+if (empty($firstName) || empty($lastName) || empty($email) || empty($nid)) {
+    echo json_encode(['success' => false, 'message' => 'All required fields must be filled in.']);
+    exit;
+}
+
 // Step 1: Check if the email is already used
 $checkStmt = oci_parse($conn, "SELECT COUNT(*) AS CNT FROM Person WHERE Email = :email");
 oci_bind_by_name($checkStmt, ':email', $email);

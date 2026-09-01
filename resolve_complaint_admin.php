@@ -13,8 +13,13 @@ $complaintId = trim($_POST['complaintId'] ?? '');
 $empId = trim($_POST['empId'] ?? '');
 $resolution = trim($_POST['resolution'] ?? '');
 
-if ($complaintId === '' || $empId === '' || strlen($resolution) < 10) {
-    echo json_encode(['success' => false, 'message' => 'Choose an employee and enter at least 10 characters of resolution.']);
+// Server-side validation
+if (strlen(trim($resolution)) < 10 || strlen($resolution) > 500) {
+    echo json_encode(['success' => false, 'message' => 'Resolution must be between 10 and 500 characters.']);
+    exit;
+}
+if ($complaintId === '' || $empId === '') {
+    echo json_encode(['success' => false, 'message' => 'Choose an employee and complaint before resolving.']);
     exit;
 }
 
@@ -33,18 +38,27 @@ if ($row['STATUS'] === 'Resolved') {
     exit;
 }
 
-$sql = "UPDATE Complaints
-        SET Status = 'Resolved', Resolution = :p_resolution, Resolved_by_Emp_id = :p_emp_id
-        WHERE Complaint_id = :p_id";
+$sql = "BEGIN resolve_complaint_proc(:id, :res, :emp); END;";
+
 $stmt = oci_parse($conn, $sql);
-oci_bind_by_name($stmt, ':p_resolution', $resolution);
-oci_bind_by_name($stmt, ':p_emp_id', $empId);
-oci_bind_by_name($stmt, ':p_id', $complaintId);
+
+oci_bind_by_name($stmt, ":id", $complaintId);
+oci_bind_by_name($stmt, ":res", $resolution);
+oci_bind_by_name($stmt, ":emp", $empId);
 
 if (!oci_execute($stmt)) {
+
     $e = oci_error($stmt);
-    echo json_encode(['success' => false, 'message' => 'Could not resolve complaint: ' . $e['message']]);
+
+    echo json_encode([
+        "success" => false,
+        "message" => $e['message']
+    ]);
+
     exit;
 }
 
-echo json_encode(['success' => true, 'message' => 'Complaint resolved successfully.']);
+echo json_encode([
+    "success" => true,
+    "message" => "Complaint resolved successfully."
+]);

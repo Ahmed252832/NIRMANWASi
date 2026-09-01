@@ -11,8 +11,13 @@ $password = $_POST['password'] ?? '';
 $title = trim($_POST['title'] ?? '');
 $contractorId = trim($_POST['contractorId'] ?? '');
 
-if ($firstName === '' || $lastName === '' || $email === '' || $password === '' || $title === '' || $contractorId === '') {
-    echo json_encode(['success' => false, 'message' => 'All fields are required.']);
+// Server-side validation — never trust the frontend alone
+if (strlen($password) < 6) {
+    echo json_encode(['success' => false, 'message' => 'Password must contain at least 6 characters.']);
+    exit;
+}
+if (empty($firstName) || empty($lastName) || empty($email) || empty($title) || empty($contractorId)) {
+    echo json_encode(['success' => false, 'message' => 'All required fields must be filled in.']);
     exit;
 }
 

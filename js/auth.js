@@ -132,10 +132,10 @@ function handleRegistration(event) {
   var confirmPassword = document.getElementById("confirmPassword").value;
   var email = document.getElementById("registerEmail").value.trim();
 
-  if (password.length < 6) {
-    showAuthFeedback("registerFeedback", "Password must contain at least 6 characters.", "danger");
-    return;
-  }
+  // if (password.length < 6) {
+  //   showAuthFeedback("registerFeedback", "Password must contain at least 6 characters.", "danger");
+  //   return;
+  // }
 
   if (password !== confirmPassword) {
     showAuthFeedback("registerFeedback", "Password and confirmation do not match.", "danger");
