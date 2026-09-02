@@ -1,0 +1,188 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="NIRMAN real estate and construction management system.">
+    <title>NIRMAN | Real Estate & Construction Management</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+    <nav class="navbar navbar-expand-lg public-navbar sticky-top" aria-label="Public navigation">
+      <div class="container">
+        <a class="navbar-brand brand-logo" href="index.html" aria-label="NIRMAN home">
+          <span class="brand-symbol" aria-hidden="true"></span>
+          <span>NIRMAN</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNavigation" aria-controls="publicNavigation" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="publicNavigation">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="#properties">Properties</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+            <li class="nav-item ms-lg-1"><a class="btn btn-nirman btn-sm px-3" href="register.html">Register</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="mainContent">
+      <section class="hero-section" id="home">
+        <div class="container">
+          <div class="row hero-content align-items-center">
+            <div class="col-lg-7">
+              <div class="hero-eyebrow"><span></span>Real Estate and Construction</div>
+              <h1>Manage everything from <strong>plan</strong> to property.</h1>
+              <p class="hero-lead">
+                NIRMAN helps manage projects, units, bookings, payments, tenders, contractors and construction updates in one place.
+              </p>
+              <div class="hero-actions">
+                <a class="btn btn-nirman btn-lg" href="#projects">Explore projects</a>
+                <a class="btn btn-outline-light btn-lg" href="login.html">Open your workspace</a>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="hero-visual" aria-label="Latest project progress preview" aria-live="polite">
+                <div class="plan-header">
+                  <span class="plan-label">Project overview</span>
+                  <span class="plan-code" id="heroProjectStatus">Loading</span>
+                </div>
+                <div class="tower-scene" aria-hidden="true">
+                  <div class="tower tower-one"></div>
+                  <div class="tower tower-two"></div>
+                  <div class="tower-crane"></div>
+                </div>
+                <div class="plan-footer">
+                  <div>
+                    <p class="plan-project-name" id="heroProjectName">Loading project...</p>
+                    <div class="plan-progress" id="heroProjectLocation">Latest project progress</div>
+                  </div>
+                  <div class="plan-percent" id="heroProjectProgress">--</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="intro-band" aria-label="System statistics">
+        <div class="container">
+          <div class="intro-stat-grid">
+            <div class="intro-stat"><strong id="projectCount">0</strong><span>Total projects</span></div>
+            <div class="intro-stat"><strong id="availableUnitCount">0</strong><span>Available units</span></div>
+            <div class="intro-stat"><strong id="publishedTenderCount">0</strong><span>Published tenders</span></div>
+            <div class="intro-stat"><strong id="progressUpdateCount">0</strong><span>Progress updates</span></div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="section-space bg-white" id="projects">
+        <div class="container">
+          <div class="section-heading">
+            <span class="section-kicker">Featured projects</span>
+            <h2>See project progress.</h2>
+          </div>
+          <div class="row g-4" id="featuredProjects" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section-space" id="properties">
+        <div class="container">
+          <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5">
+            <div class="section-heading mb-0">
+              <span class="section-kicker">Available units</span>
+              <h2>Find an available unit.</h2>
+            </div>
+            <a class="btn btn-navy" href="login.html">Client area</a>
+          </div>
+          <div class="row g-4" id="availableUnits" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section-space" id="about">
+        <div class="container">
+          <div class="row g-5 align-items-center">
+            <div class="col-lg-5">
+              <span class="section-kicker">About NIRMAN</span>
+              <h2 class="display-5 mb-4">Manage real estate work in one system.</h2>
+               <a class="btn btn-outline-navy" href="register.html">Create an account</a>
+            </div>
+            <div class="col-lg-7">
+              <div class="about-panel">
+                <span class="section-kicker">Main features</span>
+                 <h3 class="h2">From tenders to client support</h3>
+                <ul class="about-list">
+                  <li>Project and area tracking</li>
+                  <li>Booking and allocation</li>
+                  <li>Tenders, bids, and awards</li>
+                  <li>Payments and installments</li>
+                  <li>Contractor supervision</li>
+                  <li>Complaints</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-space-sm">
+        <div class="container">
+          <div class="cta-panel">
+            <div class="position-relative">
+              <span class="section-kicker">Get started</span>
+              <h2>Login with your user role.</h2>
+              <p class="mb-4">Login with an existing account or register as a Client or Contractor Representative.</p>
+              <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-nirman" href="login.html">Go to login</a>
+                <a class="btn btn-outline-light" href="register.html">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row g-4">
+           <div class="col-lg-8">
+            <a class="brand-logo brand-logo-light mb-3" href="index.html">
+              <span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span>
+            </a>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h4>Explore</h4>
+            <ul class="footer-links">
+              <li><a href="#projects">Projects</a></li>
+              <li><a href="#properties">Properties</a></li>
+              <li><a href="#about">About</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h4>Access</h4>
+            <ul class="footer-links">
+              <li><a href="login.html">User login</a></li>
+              <li><a href="admin-login.html">Admin login</a></li>
+              <li><a href="register.html">Register</a></li>
+            </ul>
+          </div>
+         </div>
+      </div>
+    </footer>
+
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/public.js"></script>
+  </body>
+</html>
