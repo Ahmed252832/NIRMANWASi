@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Secure NIRMAN login for Employees, Clients, and approved Contractor Representatives."><title>User Login | NIRMAN</title><link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/responsive.css"></head>
+  <body class="auth-page">
+    <a class="skip-link" href="#loginPanel">Skip to login</a>
+    <main class="auth-shell">
+      <section class="auth-showcase" aria-labelledby="loginWelcomeTitle">
+        <a class="brand-logo brand-logo-light" href="index.html"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a>
+        <div class="auth-showcase-copy"><span class="measure-label text-white">Authorized workspace</span><h1 id="loginWelcomeTitle">Return to the records you are responsible for.</h1><p>Select the role attached to your account. NIRMAN verifies that choice against your server-side identity before opening a workspace.</p></div>
+        <div class="auth-blueprint" aria-label="Workspace access principles"><div class="blueprint-cell"><strong>01</strong><span>Session identity</span></div><div class="blueprint-cell"><strong>02</strong><span>Role boundary</span></div><div class="blueprint-cell"><strong>03</strong><span>Scoped records</span></div></div>
+      </section>
+      <section class="auth-form-panel" id="loginPanel" aria-labelledby="loginHeading">
+        <a class="auth-back-link" href="index.html"><span aria-hidden="true">&larr;</span> Back to public site</a>
+        <div class="auth-form-heading"><span class="section-kicker">Secure access</span><h2 id="loginHeading">User login</h2><p>Employee, Client, or approved Contractor Representative.</p></div>
+        <div id="loginFeedback" aria-live="polite"></div>
+        <form id="loginForm">
+          <fieldset class="mb-4"><legend class="form-label">Account role</legend><div class="role-choice"><label><input type="radio" name="loginRole" value="employee" checked>Employee</label><label><input type="radio" name="loginRole" value="client">Client</label><label><input type="radio" name="loginRole" value="contractor">Representative</label></div></fieldset>
+          <div class="mb-3"><label class="form-label" for="loginEmail">Email address</label><input class="form-control" type="email" id="loginEmail" autocomplete="username" maxlength="60" required placeholder="name@example.com"></div>
+          <div class="mb-4"><label class="form-label" for="loginPassword">Password</label><input class="form-control" type="password" id="loginPassword" autocomplete="current-password" required placeholder="Enter your password"></div>
+          <button class="btn btn-navy w-100" type="submit">Open workspace</button>
+        </form>
+        <p class="auth-switch">Need a Client or Representative account? <a href="register.html">Register</a></p><p class="auth-switch mt-2">System Administrator? <a href="admin-login.html">Use Admin access</a></p>
+      </section>
+    </main>
+    <script src="js/common.js"></script><script src="js/auth.js"></script>
+  </body>
+</html>

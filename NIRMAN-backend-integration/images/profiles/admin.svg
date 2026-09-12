@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Fictional administrator portrait">
+  <rect width="160" height="160" rx="24" fill="#0f2747"/>
+  <circle cx="80" cy="60" r="30" fill="#8f5d43"/>
+  <path d="M46 57c2-27 16-41 35-41 23 0 35 16 35 43-10-14-22-20-36-20-12 0-24 6-34 18Z" fill="#151515"/>
+  <path d="M26 160c5-44 23-66 54-66s49 22 54 66Z" fill="#fffefa"/>
+  <path d="M67 93h26v24H67Z" fill="#7d4d38"/>
+  <path d="m61 103 19 20 19-20 9 57H52Z" fill="#d7a84b"/>
+</svg>
