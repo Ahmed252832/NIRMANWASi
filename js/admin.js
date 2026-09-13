@@ -6,6 +6,344 @@ function setAdminText(elementId, value) {
   }
 }
 
+var adminContractorsCache = [];
+var adminRepresentativesCache = [];
+var adminEmployeesCache = [];
+var adminSupervisionsCache = [];
+var adminAllocationsCache = [];
+var adminPaymentsCache = [];
+var adminComplaintsCache = [];
+var adminTendersCache = [];
+var adminBidsCache = [];
+var adminAwardsCache = [];
+var adminAreasCache = [];
+var adminPortfolioAreasCache = [];
+var adminPortfolioProjectsCache = [];
+var adminPortfolioUnitsCache = [];
+var adminPortfolioUpdatesCache = [];
+
+function fetchAdminContractors(callback) {
+  fetch("../../get_contractors_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminContractorsCache = rows.map(function (contractor) {
+        return {
+          contractorId: contractor.CONTRACTOR_ID,
+          companyName: contractor.COMPANY_NAME,
+          licenseNo: contractor.LICENSE_NO,
+          licenseDue: contractor.LICENSE_DUE
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminRepresentatives(callback) {
+  fetch("../../get_representatives_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminRepresentativesCache = rows.map(function (rep) {
+        return {
+          repId: rep.REP_ID,
+          title: rep.TITLE,
+          approvalStatus: rep.APPROVAL_STATUS,
+          contractorId: rep.CONTRACTOR_ID,
+          firstName: rep.FIRST_NAME,
+          lastName: rep.LAST_NAME,
+          email: rep.EMAIL,
+          contactNo: rep.CONTACT_NO,
+          companyName: rep.COMPANY_NAME
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminEmployees(callback) {
+  fetch("../../get_employees_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminEmployeesCache = rows.map(function (employee) {
+        return {
+          employeeId: employee.EMP_ID,
+          designation: employee.DESIGNATION,
+          deptName: employee.DEPT_NAME,
+          firstName: employee.FIRST_NAME,
+          lastName: employee.LAST_NAME
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminSupervisions(callback) {
+  fetch("../../get_supervisions_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminSupervisionsCache = rows.map(function (supervision) {
+        return {
+          employeeId: supervision.EMP_ID,
+          contractorId: supervision.CONTRACTOR_ID,
+          firstName: supervision.FIRST_NAME,
+          lastName: supervision.LAST_NAME,
+          designation: supervision.DESIGNATION,
+          deptName: supervision.DEPT_NAME,
+          companyName: supervision.COMPANY_NAME,
+          licenseNo: supervision.LICENSE_NO
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminPayments(callback) {
+  fetch("../../get_payments_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminPaymentsCache = rows.map(function (payment) {
+        return {
+          clientId: payment.CL_ID,
+          paymentId: payment.PAYMENT_ID,
+          bookingId: payment.BOOKING_ID,
+          verifiedByEmployeeId: payment.VERIFIED_BY_EMP_ID,
+          paymentStatus: payment.PAYMENT_STATUS,
+          verifiedAt: payment.VERIFIED_AT,
+          paymentMethod: payment.PAYMENT_METHOD,
+          amount: payment.AMOUNT,
+          paymentDue: payment.PAYMENT_DUE,
+          clientName: payment.FIRST_NAME + " " + payment.LAST_NAME,
+          verifierName: payment.VERIFIER_FIRST ? (payment.VERIFIER_FIRST + " " + payment.VERIFIER_LAST) : null
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminAllocations(callback) {
+  fetch("../../get_allocations_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminAllocationsCache = rows.map(function (booking) {
+        return {
+          bookingId: booking.BOOKING_ID,
+          clientId: booking.CL_ID,
+          unitId: booking.UNIT_ID,
+          projectId: booking.PROJECT_ID,
+          bookingStatus: booking.BOOKING_STATUS,
+          bookingDate: booking.BOOKING_DATE,
+          dueAmount: booking.DUE_AMOUNT,
+          clientName: booking.FIRST_NAME + " " + booking.LAST_NAME,
+          unitNo: booking.UNIT_NO,
+          unitType: booking.UNIT_TYPE,
+          projectName: booking.PROJECT_NAME,
+          confirmedEmpId: booking.CONFIRMED_EMP_ID,
+          confirmedEmpName: booking.EMP_FIRST_NAME ? (booking.EMP_FIRST_NAME + " " + booking.EMP_LAST_NAME) : null
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminComplaints(callback) {
+  fetch("../../get_complaints_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminComplaintsCache = rows.map(function (complaint) {
+        return {
+          complaintId: complaint.COMPLAINT_ID,
+          clientId: complaint.CL_ID,
+          resolvedByEmployeeId: complaint.RESOLVED_BY_EMP_ID,
+          status: complaint.STATUS,
+          filedDate: complaint.FILED_DATE,
+          note: complaint.NOTE,
+          resolution: complaint.RESOLUTION,
+          clientName: complaint.FIRST_NAME + " " + complaint.LAST_NAME,
+          employeeName: complaint.EMP_FIRST_NAME ? (complaint.EMP_FIRST_NAME + " " + complaint.EMP_LAST_NAME) : null
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminTenders(callback) {
+  fetch("../../get_tenders_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminTendersCache = rows.map(function (tender) {
+        return {
+          tenderId: tender.TENDER_ID,
+          employeeId: tender.EMP_ID,
+          deadline: tender.DEADLINE,
+          title: tender.TITLE,
+          bidDetails: tender.BID_DETAILS,
+          status: tender.STATUS,
+          publisherName: tender.FIRST_NAME + " " + tender.LAST_NAME,
+          bidCount: tender.BID_COUNT
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminBids(callback) {
+  fetch("../../get_bids_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminBidsCache = rows.map(function (bid) {
+        return {
+          tenderId: bid.TENDER_ID,
+          bidId: bid.BID_ID,
+          repId: bid.REP_ID,
+          bidStatus: bid.BID_STATUS,
+          bidAmount: bid.BID_AMOUNT,
+          tenderTitle: bid.TENDER_TITLE,
+          tenderStatus: bid.TENDER_STATUS,
+          repName: bid.FIRST_NAME + " " + bid.LAST_NAME,
+          companyName: bid.COMPANY_NAME,
+          awardId: bid.AWARD_ID
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminAwards(callback) {
+  fetch("../../get_awards_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminAwardsCache = rows.map(function (award) {
+        return {
+          awardId: award.AWARD_ID,
+          tenderId: award.TENDER_ID,
+          bidId: award.BID_ID,
+          employeeId: award.EMP_ID,
+          awardAmount: award.AWARD_AMOUNT,
+          awardDate: award.AWARD_DATE,
+          empName: award.FIRST_NAME + " " + award.LAST_NAME,
+          projectId: award.PROJECT_ID,
+          projectName: award.PROJECT_NAME
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchAdminAreas(callback) {
+  fetch("../../get_areas_admin.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      adminAreasCache = rows.map(function (area) {
+        return {
+          areaId: area.AREA_ID,
+          houseNo: area.HOUSE_NO,
+          roadSector: area.ROAD_SECTOR
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function fetchPortfolioAreas(callback) {
+  fetch("../../get_portfolio_areas.php").then(function (r) { return r.json(); }).then(function (rows) {
+    adminPortfolioAreasCache = rows.map(function (a) {
+      return {
+        areaId: a.AREA_ID,
+        houseNo: a.HOUSE_NO,
+        roadSector: a.ROAD_SECTOR,
+        boundaryInfo: a.BOUNDARY_INFO,
+        latitude: a.LATITUDE,
+        longitude: a.LONGITUDE,
+        projectId: a.PROJECT_ID,
+        projectName: a.PROJECT_NAME
+      };
+    });
+    if (callback) callback();
+  });
+}
+
+function fetchPortfolioProjects(callback) {
+  fetch("../../get_portfolio_projects.php").then(function (r) { return r.json(); }).then(function (rows) {
+    adminPortfolioProjectsCache = rows.map(function (p) {
+      return {
+        projectId: p.PROJECT_ID,
+        awardId: p.AWARD_ID,
+        areaId: p.AREA_ID,
+        projectBudget: p.PROJECT_BUDGET,
+        projectName: p.PROJECT_NAME,
+        deadline: p.DEADLINE,
+        status: p.STATUS,
+        houseNo: p.HOUSE_NO,
+        roadSector: p.ROAD_SECTOR,
+        latestProgress: p.LATEST_PROGRESS
+      };
+    });
+    if (callback) callback();
+  });
+}
+
+function fetchPortfolioUnits(callback) {
+  fetch("../../get_portfolio_units.php").then(function (r) { return r.json(); }).then(function (rows) {
+    adminPortfolioUnitsCache = rows.map(function (u) {
+      return {
+        unitId: u.UNIT_ID,
+        unitType: u.UNIT_TYPE,
+        unitNo: u.UNIT_NO,
+        status: u.STATUS,
+        bookingId: u.BOOKING_ID,
+        clientId: u.CL_ID,
+        projectId: u.PROJECT_ID,
+        clientName: u.FIRST_NAME ? (u.FIRST_NAME + " " + u.LAST_NAME) : null,
+        projectName: u.PROJECT_NAME
+      };
+    });
+    if (callback) callback();
+  });
+}
+
+function fetchPortfolioUpdates(callback) {
+  fetch("../../get_portfolio_updates.php").then(function (r) { return r.json(); }).then(function (rows) {
+    adminPortfolioUpdatesCache = rows.map(function (u) {
+      return {
+        projectId: u.PROJECT_ID,
+        updateId: u.UPDATE_ID,
+        repId: u.REP_ID,
+        updateDate: u.UPDATE_DATE,
+        workNote: u.WORK_NOTE,
+        progressPercent: u.PROGRESS_PERCENT,
+        projectName: u.PROJECT_NAME,
+        repName: u.FIRST_NAME + " " + u.LAST_NAME
+      };
+    });
+    if (callback) callback();
+  });
+}
+
+function isEligibleAdminBid(bid) {
+  return bid.tenderStatus !== "Awarded" && bid.bidStatus !== "Rejected" && !bid.awardId;
+}
+
 function getAdminPerson(personId) {
   return findRecord(nirmanData.people, "personId", personId);
 }
@@ -476,10 +814,10 @@ function populateEmployeeSelect(selectId) {
     return;
   }
   var html = '<option value="">Choose an employee</option>';
-  for (var index = 0; index < nirmanData.employees.length; index += 1) {
-    html += '<option value="' + escapeHtml(nirmanData.employees[index].employeeId) + '">' +
-      escapeHtml(getEmployeeName(nirmanData.employees[index].employeeId) + " - " + nirmanData.employees[index].designation) +
-      "</option>";
+  for (var index = 0; index < adminEmployeesCache.length; index += 1) {
+    var emp = adminEmployeesCache[index];
+    html += '<option value="' + escapeHtml(emp.employeeId) + '">' +
+      escapeHtml(emp.firstName + " " + emp.lastName + " - " + emp.designation) + "</option>";
   }
   select.innerHTML = html;
 }
@@ -490,19 +828,19 @@ function renderContractorsPage() {
   var supervisionHtml = "";
   var pendingCount = 0;
   var index;
-  for (index = 0; index < nirmanData.contractors.length; index += 1) {
-    var contractor = nirmanData.contractors[index];
+  for (index = 0; index < adminContractorsCache.length; index += 1) {
+    var contractor = adminContractorsCache[index];
     var repNames = [];
     var supervisorNames = [];
     var licenseState = getLicenseState(contractor.licenseDue);
-    for (var repIndex = 0; repIndex < nirmanData.contractorReps.length; repIndex += 1) {
-      if (nirmanData.contractorReps[repIndex].contractorId === contractor.contractorId) {
-        repNames.push(getRepresentativeName(nirmanData.contractorReps[repIndex].repId));
+    for (var repIndex = 0; repIndex < adminRepresentativesCache.length; repIndex += 1) {
+      if (adminRepresentativesCache[repIndex].contractorId === contractor.contractorId) {
+        repNames.push(adminRepresentativesCache[repIndex].firstName + " " + adminRepresentativesCache[repIndex].lastName);
       }
     }
-    for (var supervisorIndex = 0; supervisorIndex < nirmanData.supervisions.length; supervisorIndex += 1) {
-      if (nirmanData.supervisions[supervisorIndex].contractorId === contractor.contractorId) {
-        supervisorNames.push(getEmployeeName(nirmanData.supervisions[supervisorIndex].employeeId));
+    for (var supIndex = 0; supIndex < adminSupervisionsCache.length; supIndex += 1) {
+      if (adminSupervisionsCache[supIndex].contractorId === contractor.contractorId) {
+        supervisorNames.push(adminSupervisionsCache[supIndex].firstName + " " + adminSupervisionsCache[supIndex].lastName);
       }
     }
     contractorHtml += '<tr data-status="' + escapeHtml(licenseState) + '"><td><span class="table-primary-text">' +
@@ -513,54 +851,62 @@ function renderContractorsPage() {
   }
   document.getElementById("contractorTableBody").innerHTML = contractorHtml;
 
-  for (index = 0; index < nirmanData.contractorReps.length; index += 1) {
-    var representative = nirmanData.contractorReps[index];
-    var repPerson = getAdminPerson(representative.personId);
-    var representedContractor = getAdminContractor(representative.contractorId);
+  for (index = 0; index < adminRepresentativesCache.length; index += 1) {
+    var representative = adminRepresentativesCache[index];
     if (representative.approvalStatus === "Pending") {
       pendingCount += 1;
     }
     representativeHtml += '<tr data-status="' + escapeHtml(representative.approvalStatus) +
-      '"><td><span class="table-primary-text">' + escapeHtml(getPersonName(representative.personId)) +
-      '</span><span class="table-secondary-text">' + escapeHtml(representative.repId + " / " + representative.personId) +
+      '"><td><span class="table-primary-text">' + escapeHtml(representative.firstName + " " + representative.lastName) +
+      '</span><span class="table-secondary-text">' + escapeHtml(representative.repId) +
       "</span></td><td>" + escapeHtml(representative.title) + "</td><td>" +
-      escapeHtml(representedContractor ? representedContractor.companyName : "Unknown contractor") + "</td><td>" +
-      escapeHtml(repPerson ? repPerson.email + " / " + repPerson.contactNo : "Not available") + "</td><td>" +
+      escapeHtml(representative.companyName) + "</td><td>" +
+      escapeHtml(representative.email + " / " + representative.contactNo) + "</td><td>" +
       createStatusBadge(representative.approvalStatus) + "</td><td>" +
       (representative.approvalStatus === "Pending" ? '<button class="mini-action approve-representative" type="button" data-id="' +
         escapeHtml(representative.repId) + '">Approve</button>' : "Approved") + "</td></tr>";
   }
   document.getElementById("representativeTableBody").innerHTML = representativeHtml;
 
-  for (index = 0; index < nirmanData.supervisions.length; index += 1) {
-    var supervision = nirmanData.supervisions[index];
-    var supervisingEmployee = getAdminEmployee(supervision.employeeId);
-    var supervisedContractor = getAdminContractor(supervision.contractorId);
-    supervisionHtml += "<tr><td><span class=\"table-primary-text\">" + escapeHtml(getEmployeeName(supervision.employeeId)) +
+  for (index = 0; index < adminSupervisionsCache.length; index += 1) {
+    var supervision = adminSupervisionsCache[index];
+    supervisionHtml += "<tr><td><span class=\"table-primary-text\">" + escapeHtml(supervision.firstName + " " + supervision.lastName) +
       '</span><span class="table-secondary-text">' + escapeHtml(supervision.employeeId) + "</span></td><td>" +
-      escapeHtml(supervisingEmployee ? supervisingEmployee.designation : "Not available") + "</td><td>" +
-      escapeHtml(supervisingEmployee ? supervisingEmployee.deptName : "Not available") + "</td><td>" +
-      escapeHtml(supervisedContractor ? supervisedContractor.companyName : "Unknown contractor") + "</td><td>" +
-      escapeHtml(supervisedContractor ? supervisedContractor.licenseNo : "Not available") + "</td></tr>";
+      escapeHtml(supervision.designation) + "</td><td>" + escapeHtml(supervision.deptName) + "</td><td>" +
+      escapeHtml(supervision.companyName) + "</td><td>" + escapeHtml(supervision.licenseNo) + "</td></tr>";
   }
   document.getElementById("supervisionTableBody").innerHTML = supervisionHtml;
-  setAdminText("contractorCount", nirmanData.contractors.length);
-  setAdminText("representativeCount", nirmanData.contractorReps.length);
+  setAdminText("contractorCount", adminContractorsCache.length);
+  setAdminText("representativeCount", adminRepresentativesCache.length);
   setAdminText("pendingRepresentativeCount", pendingCount);
-  setAdminText("supervisionCount", nirmanData.supervisions.length);
+  setAdminText("supervisionCount", adminSupervisionsCache.length);
 
   var approveButtons = document.querySelectorAll(".approve-representative");
   for (index = 0; index < approveButtons.length; index += 1) {
     approveButtons[index].addEventListener("click", function () {
-      var representative = findRecord(nirmanData.contractorReps, "repId", this.getAttribute("data-id"));
-      if (representative && window.confirm("Approve " + getRepresentativeName(representative.repId) + "?")) {
-        representative.approvalStatus = "Approved";
-        renderContractorsPage();
-        applyAdminFilter("contractorTable");
-        applyAdminFilter("representativeTable");
-        applyAdminFilter("supervisionTable");
-        showPageAlert("Representative approved successfully.", "success");
+      var repId = this.getAttribute("data-id");
+      var representative = findRecord(adminRepresentativesCache, "repId", repId);
+      if (!representative || !window.confirm("Approve " + representative.firstName + " " + representative.lastName + "?")) {
+        return;
       }
+      var formData = new FormData();
+      formData.append("repId", repId);
+      fetch("../../approve_representative.php", { method: "POST", body: formData })
+        .then(function (r) { return r.json(); })
+        .then(function (result) {
+          if (result.success) {
+            fetchAdminRepresentatives(function () {
+              renderContractorsPage();
+              applyAdminFilter("representativeTable");
+              showPageAlert(result.message, "success");
+            });
+          } else {
+            showPageAlert(result.message, "danger");
+          }
+        })
+        .catch(function () {
+          showPageAlert("Something went wrong. Please try again.", "danger");
+        });
     });
   }
 }
@@ -568,41 +914,49 @@ function renderContractorsPage() {
 function initializeContractorForm() {
   var contractorSelect = document.getElementById("supervisionContractor");
   var form = document.getElementById("supervisionForm");
+  if (!contractorSelect || !form) {
+    return;
+  }
   populateEmployeeSelect("supervisionEmployee");
   var html = '<option value="">Choose a contractor</option>';
-  for (var index = 0; index < nirmanData.contractors.length; index += 1) {
-    html += '<option value="' + escapeHtml(nirmanData.contractors[index].contractorId) + '">' +
-      escapeHtml(nirmanData.contractors[index].companyName) + "</option>";
+  for (var index = 0; index < adminContractorsCache.length; index += 1) {
+    html += '<option value="' + escapeHtml(adminContractorsCache[index].contractorId) + '">' +
+      escapeHtml(adminContractorsCache[index].companyName) + "</option>";
   }
   contractorSelect.innerHTML = html;
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     var employeeId = document.getElementById("supervisionEmployee").value;
     var contractorId = document.getElementById("supervisionContractor").value;
-    var duplicate = false;
-    if (!getAdminEmployee(employeeId) || !getAdminContractor(contractorId)) {
-      showPageAlert("Choose an existing employee and contractor.", "danger");
-      return;
-    }
-    for (var index = 0; index < nirmanData.supervisions.length; index += 1) {
-      if (nirmanData.supervisions[index].employeeId === employeeId &&
-          nirmanData.supervisions[index].contractorId === contractorId) {
-        duplicate = true;
-      }
-    }
-    if (duplicate) {
-      showPageAlert("That Employee-Contractor supervision pair already exists.", "danger");
+    if (!employeeId || !contractorId) {
+      showPageAlert("Choose an employee and a contractor.", "danger");
       return;
     }
     if (!window.confirm("Create this supervision assignment?")) {
       return;
     }
-    nirmanData.supervisions.push({ employeeId: employeeId, contractorId: contractorId });
-    form.reset();
-    hideAdminModal("supervisionModal");
-    renderContractorsPage();
-    applyAdminFilter("supervisionTable");
-    showPageAlert("Supervision assignment added successfully.", "success");
+    var formData = new FormData();
+    formData.append("empId", employeeId);
+    formData.append("contractorId", contractorId);
+    fetch("../../assign_supervisor.php", { method: "POST", body: formData })
+      .then(function (r) { return r.json(); })
+      .then(function (result) {
+        if (result.success) {
+          form.reset();
+          hideAdminModal("supervisionModal");
+          fetchAdminSupervisions(function () {
+            renderContractorsPage();
+            applyAdminFilter("supervisionTable");
+            showPageAlert(result.message, "success");
+          });
+        } else {
+          showPageAlert(result.message, "danger");
+        }
+      })
+      .catch(function () {
+        showPageAlert("Something went wrong. Please try again.", "danger");
+      });
   });
 }
 
@@ -614,68 +968,70 @@ function renderPortfolioPage() {
   var overdueCount = 0;
   var availableCount = 0;
   var index;
-  for (index = 0; index < nirmanData.areas.length; index += 1) {
-    var area = nirmanData.areas[index];
-    var projectNames = [];
-    for (var projectIndex = 0; projectIndex < nirmanData.projects.length; projectIndex += 1) {
-      if (nirmanData.projects[projectIndex].areaId === area.areaId) {
-        projectNames.push(nirmanData.projects[projectIndex].projectName);
-      }
+
+  var areaGroups = {};
+  for (index = 0; index < adminPortfolioAreasCache.length; index += 1) {
+    var a = adminPortfolioAreasCache[index];
+    if (!areaGroups[a.areaId]) {
+      areaGroups[a.areaId] = { area: a, projectNames: [] };
     }
+    if (a.projectName) {
+      areaGroups[a.areaId].projectNames.push(a.projectName);
+    }
+  }
+  for (var areaId in areaGroups) {
+    var group = areaGroups[areaId];
+    var area = group.area;
     areaHtml += "<tr><td><span class=\"table-primary-text\">" + escapeHtml(area.areaId) +
       "</span></td><td>" + escapeHtml("House " + area.houseNo + ", " + area.roadSector) + "</td><td>" +
       escapeHtml(area.latitude + ", " + area.longitude) + "</td><td>" + escapeHtml(area.boundaryInfo) + "</td><td>" +
-      escapeHtml(projectNames.join(", ") || "None") + "</td></tr>";
+      escapeHtml(group.projectNames.join(", ") || "None") + "</td></tr>";
   }
   document.getElementById("areaTableBody").innerHTML = areaHtml;
 
-  for (index = 0; index < nirmanData.projects.length; index += 1) {
-    var project = nirmanData.projects[index];
-    var projectArea = getAdminArea(project.areaId);
+  for (index = 0; index < adminPortfolioProjectsCache.length; index += 1) {
+    var project = adminPortfolioProjectsCache[index];
     var deadlineState = isProjectOverdue(project) ? "Overdue" : "On schedule";
-    var progress = getLatestProjectProgress(project.projectId);
     if (deadlineState === "Overdue") {
       overdueCount += 1;
     }
     projectHtml += '<tr data-status="' + escapeHtml(deadlineState) + '"><td><span class="table-primary-text">' +
       escapeHtml(project.projectName) + '</span><span class="table-secondary-text">' + escapeHtml(project.projectId) +
       "</span></td><td>" + escapeHtml(project.awardId) + "</td><td>" +
-      escapeHtml(projectArea ? "House " + projectArea.houseNo + ", " + projectArea.roadSector : project.areaId) +
+      escapeHtml("House " + project.houseNo + ", " + project.roadSector) +
       "</td><td>" + escapeHtml(formatCurrency(project.projectBudget)) + "</td><td>" + escapeHtml(formatDate(project.deadline)) +
       "<span class=\"table-secondary-text\">" + createStatusBadge(deadlineState) + "</span></td><td>" +
-      createStatusBadge(project.status) + "</td><td>" + escapeHtml(progress + "%") + "</td></tr>";
+      createStatusBadge(project.status) + "</td><td>" + escapeHtml(project.latestProgress + "%") + "</td></tr>";
   }
   document.getElementById("projectTableBody").innerHTML = projectHtml;
 
-  for (index = 0; index < nirmanData.units.length; index += 1) {
-    var unit = nirmanData.units[index];
-    var booking = findRecord(nirmanData.bookings, "unitId", unit.unitId);
-    var bookingProject = booking ? getAdminProject(booking.projectId) : null;
-    if (unit.status === "Available" && !booking) {
+  for (index = 0; index < adminPortfolioUnitsCache.length; index += 1) {
+    var unit = adminPortfolioUnitsCache[index];
+    if (unit.status === "Available" && !unit.bookingId) {
       availableCount += 1;
     }
     unitHtml += '<tr data-status="' + escapeHtml(unit.status) + '"><td><span class="table-primary-text">' +
       escapeHtml(unit.unitNo) + '</span><span class="table-secondary-text">' + escapeHtml(unit.unitId) +
       "</span></td><td>" + escapeHtml(unit.unitType) + "</td><td>" + createStatusBadge(unit.status) + "</td><td>" +
-      escapeHtml(booking ? booking.bookingId + " / " + getClientName(booking.clientId) : "No booking context") + "</td><td>" +
-      escapeHtml(bookingProject ? bookingProject.projectName + " (through " + booking.bookingId + ")" : "No project context") +
+      escapeHtml(unit.bookingId ? unit.bookingId + " / " + unit.clientName : "No booking context") + "</td><td>" +
+      escapeHtml(unit.projectName ? unit.projectName + " (through " + unit.bookingId + ")" : "No project context") +
       "</td></tr>";
   }
   document.getElementById("unitTableBody").innerHTML = unitHtml;
 
-  for (index = 0; index < nirmanData.projectUpdates.length; index += 1) {
-    var update = nirmanData.projectUpdates[index];
-    var updatedProject = getAdminProject(update.projectId);
+  for (index = 0; index < adminPortfolioUpdatesCache.length; index += 1) {
+    var update = adminPortfolioUpdatesCache[index];
     updateHtml += "<tr><td><span class=\"table-primary-text\">" + escapeHtml(update.projectId + " / " + update.updateId) +
-      "</span></td><td>" + escapeHtml(updatedProject ? updatedProject.projectName : update.projectId) + "</td><td>" +
-      escapeHtml(getRepresentativeName(update.repId)) + "</td><td>" + escapeHtml(formatDate(update.updateDate)) +
+      "</span></td><td>" + escapeHtml(update.projectName) + "</td><td>" +
+      escapeHtml(update.repName) + "</td><td>" + escapeHtml(formatDate(update.updateDate)) +
       "</td><td>" + escapeHtml(update.progressPercent + "%") + "</td><td>" + escapeHtml(update.workNote) + "</td></tr>";
   }
   document.getElementById("updateTableBody").innerHTML = updateHtml;
-  setAdminText("portfolioAreaCount", nirmanData.areas.length);
-  setAdminText("portfolioProjectCount", nirmanData.projects.length);
-  setAdminText("portfolioUnitCount", nirmanData.units.length);
-  setAdminText("portfolioUpdateCount", nirmanData.projectUpdates.length);
+
+  setAdminText("portfolioAreaCount", Object.keys(areaGroups).length);
+  setAdminText("portfolioProjectCount", adminPortfolioProjectsCache.length);
+  setAdminText("portfolioUnitCount", adminPortfolioUnitsCache.length);
+  setAdminText("portfolioUpdateCount", adminPortfolioUpdatesCache.length);
   setAdminText("portfolioOverdueNote", overdueCount + " overdue");
   setAdminText("portfolioAvailableNote", availableCount + " truly available");
 }
@@ -693,47 +1049,37 @@ function getBookingPaymentCount(bookingId) {
 function renderAllocationsPage() {
   var html = "";
   var confirmedCount = 0;
-  var relatedPaymentCount = 0;
-  for (var index = 0; index < nirmanData.bookings.length; index += 1) {
-    var booking = nirmanData.bookings[index];
-    var unit = getAdminUnit(booking.unitId);
-    var project = getAdminProject(booking.projectId);
-    var confirmation = findRecord(nirmanData.allocationConfirmations, "bookingId", booking.bookingId);
-    var state = confirmation ? "Confirmed" : "Pending confirmation";
-    var paymentCount = getBookingPaymentCount(booking.bookingId);
-    relatedPaymentCount += paymentCount;
-    if (confirmation) {
+  for (var index = 0; index < adminAllocationsCache.length; index += 1) {
+    var booking = adminAllocationsCache[index];
+    var isConfirmed = Boolean(booking.confirmedEmpId);
+    var state = isConfirmed ? "Confirmed" : "Pending confirmation";
+    if (isConfirmed) {
       confirmedCount += 1;
     }
     html += '<tr data-status="' + escapeHtml(state) + '"><td><span class="table-primary-text">' +
       escapeHtml("Booking " + booking.bookingId) + '</span><span class="table-secondary-text">' + escapeHtml(formatDate(booking.bookingDate)) +
-      "</span></td><td>" + escapeHtml(getClientName(booking.clientId)) + "</td><td>" +
-      escapeHtml(unit ? unit.unitNo + " - " + unit.unitType : "Unit unavailable") +
-      "</td><td>" + escapeHtml(project ? project.projectName : "Project unavailable") + "</td><td>" +
+      "</span></td><td>" + escapeHtml(booking.clientName) + "</td><td>" +
+      escapeHtml(booking.unitNo + " - " + booking.unitType) + "</td><td>" + escapeHtml(booking.projectName) + "</td><td>" +
       createStatusBadge(booking.bookingStatus) + '<span class="table-secondary-text">Due ' +
-      escapeHtml(formatCurrency(booking.dueAmount)) + " · " + paymentCount +
-      " payment(s)</span></td><td>" + (confirmation ? escapeHtml(getEmployeeName(confirmation.employeeId)) : createStatusBadge(state)) +
-      "</td><td>" + (confirmation ? "Confirmed" : '<button class="mini-action confirm-allocation" type="button" data-id="' +
+      escapeHtml(formatCurrency(booking.dueAmount)) + "</span></td><td>" +
+      (isConfirmed ? escapeHtml(booking.confirmedEmpName) : createStatusBadge(state)) + "</td><td>" +
+      (isConfirmed ? "Confirmed" : '<button class="mini-action confirm-allocation" type="button" data-id="' +
         escapeHtml(booking.bookingId) + '">Confirm</button>') + "</td></tr>";
   }
   document.getElementById("allocationTableBody").innerHTML = html;
-  setAdminText("allocationBookingCount", nirmanData.bookings.length);
+  setAdminText("allocationBookingCount", adminAllocationsCache.length);
   setAdminText("allocationConfirmedCount", confirmedCount);
-  setAdminText("allocationPendingCount", nirmanData.bookings.length - confirmedCount);
-  setAdminText("allocationPaymentCount", relatedPaymentCount);
+  setAdminText("allocationPendingCount", adminAllocationsCache.length - confirmedCount);
+  setAdminText("allocationPaymentCount", "Not tracked");
   var buttons = document.querySelectorAll(".confirm-allocation");
   for (index = 0; index < buttons.length; index += 1) {
     buttons[index].addEventListener("click", function () {
-      var booking = getAdminBooking(this.getAttribute("data-id"));
+      var booking = findRecord(adminAllocationsCache, "bookingId", this.getAttribute("data-id"));
       if (!booking) {
         return;
       }
       document.getElementById("allocationBookingId").value = booking.bookingId;
-      var unit = getAdminUnit(booking.unitId);
-      var project = getAdminProject(booking.projectId);
-      setAdminText("allocationSummary", getClientName(booking.clientId) + " - " +
-        (unit ? unit.unitNo : "Unit unavailable") + " - " +
-        (project ? project.projectName : "Project unavailable"));
+      setAdminText("allocationSummary", booking.clientName + " - " + booking.unitNo + " - " + booking.projectName);
       showAdminModal("allocationModal");
     });
   }
@@ -741,30 +1087,42 @@ function renderAllocationsPage() {
 
 function initializeAllocationForm() {
   var form = document.getElementById("allocationForm");
+  if (!form) {
+    return;
+  }
   populateEmployeeSelect("allocationEmployee");
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     var bookingId = document.getElementById("allocationBookingId").value;
     var employeeId = document.getElementById("allocationEmployee").value;
-    var booking = getAdminBooking(bookingId);
-    if (!booking || !getAdminEmployee(employeeId)) {
+    if (!bookingId || !employeeId) {
       showPageAlert("Choose a pending booking and an existing employee.", "danger");
-      return;
-    }
-    if (findRecord(nirmanData.allocationConfirmations, "bookingId", bookingId)) {
-      showPageAlert("This Booking-Allocation Process is already confirmed.", "danger");
       return;
     }
     if (!window.confirm("Confirm this Booking-Allocation Process?")) {
       return;
     }
-    nirmanData.allocationConfirmations.push({ bookingId: bookingId, employeeId: employeeId });
-    booking.bookingStatus = "Confirmed";
-    form.reset();
-    hideAdminModal("allocationModal");
-    renderAllocationsPage();
-    applyAdminFilter("allocationTable");
-    showPageAlert("Allocation confirmed successfully.", "success");
+    var formData = new FormData();
+    formData.append("bookingId", bookingId);
+    formData.append("empId", employeeId);
+    fetch("../../confirm_allocation.php", { method: "POST", body: formData })
+      .then(function (r) { return r.json(); })
+      .then(function (result) {
+        if (result.success) {
+          form.reset();
+          hideAdminModal("allocationModal");
+          fetchAdminAllocations(function () {
+            renderAllocationsPage();
+            applyAdminFilter("allocationTable");
+            showPageAlert(result.message, "success");
+          });
+        } else {
+          showPageAlert(result.message, "danger");
+        }
+      })
+      .catch(function () {
+        showPageAlert("Something went wrong. Please try again.", "danger");
+      });
   });
 }
 
@@ -794,26 +1152,22 @@ function renderFinancePage() {
   var totalAmount = 0;
   var pendingCount = 0;
   var index;
-  for (index = 0; index < nirmanData.payments.length; index += 1) {
-    var payment = nirmanData.payments[index];
-    var installments = getPaymentInstallments(payment);
-    var verifier = getAdminEmployee(payment.verifiedByEmployeeId);
+  for (index = 0; index < adminPaymentsCache.length; index += 1) {
+    var payment = adminPaymentsCache[index];
     totalAmount += Number(payment.amount);
     if (payment.paymentStatus === "Pending") {
       pendingCount += 1;
     }
     paymentHtml += '<tr data-status="' + escapeHtml(payment.paymentStatus) + '"><td><span class="table-primary-text">' +
-      escapeHtml(payment.clientId + " / " + payment.paymentId) + '</span><span class="table-secondary-text">Weak Payment</span></td><td>' +
-      escapeHtml(getClientName(payment.clientId)) + "</td><td>" + escapeHtml(payment.bookingId) + "</td><td>" +
+      escapeHtml(payment.clientId + " / " + payment.paymentId) + '</span></td><td>' +
+      escapeHtml(payment.clientName) + "</td><td>" + escapeHtml(payment.bookingId) + "</td><td>" +
       escapeHtml(formatCurrency(payment.amount)) + '<span class="table-secondary-text">' + escapeHtml(payment.paymentMethod) +
       "</span></td><td>" + escapeHtml(formatDate(payment.paymentDue)) + "</td><td>" +
-      escapeHtml(verifier ? getEmployeeName(verifier.employeeId) : "Not yet assigned") + '<span class="table-secondary-text">' +
+      escapeHtml(payment.verifierName || "Not yet assigned") + '<span class="table-secondary-text">' +
       escapeHtml(payment.verifiedAt ? "Verified " + formatAdminDateTime(payment.verifiedAt) : "Not yet verified") + "</span></td><td>" +
       createStatusBadge(payment.paymentStatus) + "</td><td>" + (payment.paymentStatus === "Pending" ?
         '<button class="mini-action verify-payment" type="button" data-client="' + escapeHtml(payment.clientId) +
-        '" data-payment="' + escapeHtml(payment.paymentId) + '">Verify</button> ' : "") +
-      '<button class="mini-action payment-installments" type="button" data-client="' + escapeHtml(payment.clientId) +
-      '" data-payment="' + escapeHtml(payment.paymentId) + '">Installments (' + installments.length + ")</button></td></tr>";
+        '" data-payment="' + escapeHtml(payment.paymentId) + '">Verify</button>' : "") + "</td></tr>";
   }
   document.getElementById("paymentTableBody").innerHTML = paymentHtml;
 
@@ -827,7 +1181,7 @@ function renderFinancePage() {
       "</td><td>" + escapeHtml(installment.expiredAt ? formatDate(installment.expiredAt) : "Not expired") + "</td></tr>";
   }
   document.getElementById("installmentTableBody").innerHTML = installmentHtml;
-  setAdminText("financePaymentCount", nirmanData.payments.length);
+  setAdminText("financePaymentCount", adminPaymentsCache.length);
   setAdminText("financeTotalAmount", formatCurrency(totalAmount));
   setAdminText("financePendingCount", pendingCount);
   setAdminText("financeInstallmentCount", nirmanData.installments.length);
@@ -838,42 +1192,43 @@ function renderFinancePage() {
       verifyAdminPayment(this.getAttribute("data-client"), this.getAttribute("data-payment"));
     });
   }
-  var installmentButtons = document.querySelectorAll(".payment-installments");
-  for (index = 0; index < installmentButtons.length; index += 1) {
-    installmentButtons[index].addEventListener("click", function () {
-      showPaymentInstallments(this.getAttribute("data-client"), this.getAttribute("data-payment"));
-    });
-  }
 }
 
 function verifyAdminPayment(clientId, paymentId) {
-  var payment = findAdminPayment(clientId, paymentId);
-  var employee;
+  var payment = findRecord(adminPaymentsCache.filter(function (p) { return p.clientId === clientId; }), "paymentId", paymentId);
+  var employee = adminEmployeesCache.length ? adminEmployeesCache[0] : null;
   if (!payment || payment.paymentStatus !== "Pending") {
     showPageAlert("Only a current Pending payment can be verified.", "danger");
     return;
-  }
-  employee = getAdminEmployee(payment.verifiedByEmployeeId);
-  if (!employee) {
-    employee = getAdminEmployee("2");
-  }
-  if (!employee && nirmanData.employees.length > 0) {
-    employee = nirmanData.employees[0];
   }
   if (!employee) {
     showPageAlert("No existing Employee is available to verify this payment.", "danger");
     return;
   }
-  if (!window.confirm("Verify " + clientId + " / " + paymentId + " as " + getEmployeeName(employee.employeeId) + "?")) {
+  if (!window.confirm("Verify " + clientId + " / " + paymentId + " as " + employee.firstName + " " + employee.lastName + "?")) {
     return;
   }
-  payment.verifiedByEmployeeId = employee.employeeId;
-  payment.paymentStatus = "Verified";
-  payment.verifiedAt = new Date().toISOString();
-  renderFinancePage();
-  applyAdminFilter("paymentTable");
-  applyAdminFilter("installmentTable");
-  showPageAlert("Payment verified successfully.", "success");
+  var formData = new FormData();
+  formData.append("clId", clientId);
+  formData.append("paymentId", paymentId);
+  formData.append("empId", employee.employeeId);
+  fetch("../../verify_payment_admin.php", { method: "POST", body: formData })
+    .then(function (r) { return r.json(); })
+    .then(function (result) {
+      if (result.success) {
+        fetchAdminPayments(function () {
+          renderFinancePage();
+          applyAdminFilter("paymentTable");
+          applyAdminFilter("installmentTable");
+          showPageAlert(result.message, "success");
+        });
+      } else {
+        showPageAlert(result.message, "danger");
+      }
+    })
+    .catch(function () {
+      showPageAlert("Something went wrong. Please try again.", "danger");
+    });
 }
 
 function showPaymentInstallments(clientId, paymentId) {
@@ -904,8 +1259,8 @@ function renderComplaintsPage() {
   var html = "";
   var pendingCount = 0;
   var resolvedCount = 0;
-  for (var index = 0; index < nirmanData.complaints.length; index += 1) {
-    var complaint = nirmanData.complaints[index];
+  for (var index = 0; index < adminComplaintsCache.length; index += 1) {
+    var complaint = adminComplaintsCache[index];
     if (complaint.status === "Resolved") {
       resolvedCount += 1;
     } else {
@@ -913,91 +1268,102 @@ function renderComplaintsPage() {
     }
     html += '<tr data-status="' + escapeHtml(complaint.status) + '"><td><span class="table-primary-text">' +
       escapeHtml(complaint.complaintId) + '</span><span class="table-secondary-text">' + escapeHtml(formatDate(complaint.filedDate)) +
-      "</span></td><td>" + escapeHtml(getClientName(complaint.clientId)) + "</td><td>" +
-      escapeHtml(complaint.note) + "</td><td>" +
-      escapeHtml(getEmployeeName(complaint.resolvedByEmployeeId)) + "</td><td>" + createStatusBadge(complaint.status) +
-      '</td><td><button class="mini-action complaint-detail" type="button" data-id="' + escapeHtml(complaint.complaintId) +
-      '">Details</button> ' + (complaint.status === "Resolved" ? "" :
+      "</span></td><td>" + escapeHtml(complaint.clientName) + "</td><td>" +
+      escapeHtml(complaint.note) + "</td><td>" + escapeHtml(complaint.employeeName || "Not yet assigned") + "</td><td>" +
+      createStatusBadge(complaint.status) + '</td><td><button class="mini-action complaint-detail" type="button" data-id="' +
+      escapeHtml(complaint.complaintId) + '">Details</button> ' + (complaint.status === "Resolved" ? "" :
         '<button class="mini-action resolve-complaint" type="button" data-id="' + escapeHtml(complaint.complaintId) +
         '">Resolve</button>') + "</td></tr>";
   }
   document.getElementById("complaintTableBody").innerHTML = html;
-  setAdminText("complaintTotalCount", nirmanData.complaints.length);
+  setAdminText("complaintTotalCount", adminComplaintsCache.length);
   setAdminText("complaintPendingCount", pendingCount);
   setAdminText("complaintResolvedCount", resolvedCount);
-  setAdminText("complaintEmployeeCount", nirmanData.employees.length);
+  setAdminText("complaintEmployeeCount", adminEmployeesCache.length);
+
   var detailButtons = document.querySelectorAll(".complaint-detail");
-  for (index = 0; index < detailButtons.length; index += 1) {
-    detailButtons[index].addEventListener("click", function () {
+  for (var index2 = 0; index2 < detailButtons.length; index2 += 1) {
+    detailButtons[index2].addEventListener("click", function () {
       showComplaintDetails(this.getAttribute("data-id"));
     });
   }
   var resolveButtons = document.querySelectorAll(".resolve-complaint");
-  for (index = 0; index < resolveButtons.length; index += 1) {
-    resolveButtons[index].addEventListener("click", function () {
+  for (var index3 = 0; index3 < resolveButtons.length; index3 += 1) {
+    resolveButtons[index3].addEventListener("click", function () {
       openComplaintResolution(this.getAttribute("data-id"));
     });
   }
 }
 
 function showComplaintDetails(complaintId) {
-  var complaint = findRecord(nirmanData.complaints, "complaintId", complaintId);
+  var complaint = findRecord(adminComplaintsCache, "complaintId", complaintId);
   if (!complaint) {
     return;
   }
   setAdminText("complaintDetailTitle", "Complaint " + complaint.complaintId);
   document.getElementById("complaintDetailBody").innerHTML = adminDetailList([
-    ["Client", getClientName(complaint.clientId)],
+    ["Client", complaint.clientName],
     ["Filed date", formatDate(complaint.filedDate)], ["Status", complaint.status], ["Complaint note", complaint.note],
-    ["Resolving employee", getEmployeeName(complaint.resolvedByEmployeeId)],
+    ["Resolving employee", complaint.employeeName || "Not yet assigned"],
     ["Resolution", complaint.resolution || "Not yet resolved"]
   ]);
   showAdminModal("complaintDetailModal");
 }
 
 function openComplaintResolution(complaintId) {
-  var complaint = findRecord(nirmanData.complaints, "complaintId", complaintId);
+  var complaint = findRecord(adminComplaintsCache, "complaintId", complaintId);
   if (!complaint || complaint.status === "Resolved") {
     showPageAlert("Only an unresolved complaint can be resolved.", "danger");
     return;
   }
   document.getElementById("resolveComplaintId").value = complaint.complaintId;
   document.getElementById("resolveComplaintStatus").value = "Resolved";
-  document.getElementById("resolveComplaintEmployee").value = complaint.resolvedByEmployeeId;
-  document.getElementById("resolveComplaintText").value = complaint.resolution;
+  document.getElementById("resolveComplaintEmployee").value = "";
+  document.getElementById("resolveComplaintText").value = "";
   setAdminText("resolveComplaintSummary", complaint.complaintId + ": " + complaint.note);
   showAdminModal("complaintResolveModal");
 }
 
 function initializeComplaintForm() {
   var form = document.getElementById("complaintResolveForm");
+  if (!form) {
+    return;
+  }
   populateEmployeeSelect("resolveComplaintEmployee");
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     var complaintId = document.getElementById("resolveComplaintId").value;
-    var status = document.getElementById("resolveComplaintStatus").value;
     var employeeId = document.getElementById("resolveComplaintEmployee").value;
     var resolution = document.getElementById("resolveComplaintText").value.trim();
-    var complaint = findRecord(nirmanData.complaints, "complaintId", complaintId);
-    if (!complaint || complaint.status === "Resolved") {
-      showPageAlert("This complaint is missing or already resolved.", "danger");
-      return;
-    }
-    if (status !== "Resolved" || !getAdminEmployee(employeeId) || resolution.length < 10) {
-      showPageAlert("Choose Resolved, select an existing Employee, and enter at least 10 characters of resolution detail.", "danger");
+    if (!employeeId || resolution.length < 10) {
+      showPageAlert("Choose an existing Employee and enter at least 10 characters of resolution detail.", "danger");
       return;
     }
     if (!window.confirm("Resolve " + complaintId + "?")) {
       return;
     }
-    complaint.status = status;
-    complaint.resolution = resolution;
-    complaint.resolvedByEmployeeId = employeeId;
-    form.reset();
-    hideAdminModal("complaintResolveModal");
-    renderComplaintsPage();
-    applyAdminFilter("complaintTable");
-    showPageAlert("Complaint resolved successfully.", "success");
+    var formData = new FormData();
+    formData.append("complaintId", complaintId);
+    formData.append("empId", employeeId);
+    formData.append("resolution", resolution);
+    fetch("../../resolve_complaint_admin.php", { method: "POST", body: formData })
+      .then(function (r) { return r.json(); })
+      .then(function (result) {
+        if (result.success) {
+          form.reset();
+          hideAdminModal("complaintResolveModal");
+          fetchAdminComplaints(function () {
+            renderComplaintsPage();
+            applyAdminFilter("complaintTable");
+            showPageAlert(result.message, "success");
+          });
+        } else {
+          showPageAlert(result.message, "danger");
+        }
+      })
+      .catch(function () {
+        showPageAlert("Something went wrong. Please try again.", "danger");
+      });
   });
 }
 
@@ -1019,35 +1385,26 @@ function findAwardForBid(tenderId, bidId) {
   return null;
 }
 
-function isEligibleBid(bid) {
-  var tender = getAdminTender(bid.tenderId);
-  return tender && tender.status !== "Awarded" && bid.bidStatus !== "Rejected" && !findAwardForBid(bid.tenderId, bid.bidId);
-}
-
 function populateAwardForm() {
   var bidSelect = document.getElementById("awardBidChoice");
-  var employeeSelect = document.getElementById("awardEmployeeId");
   var areaSelect = document.getElementById("awardProjectArea");
   var bidHtml = '<option value="">Choose an eligible unawarded bid</option>';
   var areaHtml = '<option value="">Choose an existing area</option>';
   populateEmployeeSelect("awardEmployeeId");
-  for (var index = 0; index < nirmanData.tenderBids.length; index += 1) {
-    var bid = nirmanData.tenderBids[index];
-    var tender = getAdminTender(bid.tenderId);
-    if (isEligibleBid(bid)) {
+  for (var index = 0; index < adminBidsCache.length; index += 1) {
+    var bid = adminBidsCache[index];
+    if (isEligibleAdminBid(bid)) {
       bidHtml += '<option value="' + escapeHtml(bid.tenderId + "|" + bid.bidId) + '">' +
-        escapeHtml(bid.tenderId + " / " + bid.bidId + " - " + (tender ? tender.title : "Unknown tender") +
-          " - " + formatCurrency(bid.bidAmount)) + "</option>";
+        escapeHtml(bid.tenderId + " / " + bid.bidId + " - " + bid.tenderTitle + " - " + formatCurrency(bid.bidAmount)) + "</option>";
     }
   }
-  for (index = 0; index < nirmanData.areas.length; index += 1) {
-    areaHtml += '<option value="' + escapeHtml(nirmanData.areas[index].areaId) + '">' +
-      escapeHtml(nirmanData.areas[index].areaId + " - House " + nirmanData.areas[index].houseNo + ", " +
-        nirmanData.areas[index].roadSector) + "</option>";
+  for (index = 0; index < adminAreasCache.length; index += 1) {
+    var area = adminAreasCache[index];
+    areaHtml += '<option value="' + escapeHtml(area.areaId) + '">' +
+      escapeHtml(area.areaId + " - House " + area.houseNo + ", " + area.roadSector) + "</option>";
   }
   bidSelect.innerHTML = bidHtml;
   areaSelect.innerHTML = areaHtml;
-  employeeSelect.value = "";
 }
 
 function renderTendersPage() {
@@ -1056,62 +1413,51 @@ function renderTendersPage() {
   var awardHtml = "";
   var awardedTenderCount = 0;
   var index;
-  for (index = 0; index < nirmanData.tenders.length; index += 1) {
-    var tender = nirmanData.tenders[index];
-    var bidCount = 0;
+  for (index = 0; index < adminTendersCache.length; index += 1) {
+    var tender = adminTendersCache[index];
     if (tender.status === "Awarded") {
       awardedTenderCount += 1;
     }
-    for (var bidIndex = 0; bidIndex < nirmanData.tenderBids.length; bidIndex += 1) {
-      if (nirmanData.tenderBids[bidIndex].tenderId === tender.tenderId) {
-        bidCount += 1;
-      }
-    }
     tenderHtml += '<tr data-status="' + escapeHtml(tender.status) + '"><td><span class="table-primary-text">' +
       escapeHtml(tender.title) + '</span><span class="table-secondary-text">' + escapeHtml(tender.tenderId) +
-      "</span></td><td>" + escapeHtml(getEmployeeName(tender.employeeId)) + "</td><td>" + escapeHtml(formatDate(tender.day)) +
-      "</td><td>" + escapeHtml(formatDate(tender.deadline)) + "<span class=\"table-secondary-text\">" +
-      createStatusBadge(getDateState(tender.deadline)) + "</span></td><td>" + bidCount + "</td><td>" +
-      createStatusBadge(tender.status) + '</td><td><button class="mini-action tender-detail" type="button" data-kind="tender" data-first="' +
+      "</span></td><td>" + escapeHtml(tender.publisherName) + "</td><td>Not tracked</td><td>" + escapeHtml(formatDate(tender.deadline)) +
+      "<span class=\"table-secondary-text\">" + createStatusBadge(getDateState(tender.deadline)) + "</span></td><td>" +
+      tender.bidCount + "</td><td>" + createStatusBadge(tender.status) +
+      '</td><td><button class="mini-action tender-detail" type="button" data-kind="tender" data-first="' +
       escapeHtml(tender.tenderId) + '">Details</button></td></tr>';
   }
   document.getElementById("tenderTableBody").innerHTML = tenderHtml;
 
-  for (index = 0; index < nirmanData.tenderBids.length; index += 1) {
-    var bid = nirmanData.tenderBids[index];
-    var bidTender = getAdminTender(bid.tenderId);
-    var representative = findRecord(nirmanData.contractorReps, "repId", bid.repId);
-    var bidContractor = representative ? getAdminContractor(representative.contractorId) : null;
-    var bidAward = findAwardForBid(bid.tenderId, bid.bidId);
+  for (index = 0; index < adminBidsCache.length; index += 1) {
+    var bid = adminBidsCache[index];
     bidHtml += '<tr data-status="' + escapeHtml(bid.bidStatus) + '"><td><span class="table-primary-text">' +
-      escapeHtml(bid.tenderId + " / " + bid.bidId) + '</span><span class="table-secondary-text">Weak Tender Bid</span></td><td>' +
-      escapeHtml(bidTender ? bidTender.title : bid.tenderId) + "</td><td>" + escapeHtml(getRepresentativeName(bid.repId)) +
-      '<span class="table-secondary-text">' + escapeHtml(bidContractor ? bidContractor.companyName : "Unknown contractor") +
+      escapeHtml(bid.tenderId + " / " + bid.bidId) + '</span></td><td>' +
+      escapeHtml(bid.tenderTitle) + "</td><td>" + escapeHtml(bid.repName) +
+      '<span class="table-secondary-text">' + escapeHtml(bid.companyName) +
       "</span></td><td>" + escapeHtml(formatCurrency(bid.bidAmount)) + "</td><td>" + createStatusBadge(bid.bidStatus) +
-      "</td><td>" + escapeHtml(bidAward ? bidAward.awardId : "Unawarded") + "</td><td>" +
+      "</td><td>" + escapeHtml(bid.awardId || "Unawarded") + "</td><td>" +
       '<button class="mini-action tender-detail" type="button" data-kind="bid" data-first="' + escapeHtml(bid.tenderId) +
-      '" data-second="' + escapeHtml(bid.bidId) + '">Details</button> ' + (isEligibleBid(bid) ?
+      '" data-second="' + escapeHtml(bid.bidId) + '">Details</button> ' + (isEligibleAdminBid(bid) ?
         '<button class="mini-action open-award" type="button" data-value="' + escapeHtml(bid.tenderId + "|" + bid.bidId) +
         '">Award</button>' : "") + "</td></tr>";
   }
   document.getElementById("bidTableBody").innerHTML = bidHtml;
 
-  for (index = 0; index < nirmanData.tenderAwards.length; index += 1) {
-    var award = nirmanData.tenderAwards[index];
-    var awardProject = findRecord(nirmanData.projects, "awardId", award.awardId);
+  for (index = 0; index < adminAwardsCache.length; index += 1) {
+    var award = adminAwardsCache[index];
     awardHtml += "<tr><td><span class=\"table-primary-text\">" + escapeHtml(award.awardId) +
       "</span></td><td>" + escapeHtml(award.tenderId + " / " + award.bidId) + "</td><td>" +
-      escapeHtml(getEmployeeName(award.employeeId)) + "</td><td>" + escapeHtml(formatCurrency(award.awardAmount)) +
+      escapeHtml(award.empName) + "</td><td>" + escapeHtml(formatCurrency(award.awardAmount)) +
       "</td><td>" + escapeHtml(formatDate(award.awardDate)) + "</td><td>" +
-      escapeHtml(awardProject ? awardProject.projectName + " (" + awardProject.projectId + ")" : "No resulting project") +
+      escapeHtml(award.projectId ? award.projectName + " (" + award.projectId + ")" : "No resulting project") +
       '</td><td><button class="mini-action tender-detail" type="button" data-kind="award" data-first="' +
       escapeHtml(award.awardId) + '">Details</button></td></tr>';
   }
   document.getElementById("awardTableBody").innerHTML = awardHtml;
-  setAdminText("tenderTotalCount", nirmanData.tenders.length);
-  setAdminText("tenderBidCount", nirmanData.tenderBids.length);
-  setAdminText("tenderAwardCount", nirmanData.tenderAwards.length);
-  setAdminText("tenderProjectCount", nirmanData.projects.length);
+  setAdminText("tenderTotalCount", adminTendersCache.length);
+  setAdminText("tenderBidCount", adminBidsCache.length);
+  setAdminText("tenderAwardCount", adminAwardsCache.length);
+  setAdminText("tenderProjectCount", adminAwardsCache.filter(function (a) { return a.projectId; }).length);
   setAdminText("tenderAwardedNote", awardedTenderCount + " tender(s) marked Awarded");
   populateAwardForm();
 
@@ -1133,7 +1479,7 @@ function renderTendersPage() {
 
 function updateAwardAmountFromBid() {
   var choice = document.getElementById("awardBidChoice").value.split("|");
-  var bid = choice.length === 2 ? findTenderBid(choice[0], choice[1]) : null;
+  var bid = choice.length === 2 ? findRecord(adminBidsCache.filter(function (b) { return b.tenderId === choice[0]; }), "bidId", choice[1]) : null;
   if (bid) {
     document.getElementById("awardAmount").value = bid.bidAmount;
   }
@@ -1143,32 +1489,25 @@ function showTenderDetails(kind, firstId, secondId) {
   var title = "Tender record details";
   var items = [];
   if (kind === "tender") {
-    var tender = getAdminTender(firstId);
+    var tender = findRecord(adminTendersCache, "tenderId", firstId);
     if (!tender) { return; }
     title = tender.title;
-    items = [["Tender", tender.tenderId], ["Publisher", getEmployeeName(tender.employeeId)], ["Published", formatDate(tender.day)],
-      ["Deadline", formatDate(tender.deadline)], ["Status", tender.status], ["Task", tender.task], ["Bid details", tender.bidDetails]];
+    items = [["Tender", tender.tenderId], ["Publisher", tender.publisherName], ["Deadline", formatDate(tender.deadline)],
+      ["Status", tender.status], ["Bid details", tender.bidDetails]];
   } else if (kind === "bid") {
-    var bid = findTenderBid(firstId, secondId);
-    var representative = bid ? findRecord(nirmanData.contractorReps, "repId", bid.repId) : null;
-    var contractor = representative ? getAdminContractor(representative.contractorId) : null;
+    var bid = findRecord(adminBidsCache.filter(function (b) { return b.tenderId === firstId; }), "bidId", secondId);
     if (!bid) { return; }
     title = "Bid " + bid.tenderId + " / " + bid.bidId;
-    items = [["Tender / Bid ID", bid.tenderId + " / " + bid.bidId], ["Representative", getRepresentativeName(bid.repId)],
-      ["Contractor", contractor ? contractor.companyName : "Unknown contractor"], ["Amount", formatCurrency(bid.bidAmount)],
-      ["Status", bid.bidStatus], ["Award", findAwardForBid(bid.tenderId, bid.bidId) ? findAwardForBid(bid.tenderId, bid.bidId).awardId : "Unawarded"]];
+    items = [["Tender / Bid ID", bid.tenderId + " / " + bid.bidId], ["Representative", bid.repName],
+      ["Contractor", bid.companyName], ["Amount", formatCurrency(bid.bidAmount)],
+      ["Status", bid.bidStatus], ["Award", bid.awardId || "Unawarded"]];
   } else {
-    var award = getAdminAward(firstId);
-    var project = award ? findRecord(nirmanData.projects, "awardId", award.awardId) : null;
-    var area = project ? getAdminArea(project.areaId) : null;
+    var award = findRecord(adminAwardsCache, "awardId", firstId);
     if (!award) { return; }
     title = "Award " + award.awardId;
-    items = [["Selected bid", award.tenderId + " / " + award.bidId], ["Issued by", getEmployeeName(award.employeeId)],
+    items = [["Selected bid", award.tenderId + " / " + award.bidId], ["Issued by", award.empName],
       ["Award amount", formatCurrency(award.awardAmount)], ["Award date", formatDate(award.awardDate)],
-      ["Resulting project", project ? project.projectName + " (" + project.projectId + ")" : "Missing"],
-      ["Project budget", project ? formatCurrency(project.projectBudget) : "Not available"],
-      ["Project deadline", project ? formatDate(project.deadline) : "Not available"],
-      ["Area", area ? "House " + area.houseNo + ", " + area.roadSector : "Not available"]];
+      ["Resulting project", award.projectId ? award.projectName + " (" + award.projectId + ")" : "Missing"]];
   }
   setAdminText("tenderDetailTitle", title);
   document.getElementById("tenderDetailBody").innerHTML = adminDetailList(items);
@@ -1177,66 +1516,59 @@ function showTenderDetails(kind, firstId, secondId) {
 
 function initializeTenderAwardForm() {
   var form = document.getElementById("tenderAwardForm");
-  document.getElementById("awardBidChoice").addEventListener("change", updateAwardAmountFromBid);
+  var bidChoice = document.getElementById("awardBidChoice");
+  if (!form || !bidChoice) {
+    return;
+  }
+  bidChoice.addEventListener("change", updateAwardAmountFromBid);
   form.addEventListener("submit", function (event) {
     event.preventDefault();
-    var choice = document.getElementById("awardBidChoice").value.split("|");
-    var awardId = document.getElementById("awardId").value.trim();
-    var employeeId = document.getElementById("awardEmployeeId").value;
-    var awardAmount = Number(document.getElementById("awardAmount").value);
-    var awardDate = document.getElementById("awardDate").value;
-    var projectId = document.getElementById("awardProjectId").value.trim();
-    var areaId = document.getElementById("awardProjectArea").value;
-    var projectBudget = Number(document.getElementById("awardProjectBudget").value);
-    var projectName = document.getElementById("awardProjectName").value.trim();
-    var projectDeadline = document.getElementById("awardProjectDeadline").value;
-    var projectStatus = document.getElementById("awardProjectStatus").value;
-    var bid = choice.length === 2 ? findTenderBid(choice[0], choice[1]) : null;
-    var tender = bid ? getAdminTender(bid.tenderId) : null;
-    if (!bid || !tender || !isEligibleBid(bid)) {
-      showPageAlert("Choose an eligible unawarded Bid from a Tender that is not already Awarded.", "danger");
+    var choice = bidChoice.value.split("|");
+    if (choice.length !== 2) {
+      showPageAlert("Choose an eligible unawarded bid.", "danger");
       return;
     }
-    if (!awardId || !getAdminEmployee(employeeId) || awardAmount <= 0 || !awardDate) {
-      showPageAlert("Complete every Tender Award field with valid values.", "danger");
+    if (!window.confirm("Create this Award and its required Construction Project?")) {
       return;
     }
-    if (!projectId || !getAdminArea(areaId) || projectBudget <= 0 || !projectName || !projectDeadline || !projectStatus) {
-      showPageAlert("Complete every Construction Project field and choose an existing Area.", "danger");
-      return;
-    }
-    if (getAdminAward(awardId)) {
-      showPageAlert("Award ID " + awardId + " already exists.", "danger");
-      return;
-    }
-    if (findAwardForBid(bid.tenderId, bid.bidId)) {
-      showPageAlert("That tender bid already has an award.", "danger");
-      return;
-    }
-    if (getAdminProject(projectId)) {
-      showPageAlert("Project ID " + projectId + " already exists.", "danger");
-      return;
-    }
-    if (findRecord(nirmanData.projects, "awardId", awardId)) {
-      showPageAlert("That Award is already used by a Construction Project.", "danger");
-      return;
-    }
-    if (!window.confirm("Create Award " + awardId + " and its required Construction Project " + projectId + "?")) {
-      return;
-    }
-    nirmanData.tenderAwards.push({ awardId: awardId, tenderId: bid.tenderId, bidId: bid.bidId,
-      employeeId: employeeId, awardAmount: awardAmount, awardDate: awardDate });
-    nirmanData.projects.push({ projectId: projectId, awardId: awardId, areaId: areaId,
-      projectBudget: projectBudget, projectName: projectName, deadline: projectDeadline, status: projectStatus });
-    bid.bidStatus = "Selected";
-    tender.status = "Awarded";
-    form.reset();
-    hideAdminModal("tenderAwardModal");
-    renderTendersPage();
-    applyAdminFilter("tenderTable");
-    applyAdminFilter("bidTable");
-    applyAdminFilter("awardTable");
-    showPageAlert("Award and construction project created successfully.", "success");
+    var formData = new FormData();
+    formData.append("tenderId", choice[0]);
+    formData.append("bidId", choice[1]);
+    formData.append("awardId", document.getElementById("awardId").value.trim());
+    formData.append("empId", document.getElementById("awardEmployeeId").value);
+    formData.append("awardAmount", document.getElementById("awardAmount").value);
+    formData.append("awardDate", document.getElementById("awardDate").value);
+    formData.append("projectId", document.getElementById("awardProjectId").value.trim());
+    formData.append("areaId", document.getElementById("awardProjectArea").value);
+    formData.append("projectName", document.getElementById("awardProjectName").value.trim());
+    formData.append("projectBudget", document.getElementById("awardProjectBudget").value);
+    formData.append("projectDeadline", document.getElementById("awardProjectDeadline").value);
+    formData.append("projectStatus", document.getElementById("awardProjectStatus").value);
+
+    fetch("../../create_award_project.php", { method: "POST", body: formData })
+      .then(function (r) { return r.json(); })
+      .then(function (result) {
+        if (result.success) {
+          form.reset();
+          hideAdminModal("tenderAwardModal");
+          fetchAdminTenders(function () {
+            fetchAdminBids(function () {
+              fetchAdminAwards(function () {
+                renderTendersPage();
+                applyAdminFilter("tenderTable");
+                applyAdminFilter("bidTable");
+                applyAdminFilter("awardTable");
+                showPageAlert(result.message, "success");
+              });
+            });
+          });
+        } else {
+          showPageAlert(result.message, "danger");
+        }
+      })
+      .catch(function () {
+        showPageAlert("Something went wrong. Please try again.", "danger");
+      });
   });
 }
 
@@ -1250,21 +1582,71 @@ document.addEventListener("DOMContentLoaded", function () {
   } else if (page === "people") {
     renderPeoplePage();
   } else if (page === "contractors") {
-    renderContractorsPage();
-    initializeContractorForm();
+    fetchAdminContractors(function () {
+      fetchAdminRepresentatives(function () {
+        fetchAdminEmployees(function () {
+          fetchAdminSupervisions(function () {
+            renderContractorsPage();
+            initializeContractorForm();
+            initializeAdminFilters();
+          });
+        });
+      });
+    });
+    return;
   } else if (page === "portfolio") {
-    renderPortfolioPage();
+    fetchPortfolioAreas(function () {
+      fetchPortfolioProjects(function () {
+        fetchPortfolioUnits(function () {
+          fetchPortfolioUpdates(function () {
+            renderPortfolioPage();
+            initializeAdminFilters();
+          });
+        });
+      });
+    });
+    return;
   } else if (page === "allocations") {
-    renderAllocationsPage();
-    initializeAllocationForm();
+    fetchAdminEmployees(function () {
+      fetchAdminAllocations(function () {
+        renderAllocationsPage();
+        initializeAllocationForm();
+        initializeAdminFilters();
+      });
+    });
+    return;
   } else if (page === "finance") {
-    renderFinancePage();
+    fetchAdminEmployees(function () {
+      fetchAdminPayments(function () {
+        renderFinancePage();
+        initializeAdminFilters();
+      });
+    });
+    return;
   } else if (page === "complaints") {
-    renderComplaintsPage();
-    initializeComplaintForm();
+    fetchAdminEmployees(function () {
+      fetchAdminComplaints(function () {
+        renderComplaintsPage();
+        initializeComplaintForm();
+        initializeAdminFilters();
+      });
+    });
+    return;
   } else if (page === "tenders") {
-    renderTendersPage();
-    initializeTenderAwardForm();
+    fetchAdminEmployees(function () {
+      fetchAdminAreas(function () {
+        fetchAdminTenders(function () {
+          fetchAdminBids(function () {
+            fetchAdminAwards(function () {
+              renderTendersPage();
+              initializeTenderAwardForm();
+              initializeAdminFilters();
+            });
+          });
+        });
+      });
+    });
+    return;
   }
   initializeAdminFilters();
 });

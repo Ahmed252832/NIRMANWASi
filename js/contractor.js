@@ -1,5 +1,10 @@
 
-var currentRepresentativeId = "1";
+var currentRepresentativeId = null;
+var currentRepresentativeProfile = null;
+var contractorPublishedTendersCache = [];
+var contractorOwnBidsCache = [];
+var contractorProjectsCache = [];
+var contractorProjectUpdateHistoryCache = {};
 
 function contractorSetText(elementId, value) {
   var element = document.getElementById(elementId);
@@ -9,54 +14,168 @@ function contractorSetText(elementId, value) {
 }
 
 function contractorGetCurrentRepresentative() {
+  if (currentRepresentativeProfile) {
+    return {
+      repId: currentRepresentativeProfile.representativeId,
+      personId: currentRepresentativeProfile.personId,
+      title: currentRepresentativeProfile.title,
+      approvalStatus: currentRepresentativeProfile.approvalStatus,
+      contractorId: currentRepresentativeProfile.contractorId
+    };
+  }
   return findRecord(nirmanData.contractorReps, "repId", currentRepresentativeId);
 }
 
 function contractorGetCurrentPerson() {
+  if (currentRepresentativeProfile) {
+    return {
+      personId: currentRepresentativeProfile.personId,
+      firstName: currentRepresentativeProfile.firstName,
+      lastName: currentRepresentativeProfile.lastName,
+      email: currentRepresentativeProfile.email,
+      contactNo: currentRepresentativeProfile.contactNo
+    };
+  }
   var representative = contractorGetCurrentRepresentative();
   return representative ? findRecord(nirmanData.people, "personId", representative.personId) : null;
 }
 
+function contractorFetchCurrentRepresentative(callback) {
+  fetch("../../get_current_representative.php")
+    .then(function (response) { return response.json(); })
+    .then(function (result) {
+      if (!result.loggedIn) {
+        window.location.href = "../../login.html";
+        return;
+      }
+      currentRepresentativeId = result.representativeId;
+      currentRepresentativeProfile = result;
+      if (callback) {
+        callback();
+      }
+    })
+    .catch(function (error) {
+      console.error("Could not load current representative:", error);
+      window.location.href = "../../login.html";
+    });
+}
+
+function contractorFetchPublishedTenders(callback) {
+  fetch("../../get_published_tenders.php")
+    .then(function (r) { return r.json(); })
+    .then(function (tenders) {
+      contractorPublishedTendersCache = tenders.map(function (t) {
+        return {
+          tenderId: t.TENDER_ID,
+          employeeId: t.EMP_ID,
+          deadline: t.DEADLINE,
+          title: t.TITLE,
+          bidDetails: t.BID_DETAILS,
+          status: t.STATUS,
+          publisherName: t.FIRST_NAME + " " + t.LAST_NAME
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function contractorGetPublishedTenders() {
+  return contractorPublishedTendersCache;
+}
+
 function contractorGetTender(tenderId) {
-  return findRecord(nirmanData.tenders, "tenderId", tenderId);
+  return findRecord(contractorPublishedTendersCache, "tenderId", tenderId);
+}
+
+function contractorFetchOwnBids(callback) {
+  fetch("../../get_my_bids.php")
+    .then(function (r) { return r.json(); })
+    .then(function (bids) {
+      contractorOwnBidsCache = bids.map(function (b) {
+        return {
+          tenderId: b.TENDER_ID,
+          bidId: b.BID_ID,
+          bidStatus: b.BID_STATUS,
+          bidAmount: b.BID_AMOUNT,
+          tenderTitle: b.TITLE,
+          awardId: b.AWARD_ID,
+          awardAmount: b.AWARD_AMOUNT,
+          awardDate: b.AWARD_DATE
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
+function contractorGetOwnBids() {
+  return contractorOwnBidsCache;
 }
 
 function contractorGetAward(tenderId, bidId) {
-  for (var index = 0; index < nirmanData.tenderAwards.length; index += 1) {
-    var award = nirmanData.tenderAwards[index];
-    if (award.tenderId === tenderId && award.bidId === bidId) {
-      return award;
-    }
+  var bid = findRecord(contractorOwnBidsCache.filter(function (b) { return b.tenderId === tenderId; }), "bidId", bidId);
+  if (bid && bid.awardId) {
+    return { awardId: bid.awardId, awardAmount: bid.awardAmount, awardDate: bid.awardDate, tenderId: tenderId, bidId: bidId };
   }
   return null;
 }
 
+function contractorFetchMyProjects(callback) {
+  fetch("../../get_my_projects.php")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      contractorProjectsCache = rows.map(function (project) {
+        return {
+          projectId: project.PROJECT_ID,
+          projectName: project.PROJECT_NAME,
+          projectBudget: project.PROJECT_BUDGET,
+          deadline: project.DEADLINE,
+          status: project.STATUS,
+          awardId: project.AWARD_ID,
+          awardAmount: project.AWARD_AMOUNT,
+          awardDate: project.AWARD_DATE,
+          tenderId: project.TENDER_ID,
+          bidId: project.BID_ID,
+          areaId: project.AREA_ID,
+          houseNo: project.HOUSE_NO,
+          roadSector: project.ROAD_SECTOR,
+          boundaryInfo: project.BOUNDARY_INFO,
+          latitude: project.LATITUDE,
+          longitude: project.LONGITUDE,
+          latestUpdate: project.LATEST_UPDATE ? {
+            updateId: project.LATEST_UPDATE.UPDATE_ID,
+            updateDate: project.LATEST_UPDATE.UPDATE_DATE,
+            workNote: project.LATEST_UPDATE.WORK_NOTE,
+            progressPercent: project.LATEST_UPDATE.PROGRESS_PERCENT
+          } : null
+        };
+      });
+      if (callback) {
+        callback();
+      }
+    });
+}
+
 function contractorGetProjectForAward(awardId) {
-  return findRecord(nirmanData.projects, "awardId", awardId);
+  return findRecord(contractorProjectsCache, "awardId", awardId);
 }
 
 function contractorGetArea(areaId) {
-  return findRecord(nirmanData.areas, "areaId", areaId);
-}
-
-function contractorGetPublishedTenders() {
-  var publishedTenders = [];
-  for (var index = 0; index < nirmanData.tenders.length; index += 1) {
-    if (nirmanData.tenders[index].status === "Published") {
-      publishedTenders.push(nirmanData.tenders[index]);
-    }
+  var project = contractorProjectsCache.find(function (p) { return p.areaId === areaId; });
+  if (!project) {
+    return null;
   }
-  return publishedTenders;
-}
-
-function contractorGetOwnBids() {
-  var ownBids = [];
-  for (var index = 0; index < nirmanData.tenderBids.length; index += 1) {
-    if (nirmanData.tenderBids[index].repId === currentRepresentativeId) {
-      ownBids.push(nirmanData.tenderBids[index]);
-    }
-  }
-  return ownBids;
+  return {
+    areaId: project.areaId,
+    houseNo: project.houseNo,
+    roadSector: project.roadSector,
+    boundaryInfo: project.boundaryInfo,
+    latitude: project.latitude,
+    longitude: project.longitude
+  };
 }
 
 function contractorGetOwnBidsForTender(tenderId) {
@@ -83,58 +202,48 @@ function contractorGetRelevantAwards() {
 }
 
 function contractorGetRelevantProjects() {
-  var awards = contractorGetRelevantAwards();
-  var projects = [];
-  for (var index = 0; index < awards.length; index += 1) {
-    var project = contractorGetProjectForAward(awards[index].awardId);
-    if (project) {
-      projects.push(project);
-    }
-  }
-  return projects;
+  return contractorProjectsCache;
 }
 
 function contractorGetProjectPath(project) {
   if (!project) {
     return null;
   }
-  var award = findRecord(nirmanData.tenderAwards, "awardId", project.awardId);
-  if (!award) {
-    return null;
-  }
-  var ownBids = contractorGetOwnBids();
-  for (var index = 0; index < ownBids.length; index += 1) {
-    var bid = ownBids[index];
-    if (bid.tenderId === award.tenderId && bid.bidId === award.bidId) {
-      return {
-        bid: bid,
-        award: award,
-        tender: contractorGetTender(bid.tenderId)
-      };
-    }
-  }
-  return null;
+  return {
+    bid: { tenderId: project.tenderId, bidId: project.bidId },
+    award: { awardId: project.awardId, awardAmount: project.awardAmount, awardDate: project.awardDate },
+    tender: null
+  };
 }
 
 function contractorIsRelevantProject(projectId) {
-  var projects = contractorGetRelevantProjects();
-  for (var index = 0; index < projects.length; index += 1) {
-    if (projects[index].projectId === projectId) {
-      return true;
-    }
-  }
-  return false;
+  return Boolean(findRecord(contractorProjectsCache, "projectId", projectId));
+}
+
+function contractorFetchProjectUpdateHistory(projectId, callback) {
+  fetch("../../get_project_update_history.php?projectId=" + encodeURIComponent(projectId))
+    .then(function (r) { return r.json(); })
+    .then(function (updates) {
+      contractorProjectUpdateHistoryCache[projectId] = updates.map(function (update) {
+        return {
+          projectId: update.PROJECT_ID,
+          updateId: update.UPDATE_ID,
+          updateDate: update.UPDATE_DATE,
+          workNote: update.WORK_NOTE,
+          progressPercent: update.PROGRESS_PERCENT,
+          repId: update.REP_ID,
+          firstName: update.FIRST_NAME,
+          lastName: update.LAST_NAME
+        };
+      });
+      if (callback) {
+        callback(contractorProjectUpdateHistoryCache[projectId]);
+      }
+    });
 }
 
 function contractorGetUpdatesForProject(projectId) {
-  var updates = [];
-  for (var index = 0; index < nirmanData.projectUpdates.length; index += 1) {
-    if (nirmanData.projectUpdates[index].projectId === projectId) {
-      updates.push(nirmanData.projectUpdates[index]);
-    }
-  }
-  contractorSortUpdatesNewestFirst(updates);
-  return updates;
+  return contractorProjectUpdateHistoryCache[projectId] || [];
 }
 
 function contractorGetRelevantUpdates() {
@@ -160,8 +269,8 @@ function contractorSortUpdatesNewestFirst(updates) {
 }
 
 function contractorGetLatestUpdate(projectId) {
-  var updates = contractorGetUpdatesForProject(projectId);
-  return updates.length > 0 ? updates[0] : null;
+  var project = findRecord(contractorProjectsCache, "projectId", projectId);
+  return project ? project.latestUpdate : null;
 }
 
 function contractorTenderDeadlinePassed(tender) {
@@ -357,66 +466,59 @@ function contractorRenderDashboard() {
 }
 
 function contractorRenderProfile() {
-  var representative = contractorGetCurrentRepresentative();
-  var person = contractorGetCurrentPerson();
-  if (!representative || !person) {
-    showPageAlert("The current representative profile could not be found.", "danger");
-    return;
-  }
-  var contractor = findRecord(nirmanData.contractors, "contractorId", representative.contractorId);
-  var fullName = person.firstName + " " + person.lastName;
-  var profileHeader = document.getElementById("profileHeader");
-  if (profileHeader) {
-    profileHeader.innerHTML = '<span class="profile-avatar">' + escapeHtml(contractorGetInitials(person)) +
-      '</span><div><h2 id="profileHeaderName">' + escapeHtml(fullName) + "</h2><p>" + escapeHtml(representative.title) +
-      " · " + createStatusBadge(representative.approvalStatus) + "</p></div>";
-  }
-
-  var personDetails = document.getElementById("profilePersonDetails");
-  if (personDetails) {
-    personDetails.innerHTML = contractorDetailItem("First name", person.firstName) +
-      contractorDetailItem("Last name", person.lastName) +
-      contractorDetailItem("Contact number", person.contactNo) +
-      contractorDetailItem("Email", person.email);
-  }
-
-  var representativeDetails = document.getElementById("profileRepresentativeDetails");
-  if (representativeDetails) {
-    representativeDetails.innerHTML = contractorDetailItem("Title", representative.title) +
-      contractorDetailHtmlItem("Approval status", createStatusBadge(representative.approvalStatus));
-  }
-
-  var contractorDetails = document.getElementById("profileContractorDetails");
-  var licenseBadge = document.getElementById("profileLicenseBadge");
-  if (contractor) {
-    var licenseState = new Date(contractor.licenseDue + "23:59:59") < new Date() ? "Expired" : "Active";
-    if (licenseBadge) {
-      licenseBadge.innerHTML = createStatusBadge(licenseState);
-    }
-    if (contractorDetails) {
-      contractorDetails.innerHTML = contractorDetailItem("Company name", contractor.companyName) +
-        contractorDetailItem("License number", contractor.licenseNo) +
-        contractorDetailItem("License due", formatDate(contractor.licenseDue)) +
-        contractorDetailHtmlItem("License state", createStatusBadge(licenseState));
-    }
-  }
-
-  var otherHolder = document.getElementById("profileOtherRepresentatives");
-  if (otherHolder) {
-    var otherHtml = '<div class="activity-list">';
-    var otherCount = 0;
-    for (var index = 0; index < nirmanData.contractorReps.length; index += 1) {
-      var other = nirmanData.contractorReps[index];
-      if (other.contractorId === representative.contractorId && other.repId !== representative.repId) {
-        otherCount += 1;
-        otherHtml += '<div class="activity-item"><span class="activity-marker">RP</span><div><h3>' +
-          escapeHtml(getRepresentativeName(other.repId)) + " " + createStatusBadge(other.approvalStatus) + "</h3><p>" +
-          escapeHtml(other.title) + "</p></div></div>";
+  fetch("../../get_representative_profile.php")
+    .then(function (r) { return r.json(); })
+    .then(function (result) {
+      if (!result.found) {
+        showPageAlert("The current representative profile could not be found.", "danger");
+        return;
       }
-    }
-    otherHtml += "</div>";
-    otherHolder.innerHTML = otherCount ? otherHtml : contractorEmptyState("RP", "No other representatives", "No additional representative is recorded for this Contractor.");
-  }
+      var rep = result.rep;
+      var fullName = rep.FIRST_NAME + " " + rep.LAST_NAME;
+      var initials = (rep.FIRST_NAME.charAt(0) + rep.LAST_NAME.charAt(0)).toUpperCase();
+      var profileHeader = document.getElementById("profileHeader");
+      if (profileHeader) {
+        profileHeader.innerHTML = '<span class="profile-avatar">' + escapeHtml(initials) +
+          '</span><div><h2 id="profileHeaderName">' + escapeHtml(fullName) + "</h2><p>" + escapeHtml(rep.TITLE) +
+          " · " + createStatusBadge(rep.APPROVAL_STATUS) + "</p></div>";
+      }
+      var personDetails = document.getElementById("profilePersonDetails");
+      if (personDetails) {
+        personDetails.innerHTML = contractorDetailItem("First name", rep.FIRST_NAME) +
+          contractorDetailItem("Last name", rep.LAST_NAME) +
+          contractorDetailItem("Contact number", rep.CONTACT_NO) +
+          contractorDetailItem("Email", rep.EMAIL);
+      }
+      var representativeDetails = document.getElementById("profileRepresentativeDetails");
+      if (representativeDetails) {
+        representativeDetails.innerHTML = contractorDetailItem("Title", rep.TITLE) +
+          contractorDetailHtmlItem("Approval status", createStatusBadge(rep.APPROVAL_STATUS));
+      }
+      var contractorDetails = document.getElementById("profileContractorDetails");
+      var licenseBadge = document.getElementById("profileLicenseBadge");
+      var licenseState = new Date(rep.LICENSE_DUE + "23:59:59") < new Date() ? "Expired" : "Active";
+      if (licenseBadge) {
+        licenseBadge.innerHTML = createStatusBadge(licenseState);
+      }
+      if (contractorDetails) {
+        contractorDetails.innerHTML = contractorDetailItem("Company name", rep.COMPANY_NAME) +
+          contractorDetailItem("License number", rep.LICENSE_NO) +
+          contractorDetailItem("License due", formatDate(rep.LICENSE_DUE)) +
+          contractorDetailHtmlItem("License state", createStatusBadge(licenseState));
+      }
+      var otherHolder = document.getElementById("profileOtherRepresentatives");
+      if (otherHolder) {
+        var html = '<div class="activity-list">';
+        for (var index = 0; index < result.others.length; index += 1) {
+          var other = result.others[index];
+          html += '<div class="activity-item"><span class="activity-marker">RP</span><div><h3>' +
+            escapeHtml(other.FIRST_NAME + " " + other.LAST_NAME) + " " + createStatusBadge(other.APPROVAL_STATUS) +
+            "</h3><p>" + escapeHtml(other.TITLE) + "</p></div></div>";
+        }
+        html += "</div>";
+        otherHolder.innerHTML = result.others.length ? html : contractorEmptyState("RP", "No other representatives", "No additional representative is recorded for this Contractor.");
+      }
+    });
 }
 
 function contractorTenderMatchesFilters(tender) {
@@ -468,8 +570,8 @@ function contractorRenderTenders() {
     var ownBidCount = contractorGetOwnBidsForTender(tender.tenderId).length;
     var canBid = contractorCanBid(tender);
     rows += "<tr><td><span class=\"table-primary-text\">" + escapeHtml(tender.tenderId) +
-      '</span><span class="table-secondary-text">' + escapeHtml(tender.title) + "</span></td><td>" + escapeHtml(tender.task) +
-      "</td><td>" + formatDate(tender.day) + "</td><td>" + formatDate(tender.deadline) +
+      '</span><span class="table-secondary-text">' + escapeHtml(tender.title) + "</span></td><td>" + "Not tracked" +
+      "</td><td>" + formatDate(tender.deadline) +
       (contractorTenderDeadlinePassed(tender) ? '<span class="table-secondary-text">Deadline passed</span>' : "") +
       "</td><td>" + ownBidCount + '</td><td><div class="d-flex gap-2 flex-wrap"><button class="mini-action" type="button" data-tender-detail="' +
       escapeHtml(tender.tenderId) + '">Details</button><button class="mini-action" type="button" data-tender-bid="' +
@@ -504,11 +606,9 @@ function contractorOpenTenderDetail(tenderId) {
     body.innerHTML = '<ul class="detail-list">' +
       contractorDetailItem("Tender ID", tender.tenderId) +
       contractorDetailItem("Title", tender.title) +
-      contractorDetailItem("Task", tender.task) +
       contractorDetailItem("Bid instructions", tender.bidDetails) +
       contractorDetailHtmlItem("Status", createStatusBadge(tender.status)) +
       contractorDetailItem("Published by", getEmployeeName(tender.employeeId)) +
-      contractorDetailItem("Published date", formatDate(tender.day)) +
       contractorDetailItem("Deadline", formatDate(tender.deadline)) +
       '</ul><h3 class="h6 mt-4">My bids on this tender</h3>' +
       (ownBidHtml ? '<ul class="mt-3">' + ownBidHtml + "</ul>" : contractorEmptyState("BD", "No bid submitted", "You have not submitted a bid for this tender."));
@@ -558,57 +658,34 @@ function contractorShowBidFormError(message) {
 
 function contractorSubmitBid(event) {
   event.preventDefault();
-  var representative = contractorGetCurrentRepresentative();
   var tenderId = document.getElementById("bidTenderId").value;
-  var bidId = document.getElementById("bidId").value.trim();
-  var amountText = document.getElementById("bidAmount").value;
-  var amount = Number(amountText);
-  var tender = contractorGetTender(tenderId);
+  var amount = document.getElementById("bidAmount").value;
 
-  if (!representative || representative.approvalStatus !== "Approved") {
-    contractorShowBidFormError("Only an Approved representative can submit a bid.");
-    return;
-  }
-  if (!tender || tender.status !== "Published") {
-    contractorShowBidFormError("The selected tender is not Published.");
-    return;
-  }
-  if (contractorTenderDeadlinePassed(tender)) {
-    contractorShowBidFormError("The tender deadline has passed.");
-    return;
-  }
-  if (!bidId || !/^[A-Za-z0-9-]+$/.test(bidId)) {
-    contractorShowBidFormError("Enter a Bid ID using only letters, numbers, and hyphens.");
-    return;
-  }
-  if (!amountText || !Number.isFinite(amount) || amount <= 0) {
-    contractorShowBidFormError("Enter a valid bid amount greater than zero.");
-    return;
-  }
-  for (var index = 0; index < nirmanData.tenderBids.length; index += 1) {
-    var existingBid = nirmanData.tenderBids[index];
-    if (existingBid.tenderId === tenderId && existingBid.bidId.toLowerCase() === bidId.toLowerCase()) {
-      contractorShowBidFormError("That Tender ID and Bid ID already exist.");
-      return;
-    }
-  }
-  if (!window.confirm("Submit bid " + tenderId + " / " + bidId + " for " + formatCurrency(amount) + "?")) {
-    return;
-  }
-  nirmanData.tenderBids.push({
-    tenderId: tenderId,
-    bidId: bidId,
-    repId: currentRepresentativeId,
-    bidStatus: "Under Review",
-    bidAmount: amount
-  });
-  contractorHideModal("bidSubmissionModal");
-  contractorRenderTenders();
-  showPageAlert("Bid submitted successfully.", "success");
+  var formData = new FormData();
+  formData.append("tenderId", tenderId);
+  formData.append("amount", amount);
+
+  fetch("../../submit_bid.php", { method: "POST", body: formData })
+    .then(function (r) { return r.json(); })
+    .then(function (result) {
+      if (result.success) {
+        contractorHideModal("bidSubmissionModal");
+        contractorRenderTenders();
+        showPageAlert(result.message, "success");
+      } else {
+        contractorShowBidFormError(result.message);
+      }
+    })
+    .catch(function (error) {
+      contractorShowBidFormError("Something went wrong. Please try again.");
+      console.error(error);
+    });
 }
 
 function contractorInitializeTenders() {
-  contractorRenderTenders();
+  contractorFetchPublishedTenders(function () {
+    contractorRenderTenders();
+  });
   var search = document.getElementById("tenderSearch");
   var filter = document.getElementById("tenderBidFilter");
   var form = document.getElementById("bidSubmissionForm");
@@ -691,11 +768,10 @@ function contractorRenderBids() {
       continue;
     }
     visibleCount += 1;
-    var tender = contractorGetTender(bid.tenderId);
     rows += "<tr><td><span class=\"table-primary-text\">" + escapeHtml("Bid " + bid.bidId) +
       '</span></td><td><span class="table-primary-text">' +
-      escapeHtml(tender ? tender.title : "Tender unavailable") + '</span><span class="table-secondary-text">' +
-      escapeHtml(tender ? tender.task : bid.tenderId) + "</span></td><td>" + escapeHtml(formatCurrency(bid.bidAmount)) +
+      escapeHtml(bid.tenderTitle || "Tender unavailable") + '</span><span class="table-secondary-text">' +
+      escapeHtml(bid.tenderId) + "</span></td><td>" + escapeHtml(formatCurrency(bid.bidAmount)) +
       "</td><td>" + createStatusBadge(bid.bidStatus) + "</td><td>" +
       (award ? createStatusBadge("Awarded") + '<span class="table-secondary-text">' + escapeHtml(award.awardId) + "</span>" : createStatusBadge("No award")) +
       '</td><td><button class="mini-action" type="button" data-bid-detail="' + escapeHtml(bid.tenderId) + '|' +
@@ -725,30 +801,24 @@ function contractorOpenBidDetail(compositeId) {
     showPageAlert("The selected representative bid could not be found.", "danger");
     return;
   }
-  var tender = contractorGetTender(bid.tenderId);
   var award = contractorGetAward(bid.tenderId, bid.bidId);
   var project = award ? contractorGetProjectForAward(award.awardId) : null;
-  contractorSetText("bidDetailTitle", "Bid " + bid.bidId + (tender ? " - " + tender.title : ""));
+  contractorSetText("bidDetailTitle", "Bid " + bid.bidId + (bid.tenderTitle ? " - " + bid.tenderTitle : ""));
   var body = document.getElementById("bidDetailBody");
   if (body) {
     var html = '<h3 class="h6">Tender Bid</h3><ul class="detail-list">' +
       contractorDetailItem("Bid", "Bid " + bid.bidId) +
-      contractorDetailItem("Representative", getRepresentativeName(bid.repId)) +
+      contractorDetailItem("Representative", getRepresentativeName(currentRepresentativeId)) +
       contractorDetailItem("Bid amount", formatCurrency(bid.bidAmount)) +
       contractorDetailHtmlItem("Bid status", createStatusBadge(bid.bidStatus)) + "</ul>";
-    if (tender) {
-      html += '<h3 class="h6 mt-4">Tender context</h3><ul class="detail-list">' +
-        contractorDetailItem("Tender", tender.tenderId + " · " + tender.title) +
-        contractorDetailItem("Task", tender.task) +
-        contractorDetailHtmlItem("Tender status", createStatusBadge(tender.status)) +
-        contractorDetailItem("Deadline", formatDate(tender.deadline)) + "</ul>";
-    }
+    html += '<h3 class="h6 mt-4">Tender context</h3><ul class="detail-list">' +
+      contractorDetailItem("Tender", bid.tenderId + " · " + (bid.tenderTitle || "Tender unavailable")) +
+      '</ul>';
     if (award) {
       html += '<h3 class="h6 mt-4">Matching Award</h3><ul class="detail-list">' +
         contractorDetailItem("Award ID", award.awardId) +
         contractorDetailItem("Award amount", formatCurrency(award.awardAmount)) +
-        contractorDetailItem("Award date", formatDate(award.awardDate)) +
-        contractorDetailItem("Issued by", getEmployeeName(award.employeeId)) + "</ul>";
+        contractorDetailItem("Award date", formatDate(award.awardDate)) + "</ul>";
     } else {
       html += contractorEmptyState("AW", "No matching Award", "No Award currently matches this Tender ID / Bid ID.");
     }
@@ -762,9 +832,10 @@ function contractorOpenBidDetail(compositeId) {
 }
 
 function contractorInitializeBids() {
-  var ownBids = contractorGetOwnBids();
-  contractorPopulateSelectWithStatuses("bidStatusFilter", ownBids, "bidStatus");
-  contractorRenderBids();
+  contractorFetchOwnBids(function () {
+    contractorPopulateSelectWithStatuses("bidStatusFilter", contractorOwnBidsCache, "bidStatus");
+    contractorRenderBids();
+  });
   var filterIds = ["bidSearch", "bidStatusFilter", "bidAwardFilter"];
   for (var index = 0; index < filterIds.length; index += 1) {
     var filter = document.getElementById(filterIds[index]);
@@ -845,69 +916,80 @@ function contractorRenderProjects() {
 }
 
 function contractorOpenProjectDetail(projectId) {
-  var project = findRecord(nirmanData.projects, "projectId", projectId);
+  var project = findRecord(contractorProjectsCache, "projectId", projectId);
   if (!project || !contractorIsRelevantProject(projectId)) {
     showPageAlert("That project is not relevant to the current representative's awarded bids.", "danger");
     return;
   }
-  var path = contractorGetProjectPath(project);
-  var area = contractorGetArea(project.areaId);
-  var updates = contractorGetUpdatesForProject(project.projectId);
-  var latest = updates.length ? updates[0] : null;
-  var overdue = isProjectOverdue(project);
-  contractorSetText("projectDetailTitle", project.projectId + " · " + project.projectName);
-  var body = document.getElementById("projectDetailBody");
-  if (body) {
-    var html = '<div class="row g-4"><div class="col-lg-6"><h3 class="h6">Project and Award</h3><ul class="detail-list">' +
-      contractorDetailItem("Project ID", project.projectId) +
-      contractorDetailItem("Project name", project.projectName) +
-      contractorDetailItem("Budget", formatCurrency(project.projectBudget)) +
-      contractorDetailHtmlItem("Status", createStatusBadge(project.status)) +
-      contractorDetailItem("Deadline", formatDate(project.deadline)) +
-      contractorDetailHtmlItem("Derived overdue", createStatusBadge(overdue ? "Overdue" : "On schedule")) +
-      contractorDetailItem("Latest progress", contractorFormatProgress(latest ? latest.progressPercent : 0));
-    if (path) {
-      html += contractorDetailItem("Tender / Bid", path.bid.tenderId + " / " + path.bid.bidId) +
-        contractorDetailItem("Award", path.award.awardId + " · " + formatCurrency(path.award.awardAmount)) +
-        contractorDetailItem("Award date", formatDate(path.award.awardDate));
-    }
-    html += '</ul></div><div class="col-lg-6"><h3 class="h6">Area</h3>';
-    if (area) {
-      html += '<ul class="detail-list">' + contractorDetailItem("Area ID", area.areaId) +
-        contractorDetailItem("Address", contractorFormatArea(area)) +
-        contractorDetailItem("Boundary", area.boundaryInfo) +
-        contractorDetailItem("Centre latitude", area.latitude) +
-        contractorDetailItem("Centre longitude", area.longitude) + "</ul>";
-    } else {
-      html += contractorEmptyState("AR", "Area unavailable", "No Area record matches this Project.");
-    }
-    html += '</div></div><hr class="my-4"><h3 class="h6">Full progress history</h3>';
-    if (updates.length) {
-      html += '<div class="timeline-list mt-3">';
-      for (var index = 0; index < updates.length; index += 1) {
-        var update = updates[index];
-        html += '<div class="timeline-item"><span class="timeline-dot"></span><div class="timeline-content"><h3>' +
-          escapeHtml(update.projectId + " / " + update.updateId + " · " + contractorFormatProgress(update.progressPercent)) +
-          '</h3><p>' + escapeHtml(update.workNote) + '</p><span class="timeline-date">' + escapeHtml(formatDate(update.updateDate)) +
-          " · " + escapeHtml(getRepresentativeName(update.repId)) + "</span></div></div>";
+
+  var renderDetail = function (updates) {
+    var path = contractorGetProjectPath(project);
+    var area = contractorGetArea(project.areaId);
+    var latest = updates.length ? updates[0] : project.latestUpdate;
+    var overdue = isProjectOverdue(project);
+    contractorSetText("projectDetailTitle", project.projectId + " · " + project.projectName);
+    var body = document.getElementById("projectDetailBody");
+    if (body) {
+      var html = '<div class="row g-4"><div class="col-lg-6"><h3 class="h6">Project and Award</h3><ul class="detail-list">' +
+        contractorDetailItem("Project ID", project.projectId) +
+        contractorDetailItem("Project name", project.projectName) +
+        contractorDetailItem("Budget", formatCurrency(project.projectBudget)) +
+        contractorDetailHtmlItem("Status", createStatusBadge(project.status)) +
+        contractorDetailItem("Deadline", formatDate(project.deadline)) +
+        contractorDetailHtmlItem("Derived overdue", createStatusBadge(overdue ? "Overdue" : "On schedule")) +
+        contractorDetailItem("Latest progress", contractorFormatProgress(latest ? latest.progressPercent : 0));
+      if (path) {
+        html += contractorDetailItem("Tender / Bid", path.bid.tenderId + " / " + path.bid.bidId) +
+          contractorDetailItem("Award", path.award.awardId + " · " + formatCurrency(path.award.awardAmount)) +
+          contractorDetailItem("Award date", formatDate(path.award.awardDate));
       }
-      html += "</div>";
-    } else {
-      html += contractorEmptyState("UP", "No progress history", "No Project Update has been recorded yet.");
+      html += '</ul></div><div class="col-lg-6"><h3 class="h6">Area</h3>';
+      if (area) {
+        html += '<ul class="detail-list">' + contractorDetailItem("Area ID", area.areaId) +
+          contractorDetailItem("Address", contractorFormatArea(area)) +
+          contractorDetailItem("Boundary", area.boundaryInfo) +
+          contractorDetailItem("Centre latitude", area.latitude) +
+          contractorDetailItem("Centre longitude", area.longitude) + "</ul>";
+      } else {
+        html += contractorEmptyState("AR", "Area unavailable", "No Area record matches this Project.");
+      }
+      html += '</div></div><hr class="my-4"><h3 class="h6">Full progress history</h3>';
+      if (updates.length) {
+        html += '<div class="timeline-list mt-3">';
+        for (var index = 0; index < updates.length; index += 1) {
+          var update = updates[index];
+          html += '<div class="timeline-item"><span class="timeline-dot"></span><div class="timeline-content"><h3>' +
+            escapeHtml(update.projectId + " / " + update.updateId + " · " + contractorFormatProgress(update.progressPercent)) +
+            '</h3><p>' + escapeHtml(update.workNote) + '</p><span class="timeline-date">' + escapeHtml(formatDate(update.updateDate)) +
+            " · " + escapeHtml(getRepresentativeName(update.repId)) + "</span></div></div>";
+        }
+        html += "</div>";
+      } else {
+        html += contractorEmptyState("UP", "No progress history", "No Project Update has been recorded yet.");
+      }
+      body.innerHTML = html;
     }
-    body.innerHTML = html;
+    var updateLink = document.getElementById("projectUpdateLink");
+    if (updateLink) {
+      updateLink.removeAttribute("href");
+    }
+    contractorShowModal("projectDetailModal");
+  };
+
+  var updates = contractorGetUpdatesForProject(projectId);
+  if (updates.length) {
+    renderDetail(updates);
+    return;
   }
-  var updateLink = document.getElementById("projectUpdateLink");
-  if (updateLink) {
-    updateLink.removeAttribute("href");
-  }
-  contractorShowModal("projectDetailModal");
+
+  contractorFetchProjectUpdateHistory(projectId, renderDetail);
 }
 
 function contractorInitializeProjects() {
-  var projects = contractorGetRelevantProjects();
-  contractorPopulateSelectWithStatuses("projectStatusFilter", projects, "status");
-  contractorRenderProjects();
+  contractorFetchMyProjects(function () {
+    contractorPopulateSelectWithStatuses("projectStatusFilter", contractorProjectsCache, "status");
+    contractorRenderProjects();
+  });
   var filterIds = ["projectSearch", "projectStatusFilter", "projectOverdueFilter"];
   for (var index = 0; index < filterIds.length; index += 1) {
     var filter = document.getElementById(filterIds[index]);
@@ -1086,80 +1168,71 @@ function contractorOpenUpdateDetail(compositeId) {
 function contractorSubmitUpdate(event) {
   event.preventDefault();
   var projectId = document.getElementById("updateProjectId").value;
-  var updateId = document.getElementById("updateId").value.trim();
   var updateDate = document.getElementById("updateDate").value;
-  var progressText = document.getElementById("updateProgress").value;
-  var progress = Number(progressText);
+  var progress = document.getElementById("updateProgress").value;
   var workNote = document.getElementById("updateWorkNote").value.trim();
-  var project = findRecord(nirmanData.projects, "projectId", projectId);
 
-  if (!project || !contractorIsRelevantProject(projectId)) {
-    showPageAlert("Choose a valid project reached through your Bid and matching Award.", "danger");
+  if (!projectId) {
+    showPageAlert("Choose a valid project.", "danger");
     return;
   }
-  if (!updateId || !/^[A-Za-z0-9-]+$/.test(updateId)) {
-    showPageAlert("Enter an Update ID using only letters, numbers, and hyphens.", "danger");
-    return;
-  }
-  if (!updateDate || !workNote) {
-    showPageAlert("Enter an update date and work note.", "danger");
-    return;
-  }
-  if (progressText === "" || !Number.isFinite(progress) || progress < 0 || progress > 100) {
-    showPageAlert("Progress must be a number from 0 to 100.", "danger");
-    return;
-  }
-  for (var index = 0; index < nirmanData.projectUpdates.length; index += 1) {
-    var existingUpdate = nirmanData.projectUpdates[index];
-    if (existingUpdate.projectId === projectId && existingUpdate.updateId.toLowerCase() === updateId.toLowerCase()) {
-      showPageAlert("That Project ID and Update ID already exist.", "danger");
-      return;
-    }
-  }
-  if (!window.confirm("Add update " + projectId + " / " + updateId + " at " + contractorFormatProgress(progress) + "?")) {
-    return;
-  }
-  nirmanData.projectUpdates.push({
-    projectId: projectId,
-    updateId: updateId,
-    repId: currentRepresentativeId,
-    updateDate: updateDate,
-    workNote: workNote,
-    progressPercent: progress
-  });
-  document.getElementById("projectUpdateForm").reset();
-  document.getElementById("updateRepresentativeDisplay").value = getRepresentativeName(currentRepresentativeId) + " (" + currentRepresentativeId + ")";
-  document.getElementById("updateDate").value = contractorGetTodayValue();
-  contractorPopulateProjectChoices();
-  contractorUpdateProjectContext();
-  contractorRenderUpdates();
-  showPageAlert("Project update added successfully.", "success");
+
+  var formData = new FormData();
+  formData.append("projectId", projectId);
+  formData.append("updateDate", updateDate);
+  formData.append("progress", progress);
+  formData.append("workNote", workNote);
+
+  fetch("../../submit_progress_update.php", { method: "POST", body: formData })
+    .then(function (r) { return r.json(); })
+    .then(function (result) {
+      if (result.success) {
+        document.getElementById("projectUpdateForm").reset();
+        document.getElementById("updateDate").value = contractorGetTodayValue();
+        contractorFetchMyProjects(function () {
+          contractorPopulateProjectChoices();
+          contractorUpdateProjectContext();
+          contractorRenderUpdates();
+        });
+        showPageAlert(result.message, "success");
+      } else {
+        showPageAlert(result.message, "danger");
+      }
+    })
+    .catch(function (error) {
+      showPageAlert("Something went wrong. Please try again.", "danger");
+      console.error(error);
+    });
 }
 
 function contractorInitializeUpdates() {
-  contractorPopulateProjectChoices();
-  contractorRenderUpdates();
+  contractorFetchMyProjects(function () {
+    contractorPopulateProjectChoices();
+    contractorRenderUpdates();
+    var projects = contractorGetRelevantProjects();
+    var submitButton = document.getElementById("submitUpdateButton");
+    if (submitButton) {
+      submitButton.disabled = projects.length === 0;
+    }
+    var projectSelect = document.getElementById("updateProjectId");
+    var projectFromUrl = new URLSearchParams(window.location.search).get("project");
+    if (projectSelect && projectFromUrl && contractorIsRelevantProject(projectFromUrl)) {
+      projectSelect.value = projectFromUrl;
+    } else if (projectFromUrl) {
+      showPageAlert("The requested project is not relevant to the current representative.", "danger");
+    }
+    contractorUpdateProjectContext();
+  });
+
   var representativeDisplay = document.getElementById("updateRepresentativeDisplay");
   var updateDate = document.getElementById("updateDate");
-  var projectSelect = document.getElementById("updateProjectId");
-  var submitButton = document.getElementById("submitUpdateButton");
-  var projects = contractorGetRelevantProjects();
   if (representativeDisplay) {
     representativeDisplay.value = getRepresentativeName(currentRepresentativeId) + " (" + currentRepresentativeId + ")";
   }
   if (updateDate) {
     updateDate.value = contractorGetTodayValue();
   }
-  if (submitButton) {
-    submitButton.disabled = projects.length === 0;
-  }
-  var projectFromUrl = new URLSearchParams(window.location.search).get("project");
-  if (projectSelect && projectFromUrl && contractorIsRelevantProject(projectFromUrl)) {
-    projectSelect.value = projectFromUrl;
-  } else if (projectFromUrl) {
-    showPageAlert("The requested project is not relevant to the current representative.", "danger");
-  }
-  contractorUpdateProjectContext();
+  var projectSelect = document.getElementById("updateProjectId");
   if (projectSelect) {
     projectSelect.addEventListener("change", contractorUpdateProjectContext);
   }
@@ -1185,21 +1258,45 @@ function contractorInitializeUpdates() {
 
 document.addEventListener("DOMContentLoaded", function () {
   var page = document.body.getAttribute("data-contractor-page");
-  if (!page || typeof nirmanData === "undefined") {
+  if (!page) {
     return;
   }
-  contractorRenderSharedIdentity();
-  if (page === "dashboard") {
-    contractorRenderDashboard();
-  } else if (page === "profile") {
-    contractorRenderProfile();
-  } else if (page === "tenders") {
-    contractorInitializeTenders();
-  } else if (page === "bids") {
-    contractorInitializeBids();
-  } else if (page === "projects") {
-    contractorInitializeProjects();
-  } else if (page === "updates") {
-    contractorInitializeUpdates();
-  }
+  fetch("../../get_current_user.php")
+    .then(function (r) { return r.json(); })
+    .then(function (result) {
+      if (!result.loggedIn || result.role !== "contractor") {
+        window.location.href = "../../login.html";
+        return;
+      }
+      currentRepresentativeId = result.roleId;
+      var fullName = result.firstName + " " + result.lastName;
+      var titleText = result.title + " - " + result.approvalStatus;
+      var initials = (result.firstName.charAt(0) + result.lastName.charAt(0)).toUpperCase();
+      var nameElements = document.querySelectorAll("[data-current-rep-name]");
+      var titleElements = document.querySelectorAll("[data-current-rep-title]");
+      var initialElements = document.querySelectorAll("[data-current-rep-initials]");
+      var i;
+      for (i = 0; i < nameElements.length; i += 1) nameElements[i].textContent = fullName;
+      for (i = 0; i < titleElements.length; i += 1) titleElements[i].textContent = titleText;
+      for (i = 0; i < initialElements.length; i += 1) initialElements[i].textContent = initials;
+
+      contractorFetchPublishedTenders(function () {
+        if (page === "dashboard") {
+          contractorRenderDashboard();
+        } else if (page === "profile") {
+          contractorRenderProfile();
+        } else if (page === "tenders") {
+          contractorInitializeTenders();
+        } else if (page === "bids") {
+          contractorInitializeBids();
+        } else if (page === "projects") {
+          contractorInitializeProjects();
+        } else if (page === "updates") {
+          contractorInitializeUpdates();
+        }
+      });
+    })
+    .catch(function () {
+      window.location.href = "../../login.html";
+    });
 });
