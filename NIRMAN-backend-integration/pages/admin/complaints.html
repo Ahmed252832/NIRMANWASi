@@ -63,7 +63,13 @@
           <div class="modal-body">
             <input type="hidden" id="resolveComplaintId">
             <div class="info-callout mb-3" id="resolveComplaintSummary">Select an unresolved complaint.</div>
+<<<<<<< HEAD:NIRMAN-backend-integration/pages/admin/complaints.html
             <div><label class="form-label" for="resolveComplaintText">Resolution</label><textarea class="form-control" id="resolveComplaintText" minlength="10" maxlength="500" required placeholder="Record how the complaint was resolved"></textarea><p class="form-help">The resolution is recorded under your authenticated Admin employee identity.</p></div>
+=======
+            <div class="mb-3"><label class="form-label" for="resolveComplaintStatus">Status</label><select class="form-select" id="resolveComplaintStatus" required><option value="">Choose status</option><option value="Resolved">Resolved</option></select></div>
+            <div class="mb-3"><label class="form-label" for="resolveComplaintEmployee">Resolving Employee</label><select class="form-select" id="resolveComplaintEmployee" required><option value="">Choose an employee</option></select></div>
+            <div><label class="form-label" for="resolveComplaintText">Resolution</label><textarea class="form-control" id="resolveComplaintText"  required placeholder="Record how the complaint was resolved"></textarea><p class="form-help">Enter at least 10 characters and choose the employee who resolved it.</p></div>
+>>>>>>> origin/main:pages/admin/complaints.html
           </div>
           <div class="modal-footer"><button class="btn btn-outline-navy" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-nirman" type="submit">Resolve</button></div>
         </form>

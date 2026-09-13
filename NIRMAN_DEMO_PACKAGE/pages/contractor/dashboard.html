@@ -1,0 +1,166 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="NIRMAN contractor representative dashboard.">
+    <title>Representative Dashboard | NIRMAN</title>
+    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+  </head>
+  <body class="app-body" data-contractor-page="dashboard">
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+    <aside class="app-sidebar" id="appSidebar" aria-label="Contractor representative navigation">
+      <div class="sidebar-header">
+        <a class="brand-logo brand-logo-light" href="dashboard.html" aria-label="NIRMAN representative dashboard">
+          <span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span>
+        </a>
+        <p class="sidebar-role">Contractor Representative</p>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Workspace</div>
+        <a class="active" href="dashboard.html" aria-current="page"><span class="nav-icon">OV</span>Dashboard</a>
+        <a href="profile.html"><span class="nav-icon">ME</span>My Profile</a>
+        <div class="nav-section-title">Tenders</div>
+        <a href="tenders.html"><span class="nav-icon">TN</span>Published Tenders</a>
+        <a href="bids.html"><span class="nav-icon">BD</span>My Bids</a>
+        <div class="nav-section-title">Delivery</div>
+         <a aria-disabled="true"><span class="nav-icon">PR</span>Projects</a>
+         <a aria-disabled="true"><span class="nav-icon">UP</span>Progress Updates</a>
+        <div class="sidebar-footer">
+          <a href="../../index.html"><span class="nav-icon">EX</span>Sign Out</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+    <div class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-button" id="sidebarToggle" type="button" aria-label="Open navigation"><span></span></button>
+          <div class="topbar-context">Representative panel / <strong>Dashboard</strong></div>
+        </div>
+        <div class="topbar-right">
+          <a class="user-chip" href="profile.html" aria-label="Open representative profile">
+            <span class="user-avatar" data-current-rep-initials>--</span>
+            <span class="user-chip-name"><strong data-current-rep-name>Representative</strong><span data-current-rep-title>Profile</span></span>
+          </a>
+        </div>
+      </header>
+
+      <main class="page-content" id="mainContent">
+        <div class="page-heading">
+          <div>
+            <div class="breadcrumb-line">Representative overview</div>
+            <h1>Contractor dashboard</h1>
+            <p>Check published tenders, your bids, awarded projects and latest progress.</p>
+          </div>
+          <a class="btn btn-nirman" href="tenders.html">Browse published tenders</a>
+        </div>
+
+        <div class="page-alert-holder" id="pageAlert" aria-live="polite"></div>
+
+        <div class="flow-strip mb-4" aria-label="Tender to project workflow">
+          <div class="flow-step active"><span class="flow-number">1</span>Published Tender</div>
+          <div class="flow-step active"><span class="flow-number">2</span>Representative Bid</div>
+          <div class="flow-step"><span class="flow-number">3</span>Selected Award</div>
+          <div class="flow-step"><span class="flow-number">4</span>Resulting Project</div>
+          <div class="flow-step"><span class="flow-number">5</span>Progress Update</div>
+        </div>
+
+        <section class="row g-3 mb-4" aria-label="Representative summary statistics">
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <span class="stat-label">Published tenders</span>
+              <strong class="stat-value" id="dashboardPublishedCount">0</strong>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <span class="stat-label">My tender bids</span>
+              <strong class="stat-value" id="dashboardBidCount">0</strong>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <span class="stat-label">Related awards</span>
+              <strong class="stat-value" id="dashboardAwardCount">0</strong>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card">
+              <span class="stat-label">Awarded projects</span>
+              <strong class="stat-value" id="dashboardProjectCount">0</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="row g-4 mb-4" aria-label="Representative and tender summary">
+          <div class="col-xl-4">
+            <article class="data-card">
+              <div class="data-card-header">
+                <div><h2>Representation status</h2><p>Approval status and contractor</p></div>
+                <a class="mini-action" href="profile.html">Full profile</a>
+              </div>
+              <div class="data-card-body">
+                <div id="dashboardRepresentativeSummary"></div>
+                <hr class="my-4">
+                <div id="dashboardContractorSummary"></div>
+              </div>
+            </article>
+          </div>
+          <div class="col-xl-8">
+            <article class="data-card">
+              <div class="data-card-header">
+                <div><h2>Published tenders</h2><p>Published tenders available to you</p></div>
+                <a class="mini-action" href="tenders.html">View all</a>
+              </div>
+              <div class="table-responsive">
+                <table class="table" aria-label="Published tender summary">
+                  <thead><tr><th>Tender</th><th>Task</th><th>Deadline</th><th>My bids</th><th>Action</th></tr></thead>
+                  <tbody id="dashboardTenderBody"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="row g-4 mb-4" aria-label="Bid and project activity">
+          <div class="col-xl-5">
+            <article class="data-card">
+              <div class="data-card-header">
+                <div><h2>My bid statuses</h2><p>Your bids and their tender details</p></div>
+                <a class="mini-action" href="bids.html">View bids</a>
+              </div>
+              <div class="data-card-body" id="dashboardBidStatusList"></div>
+            </article>
+          </div>
+          <div class="col-xl-7">
+            <article class="data-card">
+              <div class="data-card-header">
+                <div><h2>Awards and resulting projects</h2><p>Based on your awarded bids and projects</p></div>
+              </div>
+              <div class="data-card-body" id="dashboardProjectList"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="data-card" aria-labelledby="recentUpdateHeading">
+          <div class="data-card-header">
+            <div><h2 id="recentUpdateHeading">Recent project update status</h2><p>Latest progress for your awarded projects</p></div>
+          </div>
+          <div class="data-card-body" id="dashboardRecentUpdates"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/data.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/contractor.js"></script>
+  </body>
+</html>
