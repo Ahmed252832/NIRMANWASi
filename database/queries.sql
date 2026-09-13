@@ -1,4 +1,4 @@
--- Query 1: Show client booking, unit, and project details
+-- Query 1:
 SELECT Person.First_Name,
        Person.Last_Name,
        Booking.Booking_id,
@@ -6,17 +6,11 @@ SELECT Person.First_Name,
        Flats_Units.Unit_type,
        Construction_Project.Project_name,
        Booking.Booking_status
-FROM Person
-JOIN Client
-    ON Person.Person_id = Client.Person_id
-JOIN Booking
-    ON Client.Cl_id = Booking.Cl_id
-JOIN Flats_Units
-    ON Booking.Unit_id = Flats_Units.Unit_id
-JOIN Construction_Project
-    ON Booking.Project_id = Construction_Project.Project_id;
+FROM Person JOIN Client ON Person.Person_id = Client.Person_id JOIN Booking ON Client.Cl_id = Booking.Cl_id
+    JOIN Flats_Units ON Booking.Unit_id = Flats_Units.Unit_id 
+    JOIN Construction_Project ON Booking.Project_id = Construction_Project.Project_id;
 
--- Query 2: Show tender bids with representative and contractor details
+-- Query 2:
 SELECT Tenders.Tender_id,
        Tenders.Title,
        Tender_Bids.Bid_id,
@@ -25,15 +19,10 @@ SELECT Tenders.Tender_id,
        Person.First_Name,
        Person.Last_Name,
        Contractor.Company_name
-FROM Tenders
-JOIN Tender_Bids
-    ON Tenders.Tender_id = Tender_Bids.Tender_id
-JOIN Contractor_Rep
-    ON Tender_Bids.Rep_id = Contractor_Rep.Rep_id
-JOIN Person
-    ON Contractor_Rep.Person_id = Person.Person_id
-JOIN Contractor
-    ON Contractor_Rep.Contractor_id = Contractor.Contractor_id;
+FROM Tenders JOIN Tender_Bids ON Tenders.Tender_id = Tender_Bids.Tender_id
+JOIN Contractor_Rep ON Tender_Bids.Rep_id = Contractor_Rep.Rep_id
+JOIN Person ON Contractor_Rep.Person_id = Person.Person_id
+JOIN Contractor ON Contractor_Rep.Contractor_id = Contractor.Contractor_id;
 
 -- Query 3: Show the average recorded progress for each project
 SELECT Construction_Project.Project_id,
@@ -41,16 +30,13 @@ SELECT Construction_Project.Project_id,
        Area.Road_Sector,
        COUNT(Project_Update.Update_id) AS Number_of_updates,
        ROUND(AVG(Project_Update.Progress_percent), 2) AS Average_progress
-FROM Construction_Project
-JOIN Area
-    ON Construction_Project.Area_id = Area.Area_id
-JOIN Project_Update
-    ON Construction_Project.Project_id = Project_Update.Project_id
+FROM Construction_Project JOIN Area ON Construction_Project.Area_id = Area.Area_id
+JOIN Project_Update ON Construction_Project.Project_id = Project_Update.Project_id
 GROUP BY Construction_Project.Project_id,
          Construction_Project.Project_name,
          Area.Road_Sector;
 
--- Query 4: Show installment totals for payments that use installments
+-- Query 4: Showing installment totals for payments that use installments
 SELECT Payments.Cl_id,
        Person.First_Name,
        Person.Last_Name,

@@ -1,122 +1,123 @@
-"use strict";
-
-/*
-  All sample information lives in this file so a future PHP layer can replace
-  it without requiring the HTML layouts to be redesigned.
-*/
 
 var nirmanData = {
-  adminAccounts: [
-    {
-      email: "admin@nirman.demo",
-      password: "admin123",
-      name: "System Administrator"
-    }
-  ],
-
   people: [
     {
-      personId: "P001",
+      personId: "1",
       firstName: "Arif",
       lastName: "Rahman",
       contactNo: "01711000001",
-      email: "arif@nirman.demo",
+      email: "arif@nirman.com",
       password: "employee123"
     },
     {
-      personId: "P002",
+      personId: "2",
       firstName: "Nusrat",
       lastName: "Jahan",
       contactNo: "01711000002",
-      email: "nusrat@nirman.demo",
+      email: "nusrat@nirman.com",
       password: "employee123"
     },
     {
-      personId: "P003",
+      personId: "3",
       firstName: "Farhan",
       lastName: "Ahmed",
       contactNo: "01711000003",
-      email: "farhan@nirman.demo",
+      email: "farhan@nirman.com",
       password: "employee123"
     },
     {
-      personId: "P004",
+      personId: "4",
       firstName: "Samira",
       lastName: "Khan",
       contactNo: "01812000001",
-      email: "samira@nirman.demo",
+      email: "samira@nirman.com",
       password: "client123"
     },
     {
-      personId: "P005",
+      personId: "5",
       firstName: "Rafiul",
       lastName: "Islam",
       contactNo: "01812000002",
-      email: "rafiul@nirman.demo",
+      email: "rafiul@nirman.com",
       password: "client123"
     },
     {
-      personId: "P006",
+      personId: "6",
       firstName: "Tanvir",
       lastName: "Hasan",
       contactNo: "01913000001",
-      email: "tanvir@nirman.demo",
+      email: "tanvir@nirman.com",
       password: "contractor123"
     },
     {
-      personId: "P007",
+      personId: "7",
       firstName: "Mehedi",
       lastName: "Chowdhury",
       contactNo: "01913000002",
-      email: "mehedi@nirman.demo",
+      email: "mehedi@nirman.com",
       password: "contractor123"
     },
     {
-      personId: "P008",
+      personId: "8",
       firstName: "Sadia",
       lastName: "Karim",
       contactNo: "01711000004",
-      email: "sadia@nirman.demo",
+      email: "sadia@nirman.com",
       password: "employee123"
     },
     {
-      personId: "P009",
+      personId: "9",
       firstName: "Ayesha",
       lastName: "Noor",
       contactNo: "01812000003",
-      email: "ayesha@nirman.demo",
+      email: "ayesha@nirman.com",
       password: "client123"
+    },
+    {
+      personId: "10",
+      firstName: "System",
+      lastName: "Administrator",
+      contactNo: "01711000005",
+      email: "admin@nirman.com",
+      password: "admin123"
     }
   ],
 
   employees: [
     {
-      employeeId: "E001",
-      personId: "P001",
+      employeeId: "1",
+      personId: "1",
       deptName: "Operations",
       designation: "Operations Manager",
       nid: "NID-EMP-1001"
     },
     {
-      employeeId: "E002",
-      personId: "P002",
+      employeeId: "2",
+      personId: "2",
       deptName: "Finance",
       designation: "Finance Officer",
       nid: "NID-EMP-1002"
     },
     {
-      employeeId: "E003",
-      personId: "P003",
+      employeeId: "3",
+      personId: "3",
       deptName: "Engineering",
       designation: "Project Engineer",
       nid: "NID-EMP-1003"
     },
     {
-      employeeId: "E004",
-      personId: "P008",
+      employeeId: "4",
+      personId: "8",
       deptName: "Client Services",
       designation: "Client Service Officer",
       nid: "NID-EMP-1004"
+    },
+    {
+      employeeId: "5",
+      personId: "10",
+      deptName: "Administration",
+      designation: "System Administrator",
+      nid: "NID-EMP-1005"
     }
   ],
 
@@ -124,26 +125,32 @@ var nirmanData = {
     {
       deptName: "Operations",
       location: "North Wing, Level 3",
-      email: "operations@nirman.demo",
+      email: "operations@nirman.com",
       description: "Coordinates allocation, procurement, and operational review."
     },
     {
       deptName: "Finance",
       location: "East Wing, Level 2",
-      email: "finance@nirman.demo",
+      email: "finance@nirman.com",
       description: "Reviews payments, installments, and financial schedules."
     },
     {
       deptName: "Engineering",
       location: "Project Wing, Level 4",
-      email: "engineering@nirman.demo",
+      email: "engineering@nirman.com",
       description: "Monitors construction work and contractor progress."
     },
     {
       deptName: "Client Services",
       location: "Welcome Wing, Level 1",
-      email: "clients@nirman.demo",
+      email: "clients@nirman.com",
       description: "Supports bookings, allocation communication, and complaints."
+    },
+    {
+      deptName: "Administration",
+      location: "Main Office, Level 2",
+      email: "admin@nirman.com",
+      description: "Handles system administration and general management."
     }
   ],
 
@@ -153,38 +160,39 @@ var nirmanData = {
     { deptName: "Finance", phoneNo: "02-55002001" },
     { deptName: "Engineering", phoneNo: "02-55003001" },
     { deptName: "Engineering", phoneNo: "02-55003002" },
-    { deptName: "Client Services", phoneNo: "02-55004001" }
+    { deptName: "Client Services", phoneNo: "02-55004001" },
+    { deptName: "Administration", phoneNo: "02-55005001" }
   ],
 
   workRelations: [
-    { employeeId: "E002", managerId: "E001" },
-    { employeeId: "E003", managerId: "E001" },
-    { employeeId: "E004", managerId: "E001" }
+    { employeeId: "2", managerId: "1" },
+    { employeeId: "3", managerId: "1" },
+    { employeeId: "4", managerId: "1" }
   ],
 
   clients: [
-    { clientId: "C001", personId: "P004", nid: "NID-CLI-2001" },
-    { clientId: "C002", personId: "P005", nid: "NID-CLI-2002" },
-    { clientId: "C003", personId: "P009", nid: "NID-CLI-2003" }
+    { clientId: "1", personId: "4", nid: "NID-CLI-2001" },
+    { clientId: "2", personId: "5", nid: "NID-CLI-2002" },
+    { clientId: "3", personId: "9", nid: "NID-CLI-2003" }
   ],
 
   clientContacts: [
-    { clientId: "C001", contactNo: "01812000001" },
-    { clientId: "C001", contactNo: "01614000001" },
-    { clientId: "C002", contactNo: "01812000002" },
-    { clientId: "C003", contactNo: "01812000003" },
-    { clientId: "C003", contactNo: "01614000003" }
+    { clientId: "1", contactNo: "01812000001" },
+    { clientId: "1", contactNo: "01614000001" },
+    { clientId: "2", contactNo: "01812000002" },
+    { clientId: "3", contactNo: "01812000003" },
+    { clientId: "3", contactNo: "01614000003" }
   ],
 
   contractors: [
     {
-      contractorId: "CT001",
+      contractorId: "1",
       companyName: "BuildCore Developments",
       licenseNo: "LIC-BC-7841",
       licenseDue: "2027-04-30"
     },
     {
-      contractorId: "CT002",
+      contractorId: "2",
       companyName: "UrbanAxis Engineering",
       licenseNo: "LIC-UA-5528",
       licenseDue: "2026-10-18"
@@ -193,31 +201,31 @@ var nirmanData = {
 
   contractorReps: [
     {
-      repId: "R001",
-      personId: "P006",
-      contractorId: "CT001",
+      repId: "1",
+      personId: "6",
+      contractorId: "1",
       approvalStatus: "Approved",
       title: "Site Representative"
     },
     {
-      repId: "R002",
-      personId: "P007",
-      contractorId: "CT002",
+      repId: "2",
+      personId: "7",
+      contractorId: "2",
       approvalStatus: "Pending",
       title: "Bid Coordinator"
     }
   ],
 
   supervisions: [
-    { employeeId: "E001", contractorId: "CT001" },
-    { employeeId: "E003", contractorId: "CT001" },
-    { employeeId: "E001", contractorId: "CT002" }
+    { employeeId: "1", contractorId: "1" },
+    { employeeId: "3", contractorId: "1" },
+    { employeeId: "1", contractorId: "2" }
   ],
 
   tenders: [
     {
-      tenderId: "T001",
-      employeeId: "E001",
+      tenderId: "1",
+      employeeId: "1",
       deadline: "2026-09-15",
       day: "2026-07-10",
       title: "Riverside Foundation and Structural Works",
@@ -226,21 +234,21 @@ var nirmanData = {
       task: "Foundation and reinforced concrete structure"
     },
     {
-      tenderId: "T002",
-      employeeId: "E003",
+      tenderId: "2",
+      employeeId: "3",
       deadline: "2026-08-25",
       day: "2026-06-28",
-      title: "Meridian Heights Finishing Package",
+      title: "GANGCHILL Finishing Package",
       bidDetails: "Interior finishing, common-area services, and handover preparation.",
       status: "Awarded",
       task: "Architectural finishing and service coordination"
     },
     {
-      tenderId: "T003",
-      employeeId: "E001",
+      tenderId: "3",
+      employeeId: "1",
       deadline: "2026-05-30",
       day: "2026-04-12",
-      title: "Harborline Residential Construction",
+      title: "KRISHNOCHURA Residential Construction",
       bidDetails: "End-to-end residential block construction based on supplied drawings.",
       status: "Awarded",
       task: "Residential building construction"
@@ -249,23 +257,23 @@ var nirmanData = {
 
   tenderBids: [
     {
-      tenderId: "T001",
-      bidId: "B001",
-      repId: "R001",
+      tenderId: "1",
+      bidId: "1",
+      repId: "1",
       bidStatus: "Under Review",
       bidAmount: 48500000
     },
     {
-      tenderId: "T002",
-      bidId: "B001",
-      repId: "R001",
+      tenderId: "2",
+      bidId: "1",
+      repId: "1",
       bidStatus: "Selected",
       bidAmount: 30750000
     },
     {
-      tenderId: "T003",
-      bidId: "B001",
-      repId: "R001",
+      tenderId: "3",
+      bidId: "1",
+      repId: "1",
       bidStatus: "Selected",
       bidAmount: 26750000
     }
@@ -273,18 +281,18 @@ var nirmanData = {
 
   tenderAwards: [
     {
-      awardId: "A001",
-      tenderId: "T002",
-      bidId: "B001",
-      employeeId: "E001",
+      awardId: "1",
+      tenderId: "2",
+      bidId: "1",
+      employeeId: "1",
       awardAmount: 30750000,
       awardDate: "2026-06-30"
     },
     {
-      awardId: "A002",
-      tenderId: "T003",
-      bidId: "B001",
-      employeeId: "E003",
+      awardId: "2",
+      tenderId: "3",
+      bidId: "1",
+      employeeId: "3",
       awardAmount: 26750000,
       awardDate: "2026-06-04"
     }
@@ -292,18 +300,18 @@ var nirmanData = {
 
   areas: [
     {
-      areaId: "AR001",
-      boundaryInfo: "North canal boundary to the central avenue corridor.",
+      areaId: "1",
+      boundaryInfo: "Near Sector 7 lake and the main avenue of Uttara.",
       houseNo: "18",
-      roadSector: "Road 7, Central District",
+      roadSector: "Avenue No. 3, Road No. 7, Uttara, Dhaka",
       latitude: 23.7808,
       longitude: 90.4071
     },
     {
-      areaId: "AR002",
-      boundaryInfo: "Eastern residential block beside the waterfront access road.",
+      areaId: "2",
+      boundaryInfo: "Inside Bashundhara residential area near the main road.",
       houseNo: "42",
-      roadSector: "Sector 11, East Quarter",
+      roadSector: "Avenue No. 5, Road No. 11, Bashundhara R/A, Dhaka",
       latitude: 23.7934,
       longitude: 90.4212
     }
@@ -311,49 +319,49 @@ var nirmanData = {
 
   projects: [
     {
-      projectId: "PR001",
-      awardId: "A001",
-      areaId: "AR001",
+      projectId: "1",
+      awardId: "1",
+      areaId: "1",
       projectBudget: 35000000,
-      projectName: "Meridian Heights",
+      projectName: "GANGCHILL",
       deadline: "2027-03-30",
       status: "In Progress"
     },
     {
-      projectId: "PR002",
-      awardId: "A002",
-      areaId: "AR002",
+      projectId: "2",
+      awardId: "2",
+      areaId: "2",
       projectBudget: 28000000,
-      projectName: "Harborline Residences",
+      projectName: "KRISHNOCHURA",
       deadline: "2026-07-15",
       status: "In Progress"
     }
   ],
 
   units: [
-    { unitId: "U001", unitType: "Apartment", unitNo: "A-401", status: "Available" },
-    { unitId: "U002", unitType: "Apartment", unitNo: "A-402", status: "Reserved" },
-    { unitId: "U003", unitType: "Commercial", unitNo: "C-12", status: "Available" },
-    { unitId: "U004", unitType: "Apartment", unitNo: "B-305", status: "Allocated" },
-    { unitId: "U005", unitType: "Studio", unitNo: "S-08", status: "Available" },
-    { unitId: "U006", unitType: "Parking", unitNo: "P-14", status: "Available" }
+    { unitId: "1", unitType: "Apartment", unitNo: "A-401", status: "Available" },
+    { unitId: "2", unitType: "Apartment", unitNo: "A-402", status: "Reserved" },
+    { unitId: "3", unitType: "Commercial", unitNo: "C-12", status: "Available" },
+    { unitId: "4", unitType: "Apartment", unitNo: "B-305", status: "Allocated" },
+    { unitId: "5", unitType: "Studio", unitNo: "S-08", status: "Available" },
+    { unitId: "6", unitType: "Parking", unitNo: "P-14", status: "Available" }
   ],
 
   bookings: [
     {
-      bookingId: "BK001",
-      clientId: "C001",
-      unitId: "U002",
-      projectId: "PR001",
+      bookingId: "1",
+      clientId: "1",
+      unitId: "2",
+      projectId: "1",
       bookingStatus: "Confirmed",
       bookingDate: "2026-07-20",
       dueAmount: 8500000
     },
     {
-      bookingId: "BK002",
-      clientId: "C002",
-      unitId: "U004",
-      projectId: "PR002",
+      bookingId: "2",
+      clientId: "2",
+      unitId: "4",
+      projectId: "2",
       bookingStatus: "Pending",
       bookingDate: "2026-08-02",
       dueAmount: 6200000
@@ -361,15 +369,15 @@ var nirmanData = {
   ],
 
   allocationConfirmations: [
-    { bookingId: "BK001", employeeId: "E004" }
+    { bookingId: "1", employeeId: "4" }
   ],
 
   payments: [
     {
-      clientId: "C001",
-      paymentId: "PAY001",
-      bookingId: "BK001",
-      verifiedByEmployeeId: "E002",
+      clientId: "1",
+      paymentId: "1",
+      bookingId: "1",
+      verifiedByEmployeeId: "2",
       paymentStatus: "Verified",
       verifiedAt: "2026-07-22T11:30:00",
       paymentMethod: "Bank Transfer",
@@ -377,10 +385,10 @@ var nirmanData = {
       paymentDue: "2026-07-25"
     },
     {
-      clientId: "C001",
-      paymentId: "PAY002",
-      bookingId: "BK001",
-      verifiedByEmployeeId: "E002",
+      clientId: "1",
+      paymentId: "2",
+      bookingId: "1",
+      verifiedByEmployeeId: "2",
       paymentStatus: "Pending",
       verifiedAt: "",
       paymentMethod: "Installment Plan",
@@ -388,10 +396,10 @@ var nirmanData = {
       paymentDue: "2026-10-25"
     },
     {
-      clientId: "C002",
-      paymentId: "PAY001",
-      bookingId: "BK002",
-      verifiedByEmployeeId: "E002",
+      clientId: "2",
+      paymentId: "1",
+      bookingId: "2",
+      verifiedByEmployeeId: "2",
       paymentStatus: "Pending",
       verifiedAt: "",
       paymentMethod: "Bank Transfer",
@@ -402,27 +410,27 @@ var nirmanData = {
 
   installments: [
     {
-      clientId: "C001",
-      paymentId: "PAY002",
-      installmentId: "I001",
+      clientId: "1",
+      paymentId: "2",
+      installmentId: "1",
       amount: 1500000,
       dueDate: "2026-09-25",
       status: "Upcoming",
       expiredAt: ""
     },
     {
-      clientId: "C001",
-      paymentId: "PAY002",
-      installmentId: "I002",
+      clientId: "1",
+      paymentId: "2",
+      installmentId: "2",
       amount: 1500000,
       dueDate: "2026-10-25",
       status: "Upcoming",
       expiredAt: ""
     },
     {
-      clientId: "C002",
-      paymentId: "PAY001",
-      installmentId: "I001",
+      clientId: "2",
+      paymentId: "1",
+      installmentId: "1",
       amount: 800000,
       dueDate: "2026-08-20",
       status: "Pending",
@@ -432,18 +440,18 @@ var nirmanData = {
 
   complaints: [
     {
-      complaintId: "CMP001",
-      clientId: "C001",
-      resolvedByEmployeeId: "E004",
+      complaintId: "1",
+      clientId: "1",
+      resolvedByEmployeeId: "4",
       status: "Pending",
       filedDate: "2026-08-05",
       note: "Please confirm when the allocation document will be available.",
       resolution: ""
     },
     {
-      complaintId: "CMP002",
-      clientId: "C002",
-      resolvedByEmployeeId: "E004",
+      complaintId: "2",
+      clientId: "2",
+      resolvedByEmployeeId: "4",
       status: "Resolved",
       filedDate: "2026-07-19",
       note: "The payment schedule was not visible in my booking summary.",
@@ -453,25 +461,25 @@ var nirmanData = {
 
   projectUpdates: [
     {
-      projectId: "PR001",
-      updateId: "UP001",
-      repId: "R001",
+      projectId: "1",
+      updateId: "1",
+      repId: "1",
       updateDate: "2026-07-08",
       workNote: "Site preparation and safety perimeter completed.",
       progressPercent: 22
     },
     {
-      projectId: "PR001",
-      updateId: "UP002",
-      repId: "R001",
+      projectId: "1",
+      updateId: "2",
+      repId: "1",
       updateDate: "2026-08-03",
       workNote: "Foundation reinforcement and first concrete pour completed.",
       progressPercent: 38
     },
     {
-      projectId: "PR002",
-      updateId: "UP001",
-      repId: "R001",
+      projectId: "2",
+      updateId: "1",
+      repId: "1",
       updateDate: "2026-07-27",
       workNote: "External wall work and service routing are in progress.",
       progressPercent: 68
