@@ -1,0 +1,87 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="NIRMAN user login for employees, clients, and contractor representatives.">
+    <title>User Login | NIRMAN</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+  </head>
+  <body class="auth-page">
+    <main class="auth-shell">
+      <section class="auth-showcase" aria-labelledby="loginWelcomeTitle">
+        <a class="brand-logo brand-logo-light" href="index.html">
+          <span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span>
+        </a>
+        <div class="login-map" aria-hidden="true">
+          <svg viewBox="0 0 520 300">
+            <rect class="login-map-ground" x="1" y="1" width="518" height="298" rx="10"></rect>
+            <path class="login-map-block" d="M28 24h138l24 69-55 43H28z"></path>
+            <path class="login-map-block" d="M214 24h116l22 82-44 43-102-24z"></path>
+            <path class="login-map-block" d="M380 24h112v104l-75 23-52-48z"></path>
+            <path class="login-map-block" d="M28 177l105-25 66 51-22 70H28z"></path>
+            <path class="login-map-block" d="M229 166l87 10 44 97H202z"></path>
+            <path class="login-map-block" d="M377 169l115-20v124H382l-32-54z"></path>
+            <path class="login-map-road" d="M-10 151C95 116 151 128 232 160s161 36 298-8"></path>
+            <path class="login-map-road login-map-road-small" d="M185-10c-5 79 11 132 58 178s58 87 56 142"></path>
+            <path class="login-map-road login-map-road-small" d="M357-10c14 77 6 126-27 170s-22 92 1 150"></path>
+            <g class="login-map-building" aria-hidden="true">
+              <rect x="64" y="55" width="15" height="31"></rect><rect x="83" y="43" width="20" height="43"></rect><rect x="107" y="62" width="14" height="24"></rect>
+              <rect x="407" y="61" width="17" height="35"></rect><rect x="428" y="49" width="22" height="47"></rect><rect x="454" y="70" width="12" height="26"></rect>
+              <rect x="69" y="214" width="18" height="31"></rect><rect x="91" y="200" width="23" height="45"></rect><rect x="118" y="219" width="14" height="26"></rect>
+            </g>
+            <g class="login-map-marker">
+              <g transform="translate(145 106)"><path d="M0-20c-11 0-20 9-20 20 0 15 20 34 20 34S20 15 20 0C20-11 11-20 0-20z"></path><circle r="6"></circle></g>
+              <g transform="translate(318 91)"><path d="M0-20c-11 0-20 9-20 20 0 15 20 34 20 34S20 15 20 0C20-11 11-20 0-20z"></path><circle r="6"></circle></g>
+              <g transform="translate(397 190)"><path d="M0-20c-11 0-20 9-20 20 0 15 20 34 20 34S20 15 20 0C20-11 11-20 0-20z"></path><circle r="6"></circle></g>
+              <g transform="translate(238 226)"><path d="M0-20c-11 0-20 9-20 20 0 15 20 34 20 34S20 15 20 0C20-11 11-20 0-20z"></path><circle r="6"></circle></g>
+            </g>
+          </svg>
+        </div>
+        <div class="auth-showcase-copy">
+           <h1 id="loginWelcomeTitle">Login to your NIRMAN account.</h1>
+           <p>Select your role, then enter your email and password.</p>
+         </div>
+      </section>
+
+      <section class="auth-form-panel">
+        <a class="auth-back-link" href="index.html"><span aria-hidden="true">&larr;</span> Back to public site</a>
+        <div class="auth-form-heading">
+           <h2>User login</h2>
+        </div>
+
+        <div id="loginFeedback" aria-live="polite"></div>
+
+        <form id="loginForm">
+          <fieldset class="mb-4">
+            <legend class="form-label">Account role</legend>
+            <div class="role-choice">
+              <label><input type="radio" name="loginRole" value="employee" checked>Employee</label>
+              <label><input type="radio" name="loginRole" value="client">Client</label>
+              <label><input type="radio" name="loginRole" value="contractor">Representative</label>
+            </div>
+          </fieldset>
+          <div class="mb-3">
+            <label class="form-label" for="loginEmail">Email address</label>
+            <input class="form-control" type="email" id="loginEmail" autocomplete="username" required placeholder="Enter email address">
+          </div>
+          <div class="mb-4">
+            <label class="form-label" for="loginPassword">Password</label>
+            <input class="form-control" type="password" id="loginPassword" autocomplete="current-password" required placeholder="Enter password">
+          </div>
+          <button class="btn btn-navy w-100" type="submit">Login</button>
+        </form>
+
+        <p class="auth-switch">New user? <a href="register.html">Create an account</a></p>
+        <p class="auth-switch mt-2">Administrator? <a href="admin-login.html">Admin login</a></p>
+      </section>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>
