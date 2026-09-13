@@ -1,0 +1,1403 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="NIRMAN connects real-estate operations, construction delivery, tendering, booking, and client service in one accountable system.">
+    <title>NIRMAN | Property & Construction Operations</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+      .home-benchmark {
+        --home-green: #173e38;
+        --home-green-deep: #0e2d29;
+        --home-limestone: #f3f0e8;
+        --home-paper: #fffefa;
+        --home-ink: #202927;
+        --home-muted: #66716d;
+        --home-clay: #b55338;
+        background: #f6f7f3;
+        color: var(--home-ink);
+        font-family: "Aptos", "Segoe UI", Arial, sans-serif;
+      }
+
+      .home-benchmark h1,
+      .home-benchmark h2,
+      .home-benchmark h3,
+      .home-benchmark h4,
+      .home-benchmark p {
+        font-family: inherit;
+      }
+
+      .home-benchmark h1,
+      .home-benchmark h2,
+      .home-benchmark h3 {
+        letter-spacing: -0.04em;
+      }
+
+      .home-container {
+        width: min(1420px, calc(100% - 64px));
+        margin-inline: auto;
+      }
+
+      .home-nav {
+        min-height: 74px;
+        z-index: 50;
+        padding: 0;
+        background: #f6f7f3;
+        border-bottom: 1px solid rgba(23, 62, 56, 0.1);
+        box-shadow: none;
+      }
+
+      .home-nav .home-container {
+        min-height: 74px;
+        display: flex;
+        align-items: center;
+      }
+
+      .home-nav .navbar-brand {
+        margin-right: clamp(34px, 5vw, 76px);
+        color: var(--home-green-deep);
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 800;
+        letter-spacing: 0.17em;
+      }
+
+      .home-nav .brand-symbol {
+        border-color: var(--home-green-deep);
+      }
+
+      .home-nav .brand-symbol::before,
+      .home-nav .brand-symbol::after {
+        background: var(--home-green-deep);
+      }
+
+      .home-nav .navbar-nav {
+        align-items: center;
+        gap: 3px;
+      }
+
+      .home-nav .nav-link {
+        position: relative;
+        padding: 28px 14px !important;
+        color: #5d6864;
+        font-size: 0.83rem;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+      }
+
+      .home-nav .nav-link:hover,
+      .home-nav .nav-link:focus,
+      .home-nav .nav-link.active {
+        color: var(--home-green-deep);
+      }
+
+      .home-nav .nav-link.active::after {
+        height: 2px;
+        position: absolute;
+        right: 14px;
+        bottom: 20px;
+        left: 14px;
+        content: "";
+        background: var(--home-clay);
+      }
+
+      .home-nav .home-nav-action {
+        margin-left: 9px;
+        padding: 10px 17px;
+        color: var(--home-paper);
+        background: var(--home-green-deep);
+        border: 1px solid var(--home-green-deep);
+        border-radius: 5px;
+        font-size: 0.8rem;
+        font-weight: 750;
+      }
+
+      .home-nav .home-nav-action:hover,
+      .home-nav .home-nav-action:focus {
+        color: var(--home-green-deep);
+        background: transparent;
+      }
+
+      .home-nav .navbar-toggler {
+        border-color: rgba(23, 62, 56, 0.22);
+      }
+
+      .home-nav .navbar-toggler-icon {
+        width: 22px;
+        height: 16px;
+        position: relative;
+        background: none;
+        border-top: 1px solid var(--home-green-deep);
+        border-bottom: 1px solid var(--home-green-deep);
+      }
+
+      .home-nav .navbar-toggler-icon::after {
+        height: 1px;
+        position: absolute;
+        top: 7px;
+        right: 0;
+        left: 0;
+        content: "";
+        background: var(--home-green-deep);
+      }
+
+      .home-hero {
+        width: min(1472px, calc(100% - 64px));
+        min-height: min(780px, calc(100vh - 122px));
+        position: relative;
+        margin: 64px auto 0;
+        background: var(--home-green-deep);
+        border-radius: 26px;
+        box-shadow: 0 34px 90px rgba(23, 49, 43, 0.17);
+      }
+
+      .home-hero-image {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        overflow: hidden;
+        background: #31514b;
+        border-radius: inherit;
+      }
+
+      .home-hero-image::before {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        content: "";
+        background:
+          linear-gradient(90deg, rgba(8, 34, 30, 0.94) 0%, rgba(8, 34, 30, 0.77) 41%, rgba(8, 34, 30, 0.2) 76%),
+          linear-gradient(0deg, rgba(7, 25, 22, 0.7) 0%, transparent 52%);
+      }
+
+      .home-hero-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 48%;
+        filter: saturate(0.72) contrast(1.04);
+        transform: scale(1.015);
+      }
+
+      .home-hero-inner {
+        width: min(1280px, calc(100% - 120px));
+        min-height: min(780px, calc(100vh - 122px));
+        display: flex;
+        position: relative;
+        z-index: 2;
+        align-items: center;
+        padding: 92px 0 124px;
+      }
+
+      .home-hero-copy {
+        width: min(760px, 67%);
+      }
+
+      .home-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 28px;
+        color: #d1ddd8;
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .home-eyebrow::before {
+        width: 7px;
+        height: 7px;
+        content: "";
+        background: var(--home-clay);
+        border-radius: 50%;
+      }
+
+      .home-hero h1 {
+        max-width: 760px;
+        margin: 0;
+        color: var(--home-paper);
+        font-size: clamp(3.8rem, 5.5vw, 6.2rem);
+        font-weight: 680;
+        line-height: 0.93;
+      }
+
+      .home-hero-lead {
+        max-width: 650px;
+        margin: 30px 0 0;
+        color: #bdcbc6;
+        font-size: clamp(1rem, 1.35vw, 1.17rem);
+        line-height: 1.7;
+      }
+
+      .home-hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 38px;
+      }
+
+      .home-button-primary,
+      .home-button-secondary {
+        display: inline-flex;
+        min-height: 52px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 23px;
+        border-radius: 5px;
+        font-size: 0.85rem;
+        font-weight: 750;
+        transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+      }
+
+      .home-button-primary {
+        color: var(--home-green-deep);
+        background: var(--home-paper);
+        border: 1px solid var(--home-paper);
+      }
+
+      .home-button-primary:hover,
+      .home-button-primary:focus {
+        color: var(--home-green-deep);
+        background: var(--home-limestone);
+        transform: translateY(-2px);
+      }
+
+      .home-button-secondary {
+        color: var(--home-paper);
+        background: transparent;
+        border: 1px solid rgba(255, 254, 250, 0.42);
+      }
+
+      .home-button-secondary:hover,
+      .home-button-secondary:focus {
+        color: var(--home-green-deep);
+        background: var(--home-paper);
+        border-color: var(--home-paper);
+        transform: translateY(-2px);
+      }
+
+      .home-live-record {
+        width: min(430px, 40vw);
+        position: absolute;
+        z-index: 3;
+        right: 54px;
+        bottom: -50px;
+        padding: 23px 25px;
+        color: var(--home-ink);
+        background: var(--home-paper);
+        box-shadow: 0 24px 60px rgba(7, 30, 26, 0.22);
+        border-radius: 12px;
+      }
+
+      .home-record-top,
+      .home-record-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .home-record-top {
+        margin-bottom: 20px;
+        color: var(--home-muted);
+        font-size: 0.65rem;
+        font-weight: 750;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .home-record-status {
+        min-width: 68px;
+        min-height: 16px;
+        color: var(--home-clay);
+        text-align: right;
+      }
+
+      .home-record-name {
+        min-width: 190px;
+        min-height: 27px;
+        margin: 0;
+        color: var(--home-green-deep);
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .home-record-progress {
+        min-width: 75px;
+        min-height: 43px;
+        color: var(--home-green-deep);
+        font-size: 2rem;
+        font-weight: 720;
+        text-align: right;
+      }
+
+      .home-record-progress:not(:empty)::after {
+        display: block;
+        margin-top: 3px;
+        color: var(--home-muted);
+        content: "latest progress";
+        font-size: 0.58rem;
+        font-weight: 650;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .home-skeleton:empty {
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+        background: rgba(23, 62, 56, 0.12);
+        border-radius: 3px;
+      }
+
+      .home-skeleton:empty::after {
+        width: 70%;
+        position: absolute;
+        inset: 0 auto 0 -70%;
+        content: "";
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
+        animation: home-shimmer 1.5s infinite;
+      }
+
+      @keyframes home-shimmer {
+        to { left: 120%; }
+      }
+
+      .home-metrics {
+        position: relative;
+        z-index: 5;
+        padding: 104px 0 20px;
+        background: transparent;
+      }
+
+      .home-metric-grid {
+        display: grid;
+        margin-top: -1px;
+        padding: 10px 22px;
+        background: var(--home-paper);
+        border-radius: 18px;
+        box-shadow: 0 18px 52px rgba(23, 49, 43, 0.09);
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .home-metric {
+        padding: 30px 28px;
+      }
+
+      .home-metric + .home-metric {
+        padding-left: clamp(28px, 4vw, 58px);
+        border-left: 1px solid rgba(23, 62, 56, 0.11);
+      }
+
+      .home-metric strong {
+        display: block;
+        width: max-content;
+        min-width: 52px;
+        min-height: 42px;
+        color: var(--home-green-deep);
+        font-size: clamp(2rem, 3vw, 2.8rem);
+        font-weight: 680;
+        line-height: 1;
+      }
+
+      .home-metric strong:empty {
+        width: 66px;
+        background: #e8e7df;
+      }
+
+      .home-metric strong:empty::after {
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
+      }
+
+      .home-metric span {
+        display: block;
+        margin-top: 12px;
+        color: var(--home-muted);
+        font-size: 0.76rem;
+        font-weight: 650;
+        line-height: 1.45;
+      }
+
+      .home-section {
+        padding: clamp(96px, 10vw, 150px) 0;
+      }
+
+      .home-section:not(.home-section-green) {
+        background-color: transparent;
+      }
+
+      .home-section:not(.home-section-limestone):not(.home-section-green) > .home-container {
+        padding: clamp(38px, 5vw, 76px);
+        background: var(--home-paper);
+        border-radius: 22px;
+        box-shadow: 0 24px 70px rgba(23, 49, 43, 0.09);
+      }
+
+      .home-section-limestone {
+        width: min(1472px, calc(100% - 64px));
+        margin-inline: auto;
+        padding-inline: 0;
+        background: var(--home-paper) !important;
+        border-radius: 22px;
+        box-shadow: 0 24px 70px rgba(23, 49, 43, 0.09);
+      }
+
+      .home-section-green {
+        color: var(--home-paper);
+        background: var(--home-green);
+      }
+
+      .home-section-limestone .home-container,
+      .home-section-green .home-container {
+        width: min(1280px, calc(100% - 112px));
+      }
+
+      .home-section-heading {
+        max-width: 760px;
+        margin-bottom: 54px;
+      }
+
+      .home-section-heading .home-eyebrow {
+        margin-bottom: 20px;
+        color: var(--home-green);
+      }
+
+      .home-section-heading h2 {
+        margin: 0;
+        color: var(--home-green-deep);
+        font-size: clamp(2.75rem, 5vw, 5.1rem);
+        font-weight: 650;
+        line-height: 1;
+      }
+
+      .home-section-heading p {
+        max-width: 610px;
+        margin: 22px 0 0;
+        color: var(--home-muted);
+        font-size: 1.02rem;
+        line-height: 1.7;
+      }
+
+      .home-section-green .home-section-heading .home-eyebrow,
+      .home-section-green .home-section-heading h2 {
+        color: var(--home-paper);
+      }
+
+      .home-section-green .home-section-heading p {
+        color: #c3d0cc;
+      }
+
+      .home-showcase-grid {
+        display: grid;
+        align-items: stretch;
+        gap: clamp(34px, 6vw, 82px);
+        grid-template-columns: minmax(0, 1.05fr) minmax(400px, 0.95fr);
+      }
+
+      .home-showcase-grid-reverse {
+        grid-template-columns: minmax(400px, 0.92fr) minmax(0, 1.08fr);
+      }
+
+      .home-visual-frame {
+        min-height: 660px;
+        position: relative;
+        overflow: hidden;
+        background: #c8cec8;
+        border-radius: 10px;
+        box-shadow: 0 28px 70px rgba(26, 46, 41, 0.13);
+      }
+
+      .home-visual-frame img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+        object-fit: cover;
+        transition: transform 700ms ease;
+      }
+
+      .home-visual-frame:hover img {
+        transform: scale(1.025);
+      }
+
+      .home-visual-frame::after {
+        position: absolute;
+        inset: auto 0 0;
+        height: 45%;
+        content: "";
+        background: linear-gradient(transparent, rgba(8, 31, 27, 0.72));
+      }
+
+      .home-image-caption {
+        position: absolute;
+        z-index: 1;
+        right: 28px;
+        bottom: 25px;
+        left: 28px;
+        color: rgba(255, 254, 250, 0.86);
+        font-size: 0.68rem;
+        font-weight: 650;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .home-register-column {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .home-register-intro {
+        margin-bottom: 28px;
+      }
+
+      .home-register-intro h3 {
+        margin: 0 0 13px;
+        color: var(--home-green-deep);
+        font-size: clamp(1.7rem, 2.6vw, 2.35rem);
+        font-weight: 680;
+      }
+
+      .home-register-intro p {
+        margin: 0;
+        color: var(--home-muted);
+        line-height: 1.65;
+      }
+
+      .home-register-link {
+        display: inline-flex;
+        width: max-content;
+        align-items: center;
+        gap: 10px;
+        margin-top: 28px;
+        color: var(--home-green-deep);
+        font-size: 0.82rem;
+        font-weight: 760;
+      }
+
+      .home-register-link::after {
+        content: "\2192";
+        font-size: 1.1rem;
+        transition: transform 180ms ease;
+      }
+
+      .home-register-link:hover,
+      .home-register-link:focus {
+        color: var(--home-clay);
+      }
+
+      .home-register-link:hover::after,
+      .home-register-link:focus::after {
+        transform: translateX(4px);
+      }
+
+      .home-project-feed {
+        display: grid;
+        gap: 0;
+      }
+
+      .home-project-feed > [class*="col-"] {
+        width: 100%;
+        padding: 0;
+      }
+
+      .home-benchmark .public-project-card {
+        min-height: 0;
+        padding: 25px 0;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid rgba(23, 62, 56, 0.16);
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .home-benchmark .public-project-card:hover {
+        transform: none;
+        box-shadow: none;
+      }
+
+      .home-benchmark .public-project-card .project-card-top {
+        min-height: 0;
+        padding: 0;
+        background: transparent;
+      }
+
+      .home-benchmark .public-project-card .project-number {
+        color: var(--home-green);
+      }
+
+      .home-benchmark .public-project-card .project-card-body {
+        padding: 0;
+      }
+
+      .home-benchmark .public-project-card h3 {
+        margin: 12px 0 6px;
+        color: var(--home-green-deep);
+        font-size: 1.28rem;
+        font-weight: 700;
+      }
+
+      .home-benchmark .project-coordinate {
+        color: var(--home-muted);
+      }
+
+      .home-benchmark .project-location,
+      .home-benchmark .project-meta,
+      .home-benchmark .project-progress-row,
+      .home-benchmark .project-update-note {
+        color: var(--home-muted);
+        font-size: 0.74rem;
+      }
+
+      .home-benchmark .public-project-card .progress {
+        height: 5px;
+        background: #dfe2dc;
+        border-radius: 5px;
+      }
+
+      .home-benchmark .public-project-card .progress-bar {
+        background: var(--home-green);
+      }
+
+      .home-feed-loading {
+        padding: 26px 0;
+        border-top: 1px solid rgba(23, 62, 56, 0.16);
+      }
+
+      .home-feed-loading .skeleton-line {
+        height: 12px;
+        background: #dedfd8;
+      }
+
+      .home-property-grid {
+        align-items: center;
+      }
+
+      .home-property-copy {
+        padding-right: clamp(0px, 2vw, 24px);
+      }
+
+      .home-property-copy h2 {
+        margin: 0;
+        color: var(--home-green-deep);
+        font-size: clamp(2.75rem, 4.8vw, 4.9rem);
+        font-weight: 650;
+        line-height: 1;
+      }
+
+      .home-property-copy > p {
+        max-width: 530px;
+        margin: 24px 0 0;
+        color: var(--home-muted);
+        font-size: 1.02rem;
+        line-height: 1.7;
+      }
+
+      .home-property-visual {
+        min-height: 520px;
+      }
+
+      .home-property-feed {
+        display: grid;
+        gap: 12px;
+        margin-top: 42px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .home-property-feed > [class*="col-"] {
+        width: 100%;
+        padding: 0;
+      }
+
+      .home-benchmark .public-unit-card {
+        min-height: 228px;
+        padding: 20px;
+        background: var(--home-paper);
+        border: 0;
+        border-radius: 7px;
+        box-shadow: 0 14px 35px rgba(24, 45, 40, 0.07);
+      }
+
+      .home-benchmark .unit-card-plan {
+        border-color: #cfd5cf;
+      }
+
+      .home-benchmark .public-unit-card h3 {
+        color: var(--home-green-deep);
+        font-family: inherit;
+        font-size: 1.05rem;
+        font-weight: 720;
+      }
+
+      .home-benchmark .public-unit-card p {
+        color: var(--home-muted);
+        font-size: 0.74rem;
+      }
+
+      .home-platform {
+        overflow: hidden;
+        width: min(1472px, calc(100% - 64px));
+        margin: 40px auto;
+        border-radius: 22px;
+        box-shadow: 0 28px 76px rgba(23, 49, 43, 0.14);
+      }
+
+      .home-platform-layout {
+        display: grid;
+        align-items: center;
+        gap: clamp(50px, 8vw, 110px);
+        grid-template-columns: 0.92fr 1.08fr;
+      }
+
+      .home-platform-image {
+        min-height: 640px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 9px;
+      }
+
+      .home-platform-image img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        object-fit: cover;
+        filter: saturate(0.75);
+      }
+
+      .home-platform-image::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        background: linear-gradient(180deg, transparent 45%, rgba(7, 29, 26, 0.58));
+      }
+
+      .home-platform-content .home-eyebrow {
+        margin-bottom: 21px;
+      }
+
+      .home-platform-content h2 {
+        max-width: 650px;
+        margin: 0;
+        color: var(--home-paper);
+        font-size: clamp(2.7rem, 4.6vw, 4.8rem);
+        font-weight: 650;
+        line-height: 1;
+      }
+
+      .home-platform-content > p {
+        max-width: 590px;
+        margin: 23px 0 48px;
+        color: #c3d0cc;
+        line-height: 1.72;
+      }
+
+      .home-workflow {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .home-workflow li {
+        display: grid;
+        gap: 18px;
+        padding: 23px 0;
+        border-top: 1px solid rgba(255, 254, 250, 0.16);
+        grid-template-columns: 44px 130px 1fr;
+      }
+
+      .home-workflow li:last-child {
+        border-bottom: 1px solid rgba(255, 254, 250, 0.16);
+      }
+
+      .home-workflow span {
+        color: #db9d89;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+      }
+
+      .home-workflow strong {
+        color: var(--home-paper);
+        font-size: 0.9rem;
+      }
+
+      .home-workflow p {
+        margin: 0;
+        color: #aebfba;
+        font-size: 0.86rem;
+        line-height: 1.55;
+      }
+
+      .home-access {
+        padding: clamp(92px, 10vw, 140px) 0;
+        background: transparent;
+      }
+
+      .home-access-inner {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 48px;
+        padding: clamp(38px, 5vw, 72px);
+        background: var(--home-paper);
+        border: 0;
+        border-radius: 22px;
+        box-shadow: 0 24px 70px rgba(23, 49, 43, 0.09);
+      }
+
+      .home-access h2 {
+        max-width: 720px;
+        margin: 0;
+        color: var(--home-green-deep);
+        font-size: clamp(2.7rem, 5vw, 5.2rem);
+        font-weight: 650;
+        line-height: 0.98;
+      }
+
+      .home-access p {
+        max-width: 500px;
+        margin: 22px 0 0;
+        color: var(--home-muted);
+        line-height: 1.7;
+      }
+
+      .home-access-actions {
+        display: flex;
+        flex: 0 0 auto;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .home-access .home-button-primary {
+        color: var(--home-paper);
+        background: var(--home-green-deep);
+        border-color: var(--home-green-deep);
+      }
+
+      .home-access .home-button-primary:hover,
+      .home-access .home-button-primary:focus {
+        color: var(--home-paper);
+        background: var(--home-green);
+      }
+
+      .home-access .home-button-secondary {
+        color: var(--home-green-deep);
+        border-color: #b7c0bb;
+      }
+
+      .home-access .home-button-secondary:hover,
+      .home-access .home-button-secondary:focus {
+        color: var(--home-paper);
+        background: var(--home-green-deep);
+        border-color: var(--home-green-deep);
+      }
+
+      .home-footer {
+        padding: 72px 0 30px;
+        color: #b8c8c3;
+        background: #092622;
+      }
+
+      .home-footer-top {
+        display: grid;
+        gap: 50px;
+        grid-template-columns: 1.5fr 0.65fr 0.65fr;
+      }
+
+      .home-footer .brand-logo {
+        color: var(--home-paper);
+        font-family: inherit;
+        font-size: 1.05rem;
+        font-weight: 800;
+        letter-spacing: 0.17em;
+      }
+
+      .home-footer-intro p {
+        max-width: 440px;
+        margin: 22px 0 0;
+        color: #91a8a1;
+        line-height: 1.65;
+      }
+
+      .home-footer h3 {
+        margin: 0 0 20px;
+        color: var(--home-paper);
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .home-footer ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .home-footer li + li {
+        margin-top: 12px;
+      }
+
+      .home-footer a {
+        color: #b8c8c3;
+        font-size: 0.86rem;
+      }
+
+      .home-footer a:hover,
+      .home-footer a:focus {
+        color: var(--home-paper);
+      }
+
+      .home-footer-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        margin-top: 66px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(255, 254, 250, 0.13);
+        color: #78918a;
+        font-size: 0.68rem;
+        letter-spacing: 0.05em;
+      }
+
+      .home-footer-credit a {
+        color: #78918a;
+        font-size: inherit;
+      }
+
+      .home-benchmark .public-empty-state,
+      .home-benchmark .public-error-state {
+        background: transparent;
+        border: 0;
+        border-top: 1px solid rgba(23, 62, 56, 0.16);
+        border-radius: 0;
+      }
+
+      @media (max-width: 991.98px) {
+        .home-container {
+          width: min(100% - 40px, 760px);
+        }
+
+        .home-nav,
+        .home-nav .home-container {
+          min-height: 70px;
+        }
+
+        .home-nav .navbar-collapse {
+          padding: 8px 0 22px;
+          background: #f6f7f3;
+        }
+
+        .home-nav .navbar-nav {
+          align-items: stretch;
+        }
+
+        .home-nav .nav-link {
+          padding: 11px 0 !important;
+        }
+
+        .home-nav .nav-link.active::after {
+          right: auto;
+          bottom: 5px;
+          left: 0;
+          width: 24px;
+        }
+
+        .home-nav .home-nav-action {
+          width: max-content;
+          margin: 9px 0 0;
+        }
+
+        .home-hero {
+          min-height: auto;
+          width: calc(100% - 40px);
+          margin-top: 34px;
+        }
+
+        .home-hero-inner {
+          width: calc(100% - 72px);
+          min-height: 650px;
+          align-items: flex-start;
+          padding: 94px 0 110px;
+        }
+
+        .home-hero-copy {
+          width: min(650px, 92%);
+        }
+
+        .home-hero-image {
+          width: 100%;
+          opacity: 1;
+        }
+
+        .home-hero-image::before {
+          background: linear-gradient(90deg, rgba(8, 34, 30, 0.94), rgba(8, 34, 30, 0.54)), linear-gradient(0deg, rgba(7, 25, 22, 0.82), transparent);
+        }
+
+        .home-live-record {
+          width: min(430px, calc(100% - 40px));
+          right: 20px;
+          bottom: -54px;
+        }
+
+        .home-metric-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .home-metric:nth-child(2n + 1) {
+          padding-left: 0;
+        }
+
+        .home-metric:nth-child(3) {
+          border-left: 0;
+        }
+
+        .home-metric:nth-child(n + 3) {
+          border-top: 1px solid rgba(23, 62, 56, 0.11);
+        }
+
+        .home-showcase-grid,
+        .home-showcase-grid-reverse,
+        .home-platform-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .home-visual-frame,
+        .home-platform-image {
+          min-height: 560px;
+        }
+
+        .home-property-grid .home-property-copy {
+          order: 1;
+        }
+
+        .home-property-grid .home-property-visual {
+          order: 0;
+        }
+
+        .home-section-limestone,
+        .home-platform {
+          width: calc(100% - 40px);
+        }
+
+        .home-section-limestone .home-container,
+        .home-section-green .home-container {
+          width: calc(100% - 64px);
+        }
+
+        .home-property-feed {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .home-access-inner {
+          display: block;
+        }
+
+        .home-access-actions {
+          align-items: flex-start;
+          margin-top: 38px;
+        }
+      }
+
+      @media (max-width: 575.98px) {
+        .home-container {
+          width: calc(100% - 30px);
+        }
+
+        .home-hero-inner {
+          width: calc(100% - 36px);
+          min-height: 790px;
+          padding-top: 72px;
+        }
+
+        .home-hero-copy {
+          width: 100%;
+        }
+
+        .home-hero h1 {
+          font-size: clamp(3rem, 15vw, 4.4rem);
+        }
+
+        .home-hero-lead {
+          max-width: 94%;
+          margin-top: 23px;
+          font-size: 0.95rem;
+        }
+
+        .home-hero-actions {
+          align-items: stretch;
+          flex-direction: column;
+          margin-top: 30px;
+        }
+
+        .home-button-primary,
+        .home-button-secondary {
+          width: 100%;
+        }
+
+        .home-live-record {
+          width: auto;
+          max-width: none;
+          right: 15px;
+          left: 15px;
+          bottom: -58px;
+          padding: 18px;
+        }
+
+        .home-record-name {
+          min-width: 120px;
+          font-size: 0.96rem;
+        }
+
+        .home-record-progress {
+          min-width: 60px;
+          font-size: 1.6rem;
+        }
+
+        .home-metric-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .home-metric,
+        .home-metric + .home-metric {
+          padding: 24px 14px;
+        }
+
+        .home-metric:nth-child(2n) {
+          padding-left: 18px;
+        }
+
+        .home-section {
+          padding: 82px 0;
+        }
+
+        .home-section:not(.home-section-limestone):not(.home-section-green) > .home-container {
+          padding: 28px 20px;
+          border-radius: 16px;
+        }
+
+        .home-section-limestone,
+        .home-platform {
+          width: calc(100% - 24px);
+          border-radius: 16px;
+        }
+
+        .home-section-limestone .home-container,
+        .home-section-green .home-container {
+          width: calc(100% - 30px);
+        }
+
+        .home-section-heading h2,
+        .home-property-copy h2,
+        .home-platform-content h2,
+        .home-access h2 {
+          font-size: clamp(2.45rem, 12vw, 3.4rem);
+        }
+
+        .home-visual-frame,
+        .home-property-visual,
+        .home-platform-image {
+          min-height: 430px;
+        }
+
+        .home-property-feed {
+          grid-template-columns: 1fr;
+        }
+
+        .home-workflow li {
+          gap: 8px 12px;
+          grid-template-columns: 36px 1fr;
+        }
+
+        .home-workflow p {
+          grid-column: 2;
+        }
+
+        .home-access-inner {
+          padding: 32px 22px;
+          border-radius: 16px;
+        }
+
+        .home-footer-top {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .home-footer-intro {
+          grid-column: 1 / -1;
+        }
+
+        .home-footer-bottom {
+          align-items: flex-start;
+          flex-direction: column;
+          margin-top: 48px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .home-benchmark *,
+        .home-benchmark *::before,
+        .home-benchmark *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="public-page home-benchmark" data-public-page="home">
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+    <nav class="navbar navbar-expand-lg home-nav sticky-top" aria-label="Public navigation">
+      <div class="home-container">
+        <a class="navbar-brand brand-logo" href="index.html" aria-label="NIRMAN home"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a>
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#publicNavigation" aria-controls="publicNavigation" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="publicNavigation">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="properties.html">Properties</a></li>
+            <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+            <li class="nav-item" data-public-guest><a class="nav-link" href="login.html">Login</a></li>
+            <li class="nav-item" data-public-guest><a class="home-nav-action" href="register.html">Create account</a></li>
+            <li class="nav-item" data-public-session hidden><a class="nav-link" data-public-dashboard href="login.html">Dashboard</a></li>
+            <li class="nav-item" data-public-session hidden><a class="home-nav-action" data-logout href="index.html">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="mainContent">
+      <section class="home-hero" aria-labelledby="homeHeroTitle">
+        <div class="home-hero-image">
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&amp;fit=crop&amp;w=1800&amp;q=88" alt="Construction professional reviewing architectural plans" fetchpriority="high">
+        </div>
+        <div class="home-container home-hero-inner">
+          <div class="home-hero-copy">
+            <span class="home-eyebrow">Property + construction operations</span>
+            <h1 id="homeHeroTitle">Build with a clear line of sight.</h1>
+            <p class="home-hero-lead">NIRMAN keeps the path from tender decision to project delivery, property booking, payment review, and client support connected to the people responsible.</p>
+            <div class="home-hero-actions">
+              <a class="home-button-primary" href="projects.html">Explore live projects</a>
+              <a class="home-button-secondary" data-public-guest href="login.html">Open your workspace</a>
+              <a class="home-button-secondary" data-public-session data-public-dashboard href="login.html" hidden>Return to dashboard</a>
+            </div>
+          </div>
+        </div>
+        <aside class="home-live-record" aria-label="Latest project register preview">
+          <div class="home-record-top"><span>Latest project record</span><span class="home-record-status home-skeleton" id="heroProjectStatus"></span></div>
+          <div class="home-record-main"><p class="home-record-name home-skeleton" id="heroProjectName"></p><strong class="home-record-progress home-skeleton" id="heroProjectProgress"></strong></div>
+        </aside>
+      </section>
+
+      <section class="home-metrics" aria-label="Live NIRMAN summary">
+        <div class="home-container">
+          <div class="home-metric-grid">
+            <div class="home-metric"><strong class="home-skeleton" data-public-summary="projects"></strong><span>Projects in the register</span></div>
+            <div class="home-metric"><strong class="home-skeleton" data-public-summary="activeProjects"></strong><span>Active project records</span></div>
+            <div class="home-metric"><strong class="home-skeleton" data-public-summary="availableUnits"></strong><span>Effectively available units</span></div>
+            <div class="home-metric"><strong class="home-skeleton" data-public-summary="contractors"></strong><span>Registered contractors</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-section" aria-labelledby="projectShowcaseTitle">
+        <div class="home-container">
+          <header class="home-section-heading">
+            <span class="home-eyebrow">Oracle-backed project register</span>
+            <h2 id="projectShowcaseTitle">See where delivery stands now.</h2>
+            <p>Every displayed percentage comes from the latest dated Project Update, so current progress is never replaced by a higher historical value.</p>
+          </header>
+          <div class="home-showcase-grid">
+            <figure class="home-visual-frame">
+              <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&amp;fit=crop&amp;w=1400&amp;q=86" alt="Contemporary high-rise architecture viewed from below" loading="lazy">
+              <figcaption class="home-image-caption">Built-environment field view / visual context</figcaption>
+            </figure>
+            <div class="home-register-column">
+              <div class="home-register-intro"><h3>Current project files</h3><p>Area, deadline, status, and latest recorded progress in one concise view.</p></div>
+              <div class="row home-project-feed" id="featuredProjects" aria-live="polite"><div class="col-12"><div class="home-feed-loading"><div class="skeleton-line"></div><div class="skeleton-line w-75"></div></div></div></div>
+              <a class="home-register-link" href="projects.html">Open the complete project register</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-section home-section-limestone" aria-labelledby="propertyShowcaseTitle">
+        <div class="home-container">
+          <div class="home-showcase-grid home-showcase-grid-reverse home-property-grid">
+            <div class="home-property-copy">
+              <span class="home-eyebrow">Global property register</span>
+              <h2 id="propertyShowcaseTitle">Real availability, not brochure inventory.</h2>
+              <p>A unit appears here only when its status is Available and no Booking record exists for it. Units remain global inventory because the current database has no direct Unit-to-Project relationship.</p>
+              <div class="row home-property-feed" id="availableUnits" aria-live="polite"><div class="col-12"><div class="home-feed-loading"><div class="skeleton-line"></div><div class="skeleton-line w-50"></div></div></div></div>
+              <a class="home-register-link" href="properties.html">Browse all available units</a>
+            </div>
+            <figure class="home-visual-frame home-property-visual">
+              <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&amp;fit=crop&amp;w=1400&amp;q=86" alt="Contemporary residential interior with natural light" loading="lazy">
+              <figcaption class="home-image-caption">Residential design study / visual context</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-section home-section-green home-platform" aria-labelledby="platformTitle">
+        <div class="home-container">
+          <div class="home-platform-layout">
+            <figure class="home-platform-image">
+              <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&amp;fit=crop&amp;w=1400&amp;q=86" alt="Construction team working on an active site" loading="lazy">
+            </figure>
+            <div class="home-platform-content">
+              <span class="home-eyebrow">One accountable platform</span>
+              <h2 id="platformTitle">The record follows the work.</h2>
+              <p>Each workspace reveals only the responsibilities and records appropriate to that signed-in role. The connection between decision, delivery, ownership, and service remains intact.</p>
+              <ol class="home-workflow">
+                <li><span>01</span><strong>Oversight</strong><p>Admin coordinates organization-wide records and management queues.</p></li>
+                <li><span>02</span><strong>Operations</strong><p>Employees handle owned tenders, assigned reviews, and relevant delivery work.</p></li>
+                <li><span>03</span><strong>Ownership</strong><p>Clients follow only their bookings, payments, installments, and support records.</p></li>
+                <li><span>04</span><strong>Delivery</strong><p>Approved Representatives reach their own bids, awards, projects, and updates.</p></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-access" aria-labelledby="accessTitle">
+        <div class="home-container home-access-inner">
+          <div>
+            <span class="home-eyebrow">Secure role access</span>
+            <h2 id="accessTitle">Enter where your responsibility begins.</h2>
+            <p>Clients and Contractor Representatives can register publicly. Employee and Admin identities are managed internally.</p>
+          </div>
+          <div class="home-access-actions">
+            <a class="home-button-primary" data-public-guest href="login.html">User login</a>
+            <a class="home-button-secondary" data-public-guest href="register.html">Create an account</a>
+            <a class="home-button-primary" data-public-session data-public-dashboard href="login.html" hidden>Open dashboard</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="home-footer">
+      <div class="home-container">
+        <div class="home-footer-top">
+          <div class="home-footer-intro"><a class="brand-logo brand-logo-light" href="index.html"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a><p>Real-estate and construction records connected by responsibility, from tender decisions to client service.</p></div>
+          <div><h3>Explore</h3><ul><li><a href="projects.html">Projects</a></li><li><a href="properties.html">Properties</a></li><li><a href="about.html">About NIRMAN</a></li></ul></div>
+          <div><h3>Access</h3><ul><li data-public-guest><a href="login.html">User login</a></li><li data-public-guest><a href="admin-login.html">Admin login</a></li><li data-public-guest><a href="register.html">Register</a></li><li data-public-session hidden><a data-public-dashboard href="login.html">Dashboard</a></li><li data-public-session hidden><a data-logout href="index.html">Sign out</a></li></ul></div>
+        </div>
+        <div class="home-footer-bottom"><span>NIRMAN / <span data-current-year></span> / Oracle-backed academic DBMS project</span><span class="home-footer-credit">Context photography via <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a></span></div>
+      </div>
+    </footer>
+
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/public.js"></script>
+  </body>
+</html>

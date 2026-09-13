@@ -1,0 +1,4 @@
+NIRMAN_DEMO_PACKAGE/
+backend/config/db.php
+hash_test.php
+*.log

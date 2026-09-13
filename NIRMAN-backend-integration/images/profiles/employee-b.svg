@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Fictional employee portrait">
+  <rect width="160" height="160" rx="24" fill="#dbe4df"/>
+  <circle cx="80" cy="61" r="30" fill="#a96749"/>
+  <path d="M44 72c0-38 13-55 37-55 26 0 38 20 36 59l-13-9c1-22-8-33-24-33-15 0-24 11-24 32Z" fill="#2b211f"/>
+  <path d="M28 160c5-43 22-65 52-65s48 22 52 65Z" fill="#173e38"/>
+  <path d="M67 94h26v22H67Z" fill="#94583f"/>
+  <path d="m62 102 18 20 18-20 7 58H55Z" fill="#fffefa"/>
+</svg>

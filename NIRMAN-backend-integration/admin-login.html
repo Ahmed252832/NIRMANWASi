@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Restricted NIRMAN System Administrator login."><title>Admin Login | NIRMAN</title><link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/responsive.css"></head>
+  <body class="auth-page admin-auth">
+    <a class="skip-link" href="#adminLoginPanel">Skip to Admin login</a>
+    <main class="auth-shell">
+      <section class="auth-showcase" aria-labelledby="adminWelcomeTitle">
+        <a class="brand-logo brand-logo-light" href="index.html"><span class="brand-symbol" aria-hidden="true"></span><span>NIRMAN</span></a>
+        <div class="auth-showcase-copy"><span class="admin-auth-badge">Restricted / System oversight</span><h1 id="adminWelcomeTitle">Authority should remain visible and attributable.</h1><p>Admin access provides broad oversight. Operational records created here still use the authenticated Administrator's Employee identity.</p></div>
+        <div class="auth-blueprint" aria-label="Administrator access principles"><div class="blueprint-cell"><strong>ADM</strong><span>Role checked</span></div><div class="blueprint-cell"><strong>EMP</strong><span>Actor attached</span></div><div class="blueprint-cell"><strong>LOG</strong><span>Safe responses</span></div></div>
+      </section>
+      <section class="auth-form-panel" id="adminLoginPanel" aria-labelledby="adminLoginHeading">
+        <a class="auth-back-link" href="index.html"><span aria-hidden="true">&larr;</span> Back to public site</a>
+        <div class="auth-form-heading"><span class="section-kicker">System oversight</span><h2 id="adminLoginHeading">Administrator login</h2><p>This form accepts only the designated System Administrator account.</p></div>
+        <div id="adminFeedback" aria-live="polite"></div>
+        <form id="adminLoginForm"><div class="mb-3"><label class="form-label" for="adminEmail">Admin email</label><input class="form-control" type="email" id="adminEmail" autocomplete="username" maxlength="60" required placeholder="Administrator email"></div><div class="mb-4"><label class="form-label" for="adminPassword">Password</label><input class="form-control" type="password" id="adminPassword" autocomplete="current-password" required placeholder="Enter your password"></div><button class="btn btn-clay w-100" type="submit">Open Admin workspace</button></form>
+        <p class="auth-switch">Not a System Administrator? <a href="login.html">Use role login</a></p>
+      </section>
+    </main>
+    <script src="js/common.js"></script><script src="js/auth.js"></script>
+  </body>
+</html>
